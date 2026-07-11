@@ -13,7 +13,16 @@
     "target": "es2022",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "paths": {
+      "@algoguido/config": ["../../packages/config/src/index.ts"],
+      "@algoguido/types": ["../../packages/types/src/index.ts"],
+      "@algoguido/utils": ["../../packages/utils/src/index.ts"],
+      "@algoguido/shared": ["../../packages/shared/src/index.ts"],
+      "@algoguido/db": ["../../packages/db/src/index.ts"],
+      "@algoguido/auth": ["../../packages/auth/src/index.ts"],
+      "@algoguido/ai": ["../../packages/ai/src/index.ts"]
+    }
   },
   "ts-node": {
     "compilerOptions": {
