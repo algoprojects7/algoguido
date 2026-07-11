@@ -25,9 +25,8 @@ async function bootstrapServer(): Promise<any> {
       app.setGlobalPrefix(env.API_PREFIX);
 
       // Enable CORS
-      const corsOrigins = env.CORS_ORIGINS.split(',');
       app.enableCors({
-        origin: corsOrigins,
+        origin: true,
         credentials: true,
       });
 
