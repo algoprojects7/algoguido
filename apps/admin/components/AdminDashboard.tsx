@@ -381,6 +381,9 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
   };
 
   const handleDeleteCertificate = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this certificate?')) {
+      return;
+    }
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
       const res = await fetch(`${apiUrl}/certificates/${id}`, {
@@ -523,6 +526,9 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
   };
 
   const handleDeleteProduct = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this product?')) {
+      return;
+    }
     try {
       const token = sessionStorage.getItem('algoguido_admin_token');
       const headers: any = {};
@@ -578,7 +584,10 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
     setIsWaModalOpen(false);
   };
 
-  const handleDeleteLead = async (id: string) => {
+  const handleDeleteLead = async (id: string, type: string = 'lead') => {
+    if (!window.confirm(`Are you sure you want to delete this ${type}?`)) {
+      return;
+    }
     try {
       const token = sessionStorage.getItem('algoguido_admin_token');
       const headers: any = {};
@@ -1286,7 +1295,7 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
                                       </button>
                                     )}
                                     <button
-                                      onClick={() => handleDeleteLead(l.id)}
+                                      onClick={() => handleDeleteLead(l.id, 'lead')}
                                       className="text-red-500 hover:text-red-700 font-bold hover:underline"
                                     >
                                       Delete
@@ -1394,7 +1403,7 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
                                       </button>
                                     )}
                                     <button
-                                      onClick={() => handleDeleteLead(a.id)}
+                                      onClick={() => handleDeleteLead(a.id, 'application')}
                                       className="text-red-500 hover:text-red-700 font-bold hover:underline"
                                     >
                                       Delete
