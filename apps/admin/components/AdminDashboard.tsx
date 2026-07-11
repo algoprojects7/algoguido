@@ -1231,8 +1231,8 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                         <tbody className="divide-y divide-slate-100 text-slate-700 text-xs">
                           {certs
                             .filter((c) =>
-                              c.candidateName?.toLowerCase().includes(certSearchQuery.toLowerCase()) ||
-                              c.certificateNo?.toLowerCase().includes(certSearchQuery.toLowerCase())
+                              c.candidateName?.toLowerCase()?.includes(certSearchQuery.toLowerCase()) ||
+                              c.certificateNo?.toLowerCase()?.includes(certSearchQuery.toLowerCase())
                             )
                             .map((c) => (
                               <tr key={c.id} className="hover:bg-slate-50/20 transition-colors">
@@ -1321,9 +1321,9 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                         <tbody className="divide-y divide-slate-100 text-slate-700 text-xs">
                           {leads
                             .filter((l) =>
-                              l.name?.toLowerCase().includes(leadSearchQuery.toLowerCase()) ||
-                              l.email?.toLowerCase().includes(leadSearchQuery.toLowerCase()) ||
-                              l.company?.toLowerCase().includes(leadSearchQuery.toLowerCase())
+                              l.name?.toLowerCase()?.includes(leadSearchQuery.toLowerCase()) ||
+                              l.email?.toLowerCase()?.includes(leadSearchQuery.toLowerCase()) ||
+                              l.company?.toLowerCase()?.includes(leadSearchQuery.toLowerCase())
                             )
                             .map((l) => (
                               <tr key={l.id} className="hover:bg-slate-50/20 transition-colors">
@@ -1440,9 +1440,9 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                         <tbody className="divide-y divide-slate-100 text-slate-700 text-xs">
                           {apps
                             .filter((a) =>
-                              a.name?.toLowerCase().includes(appSearchQuery.toLowerCase()) ||
-                              a.email?.toLowerCase().includes(appSearchQuery.toLowerCase()) ||
-                              a.company?.toLowerCase().includes(appSearchQuery.toLowerCase())
+                              a.name?.toLowerCase()?.includes(appSearchQuery.toLowerCase()) ||
+                              a.email?.toLowerCase()?.includes(appSearchQuery.toLowerCase()) ||
+                              a.company?.toLowerCase()?.includes(appSearchQuery.toLowerCase())
                             )
                             .map((a) => (
                               <tr key={a.id} className="hover:bg-slate-50/20 transition-colors">
@@ -1618,8 +1618,8 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                             <tbody className="divide-y divide-slate-100 text-slate-700 text-xs">
                               {products
                                 .filter((p) =>
-                                  p.name?.toLowerCase().includes(prodSearchQuery.toLowerCase()) ||
-                                  p.slug?.toLowerCase().includes(prodSearchQuery.toLowerCase())
+                                  p.name?.toLowerCase()?.includes(prodSearchQuery.toLowerCase()) ||
+                                  p.slug?.toLowerCase()?.includes(prodSearchQuery.toLowerCase())
                                 )
                                 .map((p) => (
                                   <tr key={p.id} className="hover:bg-slate-50/20 transition-colors">
@@ -1795,8 +1795,8 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                             <tbody className="divide-y divide-slate-100 text-slate-700 text-xs">
                               {entServices
                                 .filter((es) =>
-                                  es.name?.toLowerCase().includes(entSearchQuery.toLowerCase()) ||
-                                  es.slug?.toLowerCase().includes(entSearchQuery.toLowerCase())
+                                  es.name?.toLowerCase()?.includes(entSearchQuery.toLowerCase()) ||
+                                  es.slug?.toLowerCase()?.includes(entSearchQuery.toLowerCase())
                                 )
                                 .map((es) => (
                                   <tr key={es.id} className="hover:bg-slate-50/20 transition-colors">
