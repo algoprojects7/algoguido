@@ -12,6 +12,12 @@ async function bootstrapServer(): Promise<any> {
   if (!cachedServer) {
     try {
       const expressApp = express();
+
+      // Map Vercel-injected Prisma Postgres variables if DATABASE_URL is not set
+      if (!process.env.DATABASE_URL) {
+        process.env.DATABASE_URL = process.env.PRISMA_DATABASE_URL || process.env.POSTGRES_URL;
+      }
+
       const env = validateServerEnv(process.env);
       const app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp));
 
