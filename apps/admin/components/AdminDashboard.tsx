@@ -231,9 +231,17 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
     sortOrder: 0,
   });
 
-  // Billing states
   const [billing, setBilling] = useState<any[]>([]);
   const [billingLoading, setBillingLoading] = useState(false);
+
+  // Dynamic metrics calculated from active DB states
+  const totalLeadsCount = leads.length;
+  const totalAppsCount = apps.length;
+  
+  // Total captured revenue (sum rawAmount where status is SUCCESS / CAPTURED, converted to INR)
+  const totalRevenueAmount = billing
+    .filter((pay) => pay.rawStatus === 'CAPTURED' || pay.status === 'SUCCESS')
+    .reduce((sum, pay) => sum + (pay.rawAmount || 0), 0) / 100;
 
   // WhatsApp states
   const [isWaModalOpen, setIsWaModalOpen] = useState(false);
@@ -259,7 +267,11 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
     : allNavigationItems.filter((item) => !item.restricted);
 
   useEffect(() => {
-    if (activeTab === 'certificates') {
+    if (activeTab === 'dashboard') {
+      fetchLeads();
+      fetchApplications();
+      fetchBilling();
+    } else if (activeTab === 'certificates') {
       fetchCertificates();
     } else if (activeTab === 'leads') {
       fetchLeads();
@@ -468,6 +480,8 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
           product: pay.description || 'Payment Transaction',
           amount: `₹${(pay.amount / 100).toLocaleString()}`,
           status: pay.status === 'CAPTURED' ? 'SUCCESS' : pay.status === 'CREATED' ? 'PENDING' : 'FAILED',
+          rawAmount: pay.amount,
+          rawStatus: pay.status,
           date: pay.createdAt,
         }));
         setBilling(formatted);
@@ -896,10 +910,12 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                         <TrendingUp className="h-4.5 w-4.5" />
                       </span>
                     </div>
-                    <p className="text-3xl font-display font-extrabold mt-4 text-slate-800">1,248</p>
+                    <p className="text-3xl font-display font-extrabold mt-4 text-slate-800">
+                      {leadsLoading ? '...' : totalLeadsCount.toLocaleString()}
+                    </p>
                     <div className="flex items-center gap-1.5 mt-2">
                       <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-lg border border-emerald-100">
-                        ↑ +12.5%
+                        ↑ Realtime
                       </span>
                       <span className="text-[10px] text-slate-500 font-semibold uppercase">this month</span>
                     </div>
@@ -916,10 +932,12 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                         <GraduationCap className="h-4.5 w-4.5" />
                       </span>
                     </div>
-                    <p className="text-3xl font-display font-extrabold mt-4 text-slate-800">432</p>
+                    <p className="text-3xl font-display font-extrabold mt-4 text-slate-800">
+                      {appsLoading ? '...' : totalAppsCount.toLocaleString()}
+                    </p>
                     <div className="flex items-center gap-1.5 mt-2">
                       <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-lg border border-emerald-100">
-                        ↑ +8.3%
+                        ↑ Realtime
                       </span>
                       <span className="text-[10px] text-slate-500 font-semibold uppercase">this month</span>
                     </div>
@@ -936,10 +954,12 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                         <CreditCard className="h-4.5 w-4.5" />
                       </span>
                     </div>
-                    <p className="text-3xl font-display font-extrabold mt-4 text-slate-800">₹8,45,200</p>
+                    <p className="text-3xl font-display font-extrabold mt-4 text-slate-800">
+                      {billingLoading ? '...' : `₹${totalRevenueAmount.toLocaleString()}`}
+                    </p>
                     <div className="flex items-center gap-1.5 mt-2">
                       <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-lg border border-emerald-100">
-                        ↑ +21.4%
+                        ↑ Realtime
                       </span>
                       <span className="text-[10px] text-slate-500 font-semibold uppercase">this month</span>
                     </div>
@@ -984,47 +1004,33 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                     </div>
 
                     <div className="space-y-4">
-                      <div className="p-4 rounded-2xl bg-white/50 border border-slate-200/40 flex items-center justify-between hover:shadow-sm transition-shadow duration-300">
-                        <div className="min-w-0">
-                          <p className="text-sm font-bold text-slate-800">Inquiry from TechSolutions</p>
-                          <p className="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
-                            <span>Request Demo</span>
-                            <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
-                            <span>eduAI365 Suite</span>
-                          </p>
+                      {leadsLoading ? (
+                        <div className="py-8 text-center text-slate-400 font-bold animate-pulse text-xs uppercase tracking-wider">
+                          Syncing telemetry logs...
                         </div>
-                        <Badge variant="primary">
-                          NEW
-                        </Badge>
-                      </div>
-
-                      <div className="p-4 rounded-2xl bg-white/50 border border-slate-200/40 flex items-center justify-between hover:shadow-sm transition-shadow duration-300">
-                        <div className="min-w-0">
-                          <p className="text-sm font-bold text-slate-800">Priya Sharma (Application)</p>
-                          <p className="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
-                            <span>Web Dev Internship</span>
-                            <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
-                            <span>Mumbai Hub</span>
-                          </p>
+                      ) : leads.length === 0 ? (
+                        <div className="py-8 text-center text-slate-400 text-xs font-semibold">
+                          No recent leads registered.
                         </div>
-                        <Badge variant="warning">
-                          REVIEWING
-                        </Badge>
-                      </div>
-
-                      <div className="p-4 rounded-2xl bg-white/50 border border-slate-200/40 flex items-center justify-between hover:shadow-sm transition-shadow duration-300">
-                        <div className="min-w-0">
-                          <p className="text-sm font-bold text-slate-800">Gov. Cloud RFP Query</p>
-                          <p className="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
-                            <span>Consultation Request</span>
-                            <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
-                            <span>Cloud Infrastructure</span>
-                          </p>
-                        </div>
-                        <Badge variant="success" className="bg-emerald-50 text-emerald-600 border-emerald-200">
-                          ASSIGNED
-                        </Badge>
-                      </div>
+                      ) : (
+                        leads.slice(0, 3).map((l: any) => (
+                          <div key={l.id} className="p-4 rounded-2xl bg-white/50 border border-slate-200/40 flex items-center justify-between hover:shadow-sm transition-shadow duration-300">
+                            <div className="min-w-0">
+                              <p className="text-sm font-bold text-slate-800">
+                                {l.name} {l.company ? `(${l.company})` : ''}
+                              </p>
+                              <p className="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
+                                <span className="font-semibold text-brand-600">{l.source || 'WEBSITE_CONTACT'}</span>
+                                <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                                <span className="truncate max-w-[240px]">{l.message || 'No custom description.'}</span>
+                              </p>
+                            </div>
+                            <Badge variant={l.stage === 'NEW' ? 'primary' : l.stage === 'LOST' ? 'neutral' : 'warning'}>
+                              {l.stage}
+                            </Badge>
+                          </div>
+                        ))
+                      )}
                     </div>
                   </Card>
 
