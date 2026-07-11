@@ -221,4 +221,21 @@ export class LeadsService {
 
     return systemUser;
   }
+
+  /**
+   * Remove a lead by internal ID (cascades database notes and activities)
+   */
+  async remove(id: string) {
+    const lead = await this.prisma.lead.findUnique({
+      where: { id },
+    });
+
+    if (!lead) {
+      throw new NotFoundException(`Lead with ID ${id} not found.`);
+    }
+
+    return this.prisma.lead.delete({
+      where: { id },
+    });
+  }
 }

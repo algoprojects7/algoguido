@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { LeadsService } from './leads.service';
 import { JwtAuthGuard } from '../../common/guards/auth.guard';
@@ -75,5 +75,14 @@ export class LeadsController {
   ) {
     const userId = req.user.userId;
     return this.leadsService.addNote(id, content, userId);
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @RequirePermissions('leads:write')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Delete a lead by ID (Admin)' })
+  async remove(@Param('id') id: string) {
+    return this.leadsService.remove(id);
   }
 }
