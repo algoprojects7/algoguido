@@ -107,64 +107,7 @@ const initialMockLeads = [
   },
 ];
 
-const initialMockApplications = [
-  {
-    id: 'app-1',
-    name: 'Amit Baruah',
-    email: 'amit.baruah@gmail.com',
-    phone: '+91 94350 12345',
-    company: 'Tezpur University',
-    program: 'Paid Internship',
-    skills: 'React, Node.js, PostgreSQL',
-    stage: 'QUALIFIED',
-    source: 'EDUCATION_PORTAL',
-    score: 85,
-    value: 150000,
-    message: 'B.Tech CSE student applying for paid internship in React/Node.js full stack development.',
-  },
-  {
-    id: 'app-2',
-    name: 'Prof. Dipankar Das',
-    email: 'dipankar.das@gauhati.ac.in',
-    phone: '+91 94355 55555',
-    company: 'Gauhati University',
-    program: 'Workshop',
-    skills: 'Machine Learning, Python',
-    stage: 'CONTACTED',
-    source: 'EDUCATION_PORTAL',
-    score: 92,
-    value: 200000,
-    message: 'Proposal to host a 3-day workshop on Generative AI integration in cloud software for Gauhati University faculties.',
-  },
-  {
-    id: 'app-3',
-    name: 'Dr. Hemanga Kakati',
-    email: 'hemanga.kakati@astu.ac.in',
-    phone: '+91 98640 77777',
-    company: 'ASTU Assam',
-    program: 'Academic Research Project',
-    skills: 'IoT, Python, SQL',
-    stage: 'QUALIFIED',
-    source: 'EDUCATION_PORTAL',
-    score: 88,
-    value: 300000,
-    message: 'IoT-based smart agricultural sensor networks research collaboration state grant proposal.',
-  },
-  {
-    id: 'app-4',
-    name: 'Dr. Nivedita Devi',
-    email: 'nivedita.devi@nits.ac.in',
-    phone: '+91 94351 99999',
-    company: 'NIT Silchar',
-    program: 'Faculty Development Program (FDP)',
-    skills: 'Docker, Kubernetes, Cloud',
-    stage: 'NEW',
-    source: 'EDUCATION_PORTAL',
-    score: 82,
-    value: 120000,
-    message: 'FDP proposal - Cloud Infrastructure, Docker & Kubernetes DevOps practices for computing faculties at NIT Silchar.',
-  },
-];
+
 
 const initialMockProducts = [
   {
@@ -408,12 +351,12 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
         const data = await res.json();
         const leadsData = data.data || data;
         const eduApps = leadsData.filter((l: any) => l.source === 'EDUCATION_PORTAL');
-        setApps(eduApps.length > 0 ? eduApps : initialMockApplications);
+        setApps(eduApps);
       } else {
-        setApps(initialMockApplications);
+        setApps([]);
       }
     } catch (e) {
-      setApps(initialMockApplications);
+      setApps([]);
     } finally {
       setAppsLoading(false);
     }

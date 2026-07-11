@@ -512,6 +512,14 @@ export default function Home() {
   const [countryCode, setCountryCode] = useState('+91');
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
+  // Auto-reset success message after 8 seconds
+  useEffect(() => {
+    if (status === 'success') {
+      const timer = setTimeout(() => setStatus('idle'), 8000);
+      return () => clearTimeout(timer);
+    }
+  }, [status]);
+
   const [isCertModalOpen, setIsCertModalOpen] = useState(false);
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
@@ -3038,6 +3046,12 @@ export default function Home() {
                     <h4 className="font-bold text-green-900 dark:text-white text-lg">Thank You!</h4>
                     <p className="text-green-700 dark:text-slate-300 text-sm mt-1">Your message was sent successfully. We will follow up soon.</p>
                   </div>
+                  <button
+                    onClick={() => setStatus('idle')}
+                    className="mt-2 px-5 py-2 rounded-xl bg-[#0052cc] text-white text-xs font-bold uppercase tracking-wider hover:bg-blue-700 transition-colors"
+                  >
+                    Send Another Message
+                  </button>
                 </div>
               ) : (
                 <div className="flex flex-col gap-6">
@@ -3800,9 +3814,14 @@ export default function Home() {
                     <h4 className="font-bold text-green-900 dark:text-white text-lg">Application Submitted!</h4>
                     <p className="text-green-700 dark:text-slate-300 text-sm mt-1">Your proposal was registered in our CRM. Our coordination desk will follow up soon.</p>
                   </div>
-                  <Button onClick={() => setIsEduModalOpen(false)} variant="outline" className="mt-2 font-bold">
-                    Close Window
-                  </Button>
+                  <div className="flex gap-3 mt-2">
+                    <Button onClick={() => setStatus('idle')} variant="outline" className="font-bold">
+                      Submit Another
+                    </Button>
+                    <Button onClick={() => { setIsEduModalOpen(false); setStatus('idle'); }} className="font-bold bg-[#0052cc] text-white hover:bg-blue-700">
+                      Close Window
+                    </Button>
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={handleEduSubmit} className="flex flex-col gap-4 max-h-[70vh] overflow-y-auto pr-1 text-slate-800 dark:text-white">
