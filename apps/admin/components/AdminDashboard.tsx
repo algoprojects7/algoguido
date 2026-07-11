@@ -19,7 +19,8 @@ import {
   ChevronRight,
   Award,
   Mail,
-  Briefcase
+  Briefcase,
+  UserPlus
 } from 'lucide-react';
 import { motion as originalMotion, AnimatePresence } from 'framer-motion';
 const motion = originalMotion as any;
@@ -89,6 +90,16 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
     sortOrder: 0,
   });
 
+  // Admin user creation states
+  const [users, setUsers] = useState<any[]>([]);
+  const [usersLoading, setUsersLoading] = useState(false);
+  const [newAdmin, setNewAdmin] = useState({
+    name: '',
+    email: '',
+    password: '',
+    role: 'ADMIN',
+  });
+
   const [billing, setBilling] = useState<any[]>([]);
   const [billingLoading, setBillingLoading] = useState(false);
 
@@ -124,6 +135,7 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
     { id: 'applications', name: 'Applications', icon: GraduationCap },
     { id: 'products', name: 'Products', icon: Database, restricted: true },
     { id: 'enterprise', name: 'Enterprise', icon: Briefcase, restricted: true },
+    { id: 'createadmin', name: 'Create Admin', icon: UserPlus, restricted: true },
     { id: 'billing', name: 'Razorpay Billing', icon: CreditCard },
     { id: 'settings', name: 'Settings', icon: Settings, restricted: true },
     { id: 'webmail', name: 'Web Mail', icon: Mail, href: 'https://algoguido.com:2096', isExternal: true },
@@ -149,6 +161,8 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
       fetchProducts();
     } else if (activeTab === 'enterprise') {
       fetchEnterpriseServices();
+    } else if (activeTab === 'createadmin') {
+      fetchUsers();
     } else if (activeTab === 'billing') {
       fetchBilling();
     }
@@ -494,9 +508,93 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
       });
       if (res.ok) {
         setEntServices((prev) => prev.filter((es) => es.id !== id));
-        alert('Enterprise service deleted successfully.');
       } else {
         alert(`Failed to delete: ${res.status}`);
+      }
+    } catch (e: any) {
+      alert(`Network error: ${e.message}`);
+    }
+  };
+
+  const fetchUsers = async () => {
+    setUsersLoading(true);
+    try {
+      const token = sessionStorage.getItem('algoguido_admin_token');
+      const headers: any = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const res = await fetch(`${apiUrl}/users`, { headers });
+      if (res.ok) {
+        const data = await res.json();
+        setUsers(data);
+      } else {
+        setUsers([]);
+      }
+    } catch (e) {
+      console.error('Failed to fetch admin users:', e);
+      setUsers([]);
+    } finally {
+      setUsersLoading(false);
+    }
+  };
+
+  const handleCreateAdmin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const token = sessionStorage.getItem('algoguido_admin_token');
+      const headers: any = { 'Content-Type': 'application/json' };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const res = await fetch(`${apiUrl}/users`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(newAdmin),
+      });
+
+      if (res.ok) {
+        const created = await res.json();
+        setUsers((prev) => [created, ...prev]);
+        alert('Admin account created successfully.');
+        setNewAdmin({
+          name: '',
+          email: '',
+          password: '',
+          role: 'ADMIN',
+        });
+      } else {
+        const errText = await res.text();
+        alert(`Failed to create admin: ${res.status} - ${errText || 'Error'}`);
+      }
+    } catch (e: any) {
+      alert(`Network error: ${e.message}`);
+    }
+  };
+
+  const handleDeleteUser = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this administrator account?')) {
+      return;
+    }
+    try {
+      const token = sessionStorage.getItem('algoguido_admin_token');
+      const headers: any = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const res = await fetch(`${apiUrl}/users/${id}`, {
+        method: 'DELETE',
+        headers,
+      });
+      if (res.ok) {
+        setUsers((prev) => prev.filter((u) => u.id !== id));
+        alert('User deleted successfully.');
+      } else {
+        const errText = await res.text();
+        alert(`Failed to delete: ${res.status} - ${errText || 'Error'}`);
       }
     } catch (e: any) {
       alert(`Network error: ${e.message}`);
@@ -1807,6 +1905,141 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                     </div>
                   )}
                 </Card>
+              </div>
+            ) : activeTab === 'createadmin' ? (
+              /* Create Admin Tab */
+              <div className="flex flex-col gap-8 w-full animate-fade-in pb-12">
+                <div className="grid lg:grid-cols-12 gap-8 w-full">
+                  {/* Left: Create Admin Form */}
+                  <Card variant="glass" className="lg:col-span-5 p-6 bg-white/45 border-white/60 shadow-sm flex flex-col gap-6">
+                    <div>
+                      <h3 className="font-display font-bold text-lg text-slate-800 flex items-center gap-2">
+                        <UserPlus className="h-5 w-5 text-indigo-600" />
+                        Create New Administrator
+                      </h3>
+                      <p className="text-xs text-slate-500">Register new administrative credentials</p>
+                    </div>
+
+                    <form onSubmit={handleCreateAdmin} className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Full Name *</label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="e.g. John Doe"
+                          value={newAdmin.name}
+                          onChange={(e) => setNewAdmin({ ...newAdmin, name: e.target.value })}
+                          className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Email Address *</label>
+                        <input
+                          type="email"
+                          required
+                          placeholder="e.g. john@algoguido.com"
+                          value={newAdmin.email}
+                          onChange={(e) => setNewAdmin({ ...newAdmin, email: e.target.value })}
+                          className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Password *</label>
+                        <input
+                          type="password"
+                          required
+                          placeholder="••••••••"
+                          value={newAdmin.password}
+                          onChange={(e) => setNewAdmin({ ...newAdmin, password: e.target.value })}
+                          className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">System Role *</label>
+                        <select
+                          value={newAdmin.role}
+                          onChange={(e) => setNewAdmin({ ...newAdmin, role: e.target.value })}
+                          className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        >
+                          <option value="ADMIN">Admin (Restricted access)</option>
+                          <option value="SUPER_ADMIN">Super Admin (Full access)</option>
+                          <option value="EDITOR">Editor (Content manager)</option>
+                          <option value="VIEWER">Viewer (Read-only)</option>
+                        </select>
+                      </div>
+
+                      <Button type="submit" variant="primary" className="mt-2 font-bold uppercase tracking-wider rounded-xl py-2 flex items-center justify-center gap-2">
+                        <UserPlus className="h-4 w-4" />
+                        Create Account
+                      </Button>
+                    </form>
+                  </Card>
+
+                  {/* Right: Active Administrators List */}
+                  <Card variant="glass" className="lg:col-span-7 p-6 md:p-8 bg-white/45 border-white/60 shadow-sm flex flex-col justify-between">
+                    <div>
+                      <div className="flex justify-between items-center mb-6">
+                        <div>
+                          <h3 className="font-display font-bold text-lg text-slate-800">System Administrators</h3>
+                          <p className="text-xs text-slate-500">Manage console gatekeeper registries</p>
+                        </div>
+                        <Button onClick={fetchUsers} variant="outline" size="sm" className="text-xs shrink-0">
+                          Refresh
+                        </Button>
+                      </div>
+
+                      {usersLoading ? (
+                        <div className="py-12 flex justify-center text-slate-400 font-bold animate-pulse text-sm">
+                          Loading active administrators...
+                        </div>
+                      ) : users.length === 0 ? (
+                        <div className="py-12 text-center text-slate-400 text-sm font-medium">
+                          No administrators registered.
+                        </div>
+                      ) : (
+                        <div className="overflow-x-auto w-full">
+                          <table className="w-full text-left border-collapse">
+                            <thead>
+                              <tr className="border-b border-slate-200/50 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                                <th className="pb-3">Admin User</th>
+                                <th className="pb-3">System Role</th>
+                                <th className="pb-3 text-right">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-100 text-slate-700 text-xs">
+                              {users.map((u) => (
+                                <tr key={u.id} className="hover:bg-slate-50/20 transition-colors">
+                                  <td className="py-3.5">
+                                    <div className="font-semibold text-slate-800">{u.name}</div>
+                                    <div className="text-[10px] text-slate-400 font-mono mt-0.5">{u.email}</div>
+                                  </td>
+                                  <td className="py-3.5">
+                                    <span className={`inline-block text-[9px] font-extrabold tracking-widest uppercase px-1.5 py-0.5 rounded-md ${
+                                      u.role === 'SUPER_ADMIN' ? 'bg-violet-100 text-violet-700' :
+                                      u.role === 'ADMIN' ? 'bg-sky-100 text-sky-700' :
+                                      u.role === 'EDITOR' ? 'bg-amber-100 text-amber-700' :
+                                      'bg-slate-100 text-slate-700'
+                                    }`}>
+                                      {u.role === 'SUPER_ADMIN' ? 'Super Admin' : u.role}
+                                    </span>
+                                  </td>
+                                  <td className="py-3.5 text-right">
+                                    <button
+                                      onClick={() => handleDeleteUser(u.id)}
+                                      className="text-red-500 hover:text-red-700 font-bold hover:underline"
+                                    >
+                                      Delete
+                                    </button>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                    </div>
+                  </Card>
+                </div>
               </div>
             ) : activeTab === 'settings' ? (
               /* Settings Panel */
