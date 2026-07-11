@@ -10,41 +10,46 @@ let cachedServer: any;
 
 async function bootstrapServer(): Promise<any> {
   if (!cachedServer) {
-    const expressApp = express();
-    const env = validateServerEnv(process.env);
-    const app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp));
+    try {
+      const expressApp = express();
+      const env = validateServerEnv(process.env);
+      const app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp));
 
-    // Set API prefix
-    app.setGlobalPrefix(env.API_PREFIX);
+      // Set API prefix
+      app.setGlobalPrefix(env.API_PREFIX);
 
-    // Enable CORS
-    const corsOrigins = env.CORS_ORIGINS.split(',');
-    app.enableCors({
-      origin: corsOrigins,
-      credentials: true,
-    });
+      // Enable CORS
+      const corsOrigins = env.CORS_ORIGINS.split(',');
+      app.enableCors({
+        origin: corsOrigins,
+        credentials: true,
+      });
 
-    // Enable global validation pipe
-    app.useGlobalPipes(
-      new ValidationPipe({
-        whitelist: true,
-        transform: true,
-        forbidNonWhitelisted: true,
-      })
-    );
+      // Enable global validation pipe
+      app.useGlobalPipes(
+        new ValidationPipe({
+          whitelist: true,
+          transform: true,
+          forbidNonWhitelisted: true,
+        })
+      );
 
-    // Setup Swagger/OpenAPI documentation
-    const config = new DocumentBuilder()
-      .setTitle('Algoguido Technologies API')
-      .setDescription('Enterprise System Core API for Algoguido Technologies')
-      .setVersion('2.1')
-      .addBearerAuth()
-      .build();
-    const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup(`${env.API_PREFIX}/docs`, app, document);
+      // Setup Swagger/OpenAPI documentation
+      const config = new DocumentBuilder()
+        .setTitle('Algoguido Technologies API')
+        .setDescription('Enterprise System Core API for Algoguido Technologies')
+        .setVersion('2.1')
+        .addBearerAuth()
+        .build();
+      const document = SwaggerModule.createDocument(app, config);
+      SwaggerModule.setup(`${env.API_PREFIX}/docs`, app, document);
 
-    await app.init();
-    cachedServer = expressApp;
+      await app.init();
+      cachedServer = expressApp;
+    } catch (error) {
+      console.error('❌ CRITICAL: NestJS Bootstrap Server Failed:', error);
+      throw error;
+    }
   }
   return cachedServer;
 }
