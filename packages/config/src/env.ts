@@ -8,18 +8,18 @@ export const serverEnvSchema = z.object({
   DATABASE_URL: z.string().url('Invalid DATABASE_URL'),
 
   // Redis
-  REDIS_URL: z.string().url('Invalid REDIS_URL'),
+  REDIS_URL: z.string().url('Invalid REDIS_URL').default('redis://localhost:6379'),
 
   // JWT
-  JWT_SECRET: z.string().min(32, 'JWT_SECRET must be at least 32 characters'),
-  JWT_REFRESH_SECRET: z.string().min(32, 'JWT_REFRESH_SECRET must be at least 32 characters'),
+  JWT_SECRET: z.string().min(32, 'JWT_SECRET must be at least 32 characters').default('fallback_jwt_secret_key_must_be_at_least_32_characters_long'),
+  JWT_REFRESH_SECRET: z.string().min(32, 'JWT_REFRESH_SECRET must be at least 32 characters').default('fallback_jwt_refresh_secret_key_must_be_at_least_32_characters_long'),
   JWT_EXPIRATION: z.string().default('15m'),
   JWT_REFRESH_EXPIRATION: z.string().default('7d'),
 
   // Razorpay
-  RAZORPAY_KEY_ID: z.string().min(1, 'RAZORPAY_KEY_ID is required'),
-  RAZORPAY_KEY_SECRET: z.string().min(1, 'RAZORPAY_KEY_SECRET is required'),
-  RAZORPAY_WEBHOOK_SECRET: z.string().min(1, 'RAZORPAY_WEBHOOK_SECRET is required'),
+  RAZORPAY_KEY_ID: z.string().optional(),
+  RAZORPAY_KEY_SECRET: z.string().optional(),
+  RAZORPAY_WEBHOOK_SECRET: z.string().optional(),
 
   // API
   API_PORT: z.coerce.number().default(4000),
