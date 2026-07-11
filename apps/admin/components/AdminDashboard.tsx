@@ -313,7 +313,8 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
   const fetchCertificates = async () => {
     setCertsLoading(true);
     try {
-      const res = await fetch('http://localhost:4000/api/certificates');
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const res = await fetch(`${apiUrl}/certificates`);
       if (res.ok) {
         const data = await res.json();
         setCerts(data);
@@ -331,7 +332,8 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
   const handleAddCertificate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:4000/api/certificates', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const res = await fetch(`${apiUrl}/certificates`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newCert),
@@ -380,7 +382,8 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
 
   const handleDeleteCertificate = async (id: string) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/certificates/${id}`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const res = await fetch(`${apiUrl}/certificates/${id}`, {
         method: 'DELETE',
       });
       if (res.ok || true) {
@@ -400,7 +403,8 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
       if (token) {
         headers['Authorization'] = `Bearer ${token}`;
       }
-      const res = await fetch('http://localhost:4000/api/leads', { headers });
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const res = await fetch(`${apiUrl}/leads`, { headers });
       if (res.ok) {
         const data = await res.json();
         const leadsData = data.data || data;
@@ -423,7 +427,8 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
       if (token) {
         headers['Authorization'] = `Bearer ${token}`;
       }
-      const res = await fetch('http://localhost:4000/api/leads', { headers });
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const res = await fetch(`${apiUrl}/leads`, { headers });
       if (res.ok) {
         const data = await res.json();
         const leadsData = data.data || data;
@@ -442,7 +447,8 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
   const fetchProducts = async () => {
     setProductsLoading(true);
     try {
-      const res = await fetch('http://localhost:4000/api/products');
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const res = await fetch(`${apiUrl}/products`);
       if (res.ok) {
         const data = await res.json();
         setProducts(data);
@@ -475,7 +481,8 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
       if (token) {
         headers['Authorization'] = `Bearer ${token}`;
       }
-      const res = await fetch('http://localhost:4000/api/products', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const res = await fetch(`${apiUrl}/products`, {
         method: 'POST',
         headers,
         body: JSON.stringify(newProduct),
@@ -522,7 +529,8 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
       if (token) {
         headers['Authorization'] = `Bearer ${token}`;
       }
-      const res = await fetch(`http://localhost:4000/api/products/${id}`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const res = await fetch(`${apiUrl}/products/${id}`, {
         method: 'DELETE',
         headers,
       });
@@ -553,7 +561,8 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
       setWaCustomMessage(msg);
     } else {
       // Pre-filled Payment Gateway Link Message
-      const checkoutUrl = `http://localhost:3000/checkout?leadId=${selectedLeadForWa.id}&amount=${selectedLeadForWa.value || 9999}`;
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+      const checkoutUrl = `${siteUrl}/checkout?leadId=${selectedLeadForWa.id}&amount=${selectedLeadForWa.value || 9999}`;
       const msg = `Hello ${selectedLeadForWa.name},\n\nTo proceed with your request, we have generated a secure payment link. You can complete the transaction here:\n\n${checkoutUrl}\n\nOnce completed, your service will be provisioned immediately.\n\nBest regards,\nAlgoguido Billing`;
       setWaCustomMessage(msg);
     }
@@ -576,7 +585,8 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
       if (token) {
         headers['Authorization'] = `Bearer ${token}`;
       }
-      const res = await fetch(`http://localhost:4000/api/leads/${id}`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const res = await fetch(`${apiUrl}/leads/${id}`, {
         method: 'DELETE',
         headers,
       });
