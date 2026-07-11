@@ -1145,6 +1145,7 @@ export default function Home() {
 
             <a
               href="#contact"
+              onClick={(e) => handleNavClick('contact', 'Contact', e)}
               className="hidden sm:inline-flex items-center justify-center rounded-full bg-gradient-brand text-white shadow-md font-bold text-[10px] tracking-widest uppercase h-9 px-4 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
             >
               Request Demo
