@@ -41,6 +41,10 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
         if (data.accessToken) {
           sessionStorage.setItem('algoguido_admin_token', data.accessToken);
         }
+        if (data.user?.role) {
+          sessionStorage.setItem('algoguido_admin_role', data.user.role);
+          sessionStorage.setItem('algoguido_admin_name', data.user.name || '');
+        }
         onLoginSuccess();
       } else {
         // Fallback checks for local administrative testing if backend responds with error

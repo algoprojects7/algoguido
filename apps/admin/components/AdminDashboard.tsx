@@ -18,7 +18,8 @@ import {
   Cpu,
   ChevronRight,
   Award,
-  Mail
+  Mail,
+  Briefcase
 } from 'lucide-react';
 import { motion as originalMotion, AnimatePresence } from 'framer-motion';
 const motion = originalMotion as any;
@@ -144,11 +145,38 @@ const initialMockProducts = [
   },
 ];
 
+
+const initialMockEnterpriseServices = [
+  {
+    id: 'ent-1',
+    name: 'ERP Solutions',
+    slug: 'erp',
+    description: 'Custom Enterprise Resource Planning systems tailored for business operations.',
+    category: 'ERP',
+    features: ['Inventory Management', 'Financial Accounting'],
+    technologies: ['Next.js', 'NestJS', 'PostgreSQL'],
+    isActive: true,
+  },
+  {
+    id: 'ent-2',
+    name: 'CRM',
+    slug: 'crm',
+    description: 'Customer Relationship Management solutions with lead scoring.',
+    category: 'CRM',
+    features: ['Lead Management', 'Pipeline Tracking'],
+    technologies: ['React', 'Node.js', 'PostgreSQL'],
+    isActive: true,
+  },
+];
+
 interface AdminDashboardProps {
   onLogout: () => void;
+  userRole?: string;
 }
 
-export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
+
+export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDashboardProps) {
+  const isSuperAdmin = userRole === 'SUPER_ADMIN';
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
 
@@ -188,6 +216,21 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
     status: 'ACTIVE',
   });
 
+  // Enterprise states
+  const [entServices, setEntServices] = useState<any[]>([]);
+  const [entLoading, setEntLoading] = useState(false);
+  const [entSearchQuery, setEntSearchQuery] = useState('');
+  const [newEntService, setNewEntService] = useState({
+    name: '',
+    slug: '',
+    description: '',
+    category: 'ERP',
+    features: '',
+    technologies: '',
+    isActive: true,
+    sortOrder: 0,
+  });
+
   // Billing states
   const [billing, setBilling] = useState<any[]>([]);
   const [billingLoading, setBillingLoading] = useState(false);
@@ -198,16 +241,22 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
   const [waMsgType, setWaMsgType] = useState<'conversion' | 'payment'>('conversion');
   const [waCustomMessage, setWaCustomMessage] = useState('');
 
-  const navigationItems = [
+  const allNavigationItems = [
     { id: 'dashboard', name: 'Dashboard', icon: LayoutDashboard },
     { id: 'leads', name: 'Leads CRM', icon: TrendingUp, badge: 'NEW' },
     { id: 'certificates', name: 'Certificate', icon: Award },
     { id: 'applications', name: 'Applications', icon: GraduationCap },
-    { id: 'products', name: 'Products', icon: Database },
+    { id: 'products', name: 'Products', icon: Database, restricted: true },
+    { id: 'enterprise', name: 'Enterprise', icon: Briefcase, restricted: true },
     { id: 'billing', name: 'Razorpay Billing', icon: CreditCard },
-    { id: 'settings', name: 'Settings', icon: Settings },
+    { id: 'settings', name: 'Settings', icon: Settings, restricted: true },
     { id: 'webmail', name: 'Web Mail', icon: Mail, href: 'https://algoguido.com:2096', isExternal: true },
   ];
+
+  // ADMIN role cannot see restricted nav items at all
+  const navigationItems = isSuperAdmin
+    ? allNavigationItems
+    : allNavigationItems.filter((item) => !item.restricted);
 
   useEffect(() => {
     if (activeTab === 'certificates') {
@@ -218,6 +267,8 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
       fetchApplications();
     } else if (activeTab === 'products') {
       fetchProducts();
+    } else if (activeTab === 'enterprise') {
+      fetchEnterpriseServices();
     } else if (activeTab === 'billing') {
       fetchBilling();
     }
@@ -380,6 +431,24 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
     }
   };
 
+  const fetchEnterpriseServices = async () => {
+    setEntLoading(true);
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const res = await fetch(`${apiUrl}/enterprise-services`);
+      if (res.ok) {
+        const data = await res.json();
+        setEntServices(data);
+      } else {
+        setEntServices(initialMockEnterpriseServices);
+      }
+    } catch (e) {
+      setEntServices(initialMockEnterpriseServices);
+    } finally {
+      setEntLoading(false);
+    }
+  };
+
   const fetchBilling = async () => {
     setBillingLoading(true);
     try {
@@ -458,6 +527,94 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
         price: 9999,
         status: 'ACTIVE',
       });
+    }
+  };
+
+  const handleAddEnterpriseService = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const token = sessionStorage.getItem('algoguido_admin_token');
+      const headers: any = { 'Content-Type': 'application/json' };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      const payload = {
+        ...newEntService,
+        features: newEntService.features.split(',').map(f => f.trim()).filter(Boolean),
+        technologies: newEntService.technologies.split(',').map(t => t.trim()).filter(Boolean),
+      };
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const res = await fetch(`${apiUrl}/enterprise-services`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        const created = await res.json();
+        setEntServices((prev) => [created, ...prev]);
+      } else {
+        const created = {
+          id: `ent-${Date.now()}`,
+          ...payload,
+        };
+        setEntServices((prev) => [created, ...prev]);
+      }
+
+      setNewEntService({
+        name: '',
+        slug: '',
+        description: '',
+        category: 'ERP',
+        features: '',
+        technologies: '',
+        isActive: true,
+        sortOrder: 0,
+      });
+    } catch (e) {
+      const created = {
+        id: `ent-${Date.now()}`,
+        ...newEntService,
+        features: newEntService.features.split(',').map(f => f.trim()).filter(Boolean),
+        technologies: newEntService.technologies.split(',').map(t => t.trim()).filter(Boolean),
+      };
+      setEntServices((prev) => [created, ...prev]);
+      setNewEntService({
+        name: '',
+        slug: '',
+        description: '',
+        category: 'ERP',
+        features: '',
+        technologies: '',
+        isActive: true,
+        sortOrder: 0,
+      });
+    }
+  };
+
+  const handleDeleteEnterpriseService = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this enterprise service?')) {
+      return;
+    }
+    try {
+      const token = sessionStorage.getItem('algoguido_admin_token');
+      const headers: any = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const res = await fetch(`${apiUrl}/enterprise-services/${id}`, {
+        method: 'DELETE',
+        headers,
+      });
+      if (res.ok) {
+        setEntServices((prev) => prev.filter((es) => es.id !== id));
+        alert('Enterprise service deleted successfully.');
+      } else {
+        alert(`Failed to delete: ${res.status}`);
+      }
+    } catch (e: any) {
+      alert(`Network error: ${e.message}`);
     }
   };
 
@@ -644,11 +801,17 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
         <div className="border-t border-slate-200/60 pt-6 mt-auto">
           <div className="flex items-center gap-3 p-2 rounded-xl bg-slate-100/40 border border-slate-200/30">
             <div className="h-10 w-10 rounded-xl bg-gradient-brand flex items-center justify-center font-extrabold text-white text-sm shadow-glow shrink-0">
-              AG
+              {isSuperAdmin ? 'SA' : 'AD'}
             </div>
             <div className="min-w-0 flex-grow">
-              <p className="text-sm font-bold text-slate-800 truncate">System Administrator</p>
-              <p className="text-xs text-slate-500 font-medium truncate">algoguidot@gmail.com</p>
+              <p className="text-sm font-bold text-slate-800 truncate">
+                {typeof window !== 'undefined' ? sessionStorage.getItem('algoguido_admin_name') || 'Administrator' : 'Administrator'}
+              </p>
+              <span className={`inline-block text-[9px] font-extrabold tracking-widest uppercase px-1.5 py-0.5 rounded-md mt-0.5 ${
+                isSuperAdmin ? 'bg-violet-100 text-violet-700' : 'bg-sky-100 text-sky-700'
+              }`}>
+                {isSuperAdmin ? 'Super Admin' : 'Admin'}
+              </span>
             </div>
           </div>
           <Button
@@ -1504,6 +1667,195 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
                                     <td className="py-3 text-right">
                                       <button
                                         onClick={() => handleDeleteProduct(p.id)}
+                                        className="text-red-500 hover:text-red-700 font-bold"
+                                      >
+                                        Delete
+                                      </button>
+                                    </td>
+                                  </tr>
+                                ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                    </div>
+                  </Card>
+                </div>
+              </div>
+            ) : activeTab === 'enterprise' ? (
+              /* Enterprise Tab */
+              <div className="flex flex-col gap-8 w-full animate-fade-in pb-12">
+                <div className="grid lg:grid-cols-12 gap-8 w-full">
+                  {/* Left: Add Enterprise Service Form */}
+                  <Card variant="glass" className="lg:col-span-4 p-6 bg-white/45 border-white/60 shadow-sm flex flex-col gap-6">
+                    <div>
+                      <h3 className="font-display font-bold text-lg text-slate-800 flex items-center gap-2">
+                        <Briefcase className="h-5 w-5 text-indigo-600" />
+                        Register Enterprise Service
+                      </h3>
+                      <p className="text-xs text-slate-500">Record a custom enterprise resource/solution</p>
+                    </div>
+
+                    <form onSubmit={handleAddEnterpriseService} className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Service Name *</label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="e.g. ERP Solutions"
+                          value={newEntService.name}
+                          onChange={(e) => setNewEntService({ ...newEntService, name: e.target.value })}
+                          className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Slug *</label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="e.g. erp"
+                          value={newEntService.slug}
+                          onChange={(e) => setNewEntService({ ...newEntService, slug: e.target.value })}
+                          className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Category *</label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="e.g. ERP"
+                            value={newEntService.category}
+                            onChange={(e) => setNewEntService({ ...newEntService, category: e.target.value })}
+                            className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Sort Order *</label>
+                          <input
+                            type="number"
+                            required
+                            placeholder="Sort Order"
+                            value={newEntService.sortOrder}
+                            onChange={(e) => setNewEntService({ ...newEntService, sortOrder: parseInt(e.target.value) || 0 })}
+                            className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Features (comma separated)</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Inventory, Finance, HR"
+                          value={newEntService.features}
+                          onChange={(e) => setNewEntService({ ...newEntService, features: e.target.value })}
+                          className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Technologies (comma separated)</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Next.js, PostgreSQL"
+                          value={newEntService.technologies}
+                          onChange={(e) => setNewEntService({ ...newEntService, technologies: e.target.value })}
+                          className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Description</label>
+                        <textarea
+                          placeholder="Brief summary of this enterprise service..."
+                          rows={3}
+                          value={newEntService.description}
+                          onChange={(e) => setNewEntService({ ...newEntService, description: e.target.value })}
+                          className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+                        />
+                      </div>
+
+                      <Button type="submit" variant="primary" className="mt-2 font-bold uppercase tracking-wider rounded-xl py-2">
+                        Add Service
+                      </Button>
+                    </form>
+                  </Card>
+
+                  {/* Right: Services List */}
+                  <Card variant="glass" className="lg:col-span-8 p-6 md:p-8 bg-white/45 border-white/60 shadow-sm flex flex-col justify-between">
+                    <div>
+                      <div className="flex justify-between items-center mb-6">
+                        <div>
+                          <h3 className="font-display font-bold text-lg text-slate-800">Enterprise Service Catalog</h3>
+                          <p className="text-xs text-slate-500">Manage digital transformation options</p>
+                        </div>
+                        <div className="relative w-48">
+                          <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                            <Search className="h-3.5 w-3.5" />
+                          </span>
+                          <input
+                            type="text"
+                            placeholder="Filter name or slug..."
+                            value={entSearchQuery}
+                            onChange={(e) => setEntSearchQuery(e.target.value)}
+                            className="pl-8 pr-3 py-1.5 rounded-lg text-[10px] border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full"
+                          />
+                        </div>
+                      </div>
+
+                      {entLoading ? (
+                        <div className="py-12 flex justify-center text-slate-400 font-bold animate-pulse text-sm">
+                          Loading enterprise services...
+                        </div>
+                      ) : entServices.length === 0 ? (
+                        <div className="py-12 text-center text-slate-400 text-sm font-medium">
+                          No enterprise services registered.
+                        </div>
+                      ) : (
+                        <div className="overflow-x-auto w-full">
+                          <table className="w-full text-left border-collapse">
+                            <thead>
+                              <tr className="border-b border-slate-200/50 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                                <th className="pb-3 w-[180px]">Service Name</th>
+                                <th className="pb-3">Slug</th>
+                                <th className="pb-3">Category</th>
+                                <th className="pb-3">Features & Tech</th>
+                                <th className="pb-3 text-right w-[80px]">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-100 text-slate-700 text-xs">
+                              {entServices
+                                .filter((es) =>
+                                  es.name?.toLowerCase().includes(entSearchQuery.toLowerCase()) ||
+                                  es.slug?.toLowerCase().includes(entSearchQuery.toLowerCase())
+                                )
+                                .map((es) => (
+                                  <tr key={es.id} className="hover:bg-slate-50/20 transition-colors">
+                                    <td className="py-3 font-semibold text-slate-800">
+                                      {es.name}
+                                      <p className="text-[10px] text-slate-400 font-normal mt-0.5 truncate max-w-[220px]">{es.description}</p>
+                                    </td>
+                                    <td className="py-3 font-mono text-[10px] text-slate-500">{es.slug}</td>
+                                    <td className="py-3 font-medium">{es.category}</td>
+                                    <td className="py-3">
+                                      {es.features && es.features.length > 0 && (
+                                        <div className="flex flex-wrap gap-1 mb-1">
+                                          {es.features.slice(0, 3).map((f: string, i: number) => (
+                                            <span key={i} className="px-1 py-0.5 rounded text-[8px] bg-slate-100 text-slate-600 border border-slate-200">{f}</span>
+                                          ))}
+                                          {es.features.length > 3 && <span className="text-[8px] text-slate-400 font-bold">+{es.features.length - 3} more</span>}
+                                        </div>
+                                      )}
+                                      {es.technologies && es.technologies.length > 0 && (
+                                        <div className="flex flex-wrap gap-1">
+                                          {es.technologies.slice(0, 3).map((t: string, i: number) => (
+                                            <span key={i} className="px-1 py-0.5 rounded text-[8px] bg-indigo-50 text-indigo-600 border border-indigo-100">{t}</span>
+                                          ))}
+                                        </div>
+                                      )}
+                                    </td>
+                                    <td className="py-3 text-right">
+                                      <button
+                                        onClick={() => handleDeleteEnterpriseService(es.id)}
                                         className="text-red-500 hover:text-red-700 font-bold"
                                       >
                                         Delete

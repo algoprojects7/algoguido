@@ -11,6 +11,7 @@ const motion = originalMotion as any;
 export default function AdminPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [userRole, setUserRole] = useState<string>('ADMIN');
 
   // Check auth session state on initial mount
   useEffect(() => {
@@ -18,6 +19,8 @@ export default function AdminPage() {
       const authState = sessionStorage.getItem('algoguido_admin_session');
       if (authState === 'authenticated') {
         setIsLoggedIn(true);
+        const role = sessionStorage.getItem('algoguido_admin_role');
+        if (role) setUserRole(role);
       }
     } catch (e) {
       console.error('Session storage check failed:', e);
@@ -33,6 +36,8 @@ export default function AdminPage() {
   const handleLoginSuccess = () => {
     try {
       sessionStorage.setItem('algoguido_admin_session', 'authenticated');
+      const role = sessionStorage.getItem('algoguido_admin_role');
+      if (role) setUserRole(role);
     } catch (e) {
       console.error('Session storage save failed:', e);
     }
@@ -42,6 +47,8 @@ export default function AdminPage() {
   const handleLogout = () => {
     try {
       sessionStorage.removeItem('algoguido_admin_session');
+      sessionStorage.removeItem('algoguido_admin_role');
+      sessionStorage.removeItem('algoguido_admin_name');
     } catch (e) {
       console.error('Session storage remove failed:', e);
     }
@@ -91,7 +98,7 @@ export default function AdminPage() {
               transition={{ duration: 0.5 }}
               className="flex-grow flex flex-col"
             >
-              <AdminDashboard onLogout={handleLogout} />
+              <AdminDashboard onLogout={handleLogout} userRole={userRole} />
             </motion.div>
           ) : (
             <motion.div
