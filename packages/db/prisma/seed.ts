@@ -202,16 +202,7 @@ async function main() {
   console.log('✅ Education tracks created:', tracks.length);
 
   // ── Testimonials ──────────────────────────────────────────────────────
-  const testimonials = [
-    { name: 'Rajesh Kumar', designation: 'CTO', company: 'TechSolutions India', content: 'Algoguido delivered an exceptional ERP system that transformed our business operations. Their AI integration is cutting-edge.', rating: 5, sortOrder: 1 },
-    { name: 'Priya Sharma', designation: 'Director', company: 'EduVision Academy', content: 'The eduAI365 platform has revolutionized how we manage our educational institution. Student engagement increased by 40%.', rating: 5, sortOrder: 2 },
-    { name: 'Dr. Amit Patel', designation: 'Chief Medical Officer', company: 'City Hospital', content: 'Hospital AI has streamlined our patient management workflow. The team at Algoguido understands healthcare technology deeply.', rating: 5, sortOrder: 3 },
-  ];
-
-  for (const t of testimonials) {
-    await prisma.testimonial.create({ data: t });
-  }
-  console.log('✅ Testimonials created:', testimonials.length);
+  // No demo testimonials seeded — add real testimonials via the Admin Panel.
 
   // ── Settings ──────────────────────────────────────────────────────────
   const settings = [
@@ -233,46 +224,8 @@ async function main() {
   // ── Demo Inquiries and Leads ──────────────────────────────────────────
   console.log('\n🌱 Skipping leads and education inquiries seeding.');
 
-  // ── Seed Certificates ─────────────────────────────────────────────────
-  console.log('\n🌱 Seeding certificates...');
-  const demoCertificates = [
-    {
-      certificateNo: 'AGC-2026-9812',
-      candidateName: 'Amit Baruah',
-      course: 'React & Next.js Full Stack Development',
-      grade: 'A+',
-      duration: '3 Months',
-      dateOfIssue: new Date('2026-06-15'),
-      description: 'Awarded for outstanding performance in the Next.js and NestJS development track.',
-    },
-    {
-      certificateNo: 'AGC-2026-4421',
-      candidateName: 'Priya Sharma',
-      course: 'Advanced Web Development & SaaS Systems',
-      grade: 'A',
-      duration: '3 Months',
-      dateOfIssue: new Date('2026-05-10'),
-      description: 'Successfully completed SaaS and database architecture implementation projects.',
-    },
-    {
-      certificateNo: 'AGC-2026-0731',
-      candidateName: 'Suresh Naidu',
-      course: 'Mobile App Architecture & Design',
-      grade: 'A+',
-      duration: '3 Months',
-      dateOfIssue: new Date('2026-07-01'),
-      description: 'Demonstrated excellence in Android mobile application layout, offline syncing, and routing.',
-    },
-  ];
-
-  for (const cert of demoCertificates) {
-    await prisma.certificate.upsert({
-      where: { certificateNo: cert.certificateNo },
-      update: {},
-      create: cert,
-    });
-  }
-  console.log('✅ Demo certificates created:', demoCertificates.length);
+  // ── Certificates ───────────────────────────────────────────────────────
+  // No demo certificates seeded — issue real certificates via the Admin Panel.
 
   console.log('\n🎉 Seed complete!');
 }
