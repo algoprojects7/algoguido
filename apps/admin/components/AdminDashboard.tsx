@@ -95,7 +95,7 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
   // Dynamic metrics calculated from active DB states
   const totalLeadsCount = leads.length;
   const totalAppsCount = apps.length;
-  
+
   // Total captured revenue (sum rawAmount where status is SUCCESS / CAPTURED, converted to INR)
   const totalRevenueAmount = billing
     .filter((pay) => pay.rawStatus === 'CAPTURED' || pay.status === 'SUCCESS')
@@ -107,9 +107,19 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
   const [waMsgType, setWaMsgType] = useState<'conversion' | 'payment'>('conversion');
   const [waCustomMessage, setWaCustomMessage] = useState('');
 
-  const allNavigationItems = [
+  interface NavigationItem {
+    id: string;
+    name: string;
+    icon: any;
+    restricted?: boolean;
+    href?: string;
+    isExternal?: boolean;
+    badge?: string;
+  }
+
+  const allNavigationItems: NavigationItem[] = [
     { id: 'dashboard', name: 'Dashboard', icon: LayoutDashboard },
-    { id: 'leads', name: 'Leads CRM', icon: TrendingUp, badge: 'NEW' },
+    { id: 'leads', name: 'Leads', icon: TrendingUp },
     { id: 'certificates', name: 'Certificate', icon: Award },
     { id: 'applications', name: 'Applications', icon: GraduationCap },
     { id: 'products', name: 'Products', icon: Database, restricted: true },
@@ -628,7 +638,7 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
           {navigationItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
-            
+
             if (item.isExternal) {
               return (
                 <a
@@ -636,12 +646,10 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 cursor-pointer"
+                  className="flex items-center justify-start gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 cursor-pointer w-full text-left"
                 >
-                  <div className="flex items-center gap-3">
-                    <Icon className="h-4.5 w-4.5 text-slate-500" />
-                    <span>{item.name}</span>
-                  </div>
+                  <Icon className="h-4.5 w-4.5 text-slate-500 shrink-0" />
+                  <span>{item.name}</span>
                 </a>
               );
             }
@@ -653,17 +661,15 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                   setActiveTab(item.id);
                   setIsSidebarOpen(false);
                 }}
-                className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${isActive
-                    ? 'bg-gradient-brand text-white shadow-glow'
-                    : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900'
+                className={`flex items-center justify-start gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 w-full text-left ${isActive
+                  ? 'bg-gradient-brand text-white shadow-glow'
+                  : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900'
                   }`}
               >
-                <div className="flex items-center gap-3">
-                  <Icon className={`h-4.5 w-4.5 ${isActive ? 'text-white' : 'text-slate-500'}`} />
-                  <span>{item.name}</span>
-                </div>
+                <Icon className={`h-4.5 w-4.5 shrink-0 ${isActive ? 'text-white' : 'text-slate-500'}`} />
+                <span>{item.name}</span>
                 {item.badge && !isActive && (
-                  <Badge variant="primary" className="ml-2 px-1.5 py-0.5 bg-brand-50 text-brand-600 border-brand-200">
+                  <Badge variant="primary" className="ml-auto px-1.5 py-0.5 bg-brand-50 text-brand-600 border-brand-200">
                     {item.badge}
                   </Badge>
                 )}
@@ -682,9 +688,8 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
               <p className="text-sm font-bold text-slate-800 truncate">
                 {typeof window !== 'undefined' ? sessionStorage.getItem('algoguido_admin_name') || 'Administrator' : 'Administrator'}
               </p>
-              <span className={`inline-block text-[9px] font-extrabold tracking-widest uppercase px-1.5 py-0.5 rounded-md mt-0.5 ${
-                isSuperAdmin ? 'bg-violet-100 text-violet-700' : 'bg-sky-100 text-sky-700'
-              }`}>
+              <span className={`inline-block text-[9px] font-extrabold tracking-widest uppercase px-1.5 py-0.5 rounded-md mt-0.5 ${isSuperAdmin ? 'bg-violet-100 text-violet-700' : 'bg-sky-100 text-sky-700'
+                }`}>
                 {isSuperAdmin ? 'Super Admin' : 'Admin'}
               </span>
             </div>
@@ -1235,17 +1240,17 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                                 <td className="py-3.5 text-slate-600 font-medium">{l.company || 'Individual'}</td>
                                 <td className="py-3.5 text-center">
                                   <span className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${l.score >= 85 ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
-                                      l.score >= 70 ? 'bg-amber-50 text-amber-700 border border-amber-100' :
-                                        'bg-slate-50 text-slate-700 border border-slate-100'
+                                    l.score >= 70 ? 'bg-amber-50 text-amber-700 border border-amber-100' :
+                                      'bg-slate-50 text-slate-700 border border-slate-100'
                                     }`}>
                                     {l.score}/100
                                   </span>
                                 </td>
                                 <td className="py-3.5 text-center">
                                   <span className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${l.stage === 'QUALIFIED' ? 'bg-emerald-500 text-white' :
-                                      l.stage === 'NEGOTIATION' ? 'bg-purple-500 text-white' :
-                                        l.stage === 'CONTACTED' ? 'bg-cyan-500 text-white' :
-                                          'bg-indigo-500 text-white'
+                                    l.stage === 'NEGOTIATION' ? 'bg-purple-500 text-white' :
+                                      l.stage === 'CONTACTED' ? 'bg-cyan-500 text-white' :
+                                        'bg-indigo-500 text-white'
                                     }`}>
                                     {l.stage}
                                   </span>
@@ -1969,8 +1974,8 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                   type="button"
                   onClick={() => setWaMsgType('conversion')}
                   className={`flex-1 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all duration-300 ${waMsgType === 'conversion'
-                      ? 'bg-emerald-500 text-white shadow-sm'
-                      : 'text-slate-600 hover:text-slate-800'
+                    ? 'bg-emerald-500 text-white shadow-sm'
+                    : 'text-slate-600 hover:text-slate-800'
                     }`}
                 >
                   🚀 Conversion Pitch
@@ -1979,8 +1984,8 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                   type="button"
                   onClick={() => setWaMsgType('payment')}
                   className={`flex-1 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all duration-300 ${waMsgType === 'payment'
-                      ? 'bg-emerald-500 text-white shadow-sm'
-                      : 'text-slate-600 hover:text-slate-800'
+                    ? 'bg-emerald-500 text-white shadow-sm'
+                    : 'text-slate-600 hover:text-slate-800'
                     }`}
                 >
                   💳 Invoice Payment Link
