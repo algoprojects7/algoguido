@@ -24,150 +24,8 @@ import {
 import { motion as originalMotion, AnimatePresence } from 'framer-motion';
 const motion = originalMotion as any;
 
-const initialMockCertificates = [
-  {
-    id: 'cert-1',
-    certificateNo: 'AGC-2026-9812',
-    candidateName: 'Amit Baruah',
-    course: 'React & Next.js Full Stack Development',
-    grade: 'A+',
-    duration: '3 Months',
-    dateOfIssue: '2026-06-15T00:00:00.000Z',
-    description: 'Awarded for outstanding performance in the Next.js and NestJS development track.',
-  },
-  {
-    id: 'cert-2',
-    certificateNo: 'AGC-2026-4421',
-    candidateName: 'Priya Sharma',
-    course: 'Advanced Web Development & SaaS Systems',
-    grade: 'A',
-    duration: '3 Months',
-    dateOfIssue: '2026-05-10T00:00:00.000Z',
-    description: 'Successfully completed SaaS and database architecture implementation projects.',
-  },
-  {
-    id: 'cert-3',
-    certificateNo: 'AGC-2026-0731',
-    candidateName: 'Suresh Naidu',
-    course: 'Mobile App Architecture & Design',
-    grade: 'A+',
-    duration: '3 Months',
-    dateOfIssue: '2026-07-01T00:00:00.000Z',
-    description: 'Demonstrated excellence in Android mobile application layout, offline syncing, and routing.',
-  },
-];
-
-const initialMockLeads = [
-  {
-    id: 'lead-1',
-    name: 'Dr. Ramesh Chawla',
-    email: 'ramesh.chawla@csir.res.in',
-    phone: '+91 98765 12345',
-    company: 'CSIR Delhi',
-    stage: 'NEW',
-    source: 'WEBSITE_CONTACT',
-    score: 95,
-    value: 500000,
-    message: 'AI-based research project proposal. Require high-performance custom data analysis app with local compliance.',
-  },
-  {
-    id: 'lead-2',
-    name: 'Suresh Naidu',
-    email: 'suresh.naidu@techindia.com',
-    phone: '+91 87654 32109',
-    company: 'TechIndia Solutions',
-    stage: 'CONTACTED',
-    source: 'WEBSITE_CONTACT',
-    score: 85,
-    value: 250000,
-    message: 'Enterprise mobile app matching portal with backend database integration for tracking field telemetry.',
-  },
-  {
-    id: 'lead-3',
-    name: 'Meera Nair',
-    email: 'meera.nair@apollohospitals.com',
-    phone: '+91 94470 11111',
-    company: 'Apollo Hospitals',
-    stage: 'QUALIFIED',
-    source: 'WEBSITE_CONTACT',
-    score: 90,
-    value: 800000,
-    message: 'Secure database architecture for patient records and custom AI-based analytical dashboard app.',
-  },
-  {
-    id: 'lead-4',
-    name: 'Ananya Roy',
-    email: 'ananya.roy@retailflow.in',
-    phone: '+91 98860 22222',
-    company: 'RetailFlow India',
-    stage: 'NEGOTIATION',
-    source: 'WEBSITE_CONTACT',
-    score: 75,
-    value: 350000,
-    message: 'AI-based recommendation engine and customer behavior data analysis platform for e-commerce store.',
-  },
-];
 
 
-
-const initialMockProducts = [
-  {
-    id: 'prod-1',
-    name: 'eduAI365 Suite',
-    slug: 'eduai365-suite',
-    description: 'AI-powered educational ERP system with automated scheduling, attendance tracking, and student analytics.',
-    price: 49999,
-    status: 'ACTIVE',
-  },
-  {
-    id: 'prod-2',
-    name: 'LeadGrow CRM',
-    slug: 'leadgrow-crm',
-    description: 'SaaS CRM for marketing automation, sales pipeline tracking, and customer contact management.',
-    price: 19999,
-    status: 'ACTIVE',
-  },
-  {
-    id: 'prod-3',
-    name: 'TheHirings Portal',
-    slug: 'thehirings-portal',
-    description: 'Enterprise applicant tracking system with integrated video interviews and automated resume screening.',
-    price: 29999,
-    status: 'ACTIVE',
-  },
-  {
-    id: 'prod-4',
-    name: 'Apply4Jobs Cloud',
-    slug: 'apply4jobs-cloud',
-    description: 'SaaS job board and resume portal offering custom employer profiles and screening pipelines.',
-    price: 14999,
-    status: 'ACTIVE',
-  },
-];
-
-
-const initialMockEnterpriseServices = [
-  {
-    id: 'ent-1',
-    name: 'ERP Solutions',
-    slug: 'erp',
-    description: 'Custom Enterprise Resource Planning systems tailored for business operations.',
-    category: 'ERP',
-    features: ['Inventory Management', 'Financial Accounting'],
-    technologies: ['Next.js', 'NestJS', 'PostgreSQL'],
-    isActive: true,
-  },
-  {
-    id: 'ent-2',
-    name: 'CRM',
-    slug: 'crm',
-    description: 'Customer Relationship Management solutions with lead scoring.',
-    category: 'CRM',
-    features: ['Lead Management', 'Pipeline Tracking'],
-    technologies: ['React', 'Node.js', 'PostgreSQL'],
-    isActive: true,
-  },
-];
 
 interface AdminDashboardProps {
   onLogout: () => void;
@@ -295,11 +153,11 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
         const data = await res.json();
         setCerts(data);
       } else {
-        setCerts(initialMockCertificates);
+        setCerts([]);
       }
     } catch (e) {
-      console.error(e);
-      setCerts(initialMockCertificates);
+      console.error('Failed to fetch certificates:', e);
+      setCerts([]);
     } finally {
       setCertsLoading(false);
     }
@@ -391,10 +249,11 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
         const leadsData = data.data || data;
         setLeads(leadsData);
       } else {
-        setLeads(initialMockLeads);
+        setLeads([]);
       }
     } catch (e) {
-      setLeads(initialMockLeads);
+      console.error('Failed to fetch leads:', e);
+      setLeads([]);
     } finally {
       setLeadsLoading(false);
     }
@@ -434,10 +293,11 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
         const data = await res.json();
         setProducts(data);
       } else {
-        setProducts(initialMockProducts);
+        setProducts([]);
       }
     } catch (e) {
-      setProducts(initialMockProducts);
+      console.error('Failed to fetch products:', e);
+      setProducts([]);
     } finally {
       setProductsLoading(false);
     }
@@ -452,10 +312,11 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
         const data = await res.json();
         setEntServices(data);
       } else {
-        setEntServices(initialMockEnterpriseServices);
+        setEntServices([]);
       }
     } catch (e) {
-      setEntServices(initialMockEnterpriseServices);
+      console.error('Failed to fetch enterprise services:', e);
+      setEntServices([]);
     } finally {
       setEntLoading(false);
     }
