@@ -1,0 +1,37 @@
+{
+  "name": "@algoguido/admin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Algoguido Technologies Administrative Dashboard CMS",
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "lint": "next lint",
+    "clean": "rimraf .next dist .turbo"
+  },
+  "dependencies": {
+    "@algoguido/config": "workspace:*",
+    "@algoguido/types": "workspace:*",
+    "@algoguido/utils": "workspace:*",
+    "@algoguido/shared": "workspace:*",
+    "@algoguido/ui": "workspace:*",
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "framer-motion": "^11.11.0",
+    "lucide-react": "^0.395.0",
+    "recharts": "^2.12.7",
+    "@tiptap/react": "^2.4.0",
+    "@tiptap/starter-kit": "^2.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.5.0",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
+    "autoprefixer": "^10.4.19"
+  }
+}

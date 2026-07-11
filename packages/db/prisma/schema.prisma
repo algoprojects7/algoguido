@@ -1,0 +1,839 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// Algoguido Technologies — Prisma Schema
+// Version: 2.1 Final | 35+ Models | 8 Domains
+// ──────────────────────────────────────────────────────────────────────────────
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// DOMAIN 1: AUTHENTICATION
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model AdminUser {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  password      String
+  name          String
+  avatar        String?
+  role          Role           @default(VIEWER)
+  isActive      Boolean        @default(true)
+  lastLoginAt   DateTime?
+  lastLoginIp   String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  refreshTokens RefreshToken[]
+  auditLogs     AuditLog[]
+  leadNotes     LeadNote[]
+  leadActivities LeadActivity[]
+  blogs         Blog[]         @relation("BlogAuthor")
+
+  @@map("admin_users")
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+  VIEWER
+}
+
+model Permission {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  group       String
+  createdAt   DateTime @default(now())
+
+  @@map("permissions")
+}
+
+model RefreshToken {
+  id        String    @id @default(cuid())
+  token     String    @unique
+  userId    String
+  user      AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@index([token])
+  @@map("refresh_tokens")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      AdminUser @relation(fields: [userId], references: [id])
+  action    String
+  entity    String
+  entityId  String?
+  oldValue  Json?
+  newValue  Json?
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([entity, entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// DOMAIN 2: WEBSITE CONTENT
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model Product {
+  id           String           @id @default(cuid())
+  name         String
+  slug         String           @unique
+  tagline      String
+  description  String           @db.Text
+  icon         String?
+  image        String?
+  categoryId   String
+  category     ProductCategory  @relation(fields: [categoryId], references: [id])
+  features     ProductFeature[]
+  technologies String[]
+  isActive     Boolean          @default(true)
+  sortOrder    Int              @default(0)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@index([categoryId])
+  @@index([slug])
+  @@map("products")
+}
+
+model ProductCategory {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("product_categories")
+}
+
+model ProductFeature {
+  id          String  @id @default(cuid())
+  productId   String
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+  icon        String?
+  sortOrder   Int     @default(0)
+
+  @@index([productId])
+  @@map("product_features")
+}
+
+model EnterpriseService {
+  id              String   @id @default(cuid())
+  name            String
+  slug            String   @unique
+  description     String   @db.Text
+  longDescription String?  @db.Text
+  icon            String?
+  image           String?
+  category        String
+  features        String[]
+  technologies    String[]
+  isActive        Boolean  @default(true)
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([slug])
+  @@map("enterprise_services")
+}
+
+model ClientProject {
+  id           String         @id @default(cuid())
+  title        String
+  slug         String         @unique
+  client       String
+  description  String         @db.Text
+  caseStudy    String?        @db.Text
+  images       ProjectImage[]
+  technologies String[]
+  category     String
+  isFeatured   Boolean        @default(false)
+  completedAt  DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@index([slug])
+  @@map("client_projects")
+}
+
+model ProjectImage {
+  id        String        @id @default(cuid())
+  projectId String
+  project   ClientProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String
+  isPrimary Boolean       @default(false)
+  sortOrder Int           @default(0)
+
+  @@index([projectId])
+  @@map("project_images")
+}
+
+model Blog {
+  id             String        @id @default(cuid())
+  title          String
+  slug           String        @unique
+  excerpt        String        @db.Text
+  content        String        @db.Text
+  coverImage     String?
+  authorId       String
+  author         AdminUser     @relation("BlogAuthor", fields: [authorId], references: [id])
+  categoryId     String
+  category       BlogCategory  @relation(fields: [categoryId], references: [id])
+  tags           String[]
+  seoTitle       String?
+  seoDescription String?
+  isPublished    Boolean       @default(false)
+  publishedAt    DateTime?
+  viewCount      Int           @default(0)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([slug])
+  @@index([authorId])
+  @@index([categoryId])
+  @@index([isPublished, publishedAt])
+  @@map("blogs")
+}
+
+model BlogCategory {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  blogs       Blog[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("blog_categories")
+}
+
+model MediaLibrary {
+  id         String   @id @default(cuid())
+  name       String
+  url        String
+  type       MediaType
+  mimeType   String
+  size       Int
+  alt        String?
+  uploadedBy String
+  createdAt  DateTime @default(now())
+
+  @@index([type])
+  @@map("media_library")
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  DOCUMENT
+}
+
+model Page {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  description String?
+  seoTitle    String?
+  seoDesc     String?
+  sections    PageSection[]
+  isPublished Boolean       @default(false)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@map("pages")
+}
+
+model PageSection {
+  id        String @id @default(cuid())
+  pageId    String
+  page      Page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  type      String
+  title     String?
+  content   Json?
+  sortOrder Int    @default(0)
+
+  @@index([pageId])
+  @@map("page_sections")
+}
+
+model Testimonial {
+  id          String   @id @default(cuid())
+  name        String
+  designation String
+  company     String
+  content     String   @db.Text
+  avatar      String?
+  rating      Int      @default(5)
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("testimonials")
+}
+
+model Partner {
+  id        String   @id @default(cuid())
+  name      String
+  logo      String
+  url       String?
+  isActive  Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@map("partners")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// DOMAIN 3: LEADS CRM
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model Lead {
+  id          String         @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  company     String?
+  stage       LeadStage      @default(NEW)
+  source      String         @default("WEBSITE")
+  score       Int?
+  value       Float?
+  assignedTo  String?
+  notes       LeadNote[]
+  activities  LeadActivity[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([stage])
+  @@index([email])
+  @@index([createdAt])
+  @@map("leads")
+}
+
+enum LeadStage {
+  NEW
+  CONTACTED
+  QUALIFIED
+  PROPOSAL
+  WON
+  LOST
+}
+
+model LeadActivity {
+  id          String    @id @default(cuid())
+  leadId      String
+  lead        Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  type        String
+  description String
+  userId      String
+  user        AdminUser @relation(fields: [userId], references: [id])
+  createdAt   DateTime  @default(now())
+
+  @@index([leadId])
+  @@map("lead_activities")
+}
+
+model LeadNote {
+  id        String    @id @default(cuid())
+  leadId    String
+  lead      Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  content   String    @db.Text
+  authorId  String
+  author    AdminUser @relation(fields: [authorId], references: [id])
+  createdAt DateTime  @default(now())
+
+  @@index([leadId])
+  @@map("lead_notes")
+}
+
+model DemoRequest {
+  id            String   @id @default(cuid())
+  product       String
+  name          String
+  company       String
+  email         String
+  phone         String?
+  preferredDate String?
+  preferredTime String?
+  requirements  String?  @db.Text
+  status        String   @default("PENDING")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("demo_requests")
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  company   String?
+  subject   String
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  repliedAt DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([isRead])
+  @@map("contact_messages")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// DOMAIN 4: PAYMENTS (RAZORPAY)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model Payment {
+  id                  String        @id @default(cuid())
+  razorpayOrderId     String        @unique
+  razorpayPaymentId   String?       @unique
+  razorpaySignature   String?
+  amount              Int           // Amount in paise
+  currency            String        @default("INR")
+  status              PaymentStatus @default(CREATED)
+  description         String?
+  customerEmail       String
+  customerName        String
+  customerPhone       String?
+  metadata            Json?
+  invoiceId           String?
+  invoice             Invoice?      @relation(fields: [invoiceId], references: [id])
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+
+  @@index([status])
+  @@index([customerEmail])
+  @@index([createdAt])
+  @@map("payments")
+}
+
+enum PaymentStatus {
+  CREATED
+  AUTHORIZED
+  CAPTURED
+  REFUNDED
+  FAILED
+}
+
+model PaymentPlan {
+  id              String         @id @default(cuid())
+  name            String
+  razorpayPlanId  String         @unique
+  amount          Int            // Amount in paise
+  currency        String         @default("INR")
+  interval        PlanInterval
+  description     String?
+  features        String[]
+  isActive        Boolean        @default(true)
+  subscriptions   Subscription[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@map("payment_plans")
+}
+
+enum PlanInterval {
+  daily
+  weekly
+  monthly
+  yearly
+}
+
+model Subscription {
+  id                      String             @id @default(cuid())
+  razorpaySubscriptionId  String             @unique
+  planId                  String
+  plan                    PaymentPlan        @relation(fields: [planId], references: [id])
+  customerEmail           String
+  customerName            String
+  status                  SubscriptionStatus @default(CREATED)
+  currentPeriodStart      DateTime?
+  currentPeriodEnd        DateTime?
+  cancelledAt             DateTime?
+  createdAt               DateTime           @default(now())
+  updatedAt               DateTime           @updatedAt
+
+  @@index([planId])
+  @@index([customerEmail])
+  @@index([status])
+  @@map("subscriptions")
+}
+
+enum SubscriptionStatus {
+  CREATED
+  ACTIVE
+  PAUSED
+  CANCELLED
+  COMPLETED
+  EXPIRED
+}
+
+model Invoice {
+  id                 String        @id @default(cuid())
+  razorpayInvoiceId  String?       @unique
+  invoiceNumber      String        @unique
+  amount             Int           // Amount in paise
+  currency           String        @default("INR")
+  status             InvoiceStatus @default(DRAFT)
+  customerEmail      String
+  customerName       String
+  customerCompany    String?
+  lineItems          Json
+  notes              String?       @db.Text
+  dueDate            DateTime?
+  paidAt             DateTime?
+  payments           Payment[]
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  @@index([status])
+  @@index([customerEmail])
+  @@map("invoices")
+}
+
+enum InvoiceStatus {
+  DRAFT
+  ISSUED
+  PAID
+  CANCELLED
+  EXPIRED
+}
+
+model RazorpayWebhook {
+  id        String   @id @default(cuid())
+  eventType String
+  payload   Json
+  processed Boolean  @default(false)
+  error     String?
+  createdAt DateTime @default(now())
+
+  @@index([eventType])
+  @@index([processed])
+  @@map("razorpay_webhooks")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// DOMAIN 5: EDUCATION
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model EducationTrack {
+  id           String           @id @default(cuid())
+  name         String
+  slug         String           @unique
+  description  String           @db.Text
+  type         ApplicationType
+  duration     String
+  requirements String[]
+  isActive     Boolean          @default(true)
+  applications Application[]
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@map("education_tracks")
+}
+
+enum ApplicationType {
+  INTERNSHIP
+  RESEARCH
+  TRAINING
+}
+
+model Application {
+  id          String               @id @default(cuid())
+  trackId     String
+  track       EducationTrack       @relation(fields: [trackId], references: [id])
+  type        ApplicationType
+  name        String
+  email       String
+  phone       String
+  university  String?
+  semester    String?
+  department  String?
+  skills      String[]
+  portfolioUrl String?
+  message     String?              @db.Text
+  status      ApplicationStatus    @default(PENDING)
+  documents   ApplicationDocument[]
+  interviews  InterviewSchedule[]
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+
+  @@index([trackId])
+  @@index([status])
+  @@index([email])
+  @@map("applications")
+}
+
+enum ApplicationStatus {
+  PENDING
+  REVIEWING
+  INTERVIEW
+  SELECTED
+  REJECTED
+}
+
+model ApplicationDocument {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  name          String
+  url           String
+  type          String
+  size          Int
+
+  @@index([applicationId])
+  @@map("application_documents")
+}
+
+model InterviewSchedule {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  scheduledAt   DateTime
+  duration      Int         @default(30) // minutes
+  location      String?
+  meetingLink   String?
+  notes         String?     @db.Text
+  status        String      @default("SCHEDULED")
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([applicationId])
+  @@map("interview_schedule")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// DOMAIN 6: COMPANY
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model TeamMember {
+  id          String  @id @default(cuid())
+  name        String
+  designation String
+  bio         String? @db.Text
+  avatar      String?
+  email       String?
+  linkedin    String?
+  github      String?
+  sortOrder   Int     @default(0)
+  isActive    Boolean @default(true)
+
+  @@map("team_members")
+}
+
+model Career {
+  id           String       @id @default(cuid())
+  title        String
+  slug         String       @unique
+  department   String
+  location     String
+  type         String       // FULL_TIME, PART_TIME, INTERNSHIP, CONTRACT
+  experience   String?
+  description  String       @db.Text
+  requirements String[]
+  benefits     String[]
+  salary       String?
+  isActive     Boolean      @default(true)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@map("careers")
+}
+
+model FAQ {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String   @db.Text
+  category  String
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@map("faqs")
+}
+
+model Setting {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String   @db.Text
+  type        String   @default("STRING") // STRING, NUMBER, BOOLEAN, JSON
+  group       String   @default("general")
+  description String?
+  updatedAt   DateTime @updatedAt
+
+  @@index([group])
+  @@map("settings")
+}
+
+model Menu {
+  id        String  @id @default(cuid())
+  label     String
+  href      String
+  parentId  String?
+  parent    Menu?   @relation("MenuChildren", fields: [parentId], references: [id])
+  children  Menu[]  @relation("MenuChildren")
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
+  location  String  @default("header") // header, footer
+
+  @@index([parentId])
+  @@map("menus")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// DOMAIN 7: AI
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model ChatbotConversation {
+  id        String            @id @default(cuid())
+  sessionId String
+  visitorIp String?
+  messages  ChatbotMessage[]
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  @@index([sessionId])
+  @@map("chatbot_conversations")
+}
+
+model ChatbotMessage {
+  id             String              @id @default(cuid())
+  conversationId String
+  conversation   ChatbotConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           String              // user, assistant
+  content        String              @db.Text
+  metadata       Json?
+  createdAt      DateTime            @default(now())
+
+  @@index([conversationId])
+  @@map("chatbot_messages")
+}
+
+model AILog {
+  id        String   @id @default(cuid())
+  module    String   // chat, lead-scoring, seo, resume-screening, etc.
+  input     Json
+  output    Json
+  tokens    Int?
+  latencyMs Int?
+  error     String?
+  createdAt DateTime @default(now())
+
+  @@index([module])
+  @@index([createdAt])
+  @@map("ai_logs")
+}
+
+model Recommendation {
+  id          String   @id @default(cuid())
+  sessionId   String
+  type        String   // product, service, blog
+  entityId    String
+  score       Float
+  reason      String?
+  isClicked   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([sessionId])
+  @@map("recommendations")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// DOMAIN 8: ANALYTICS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+model PageView {
+  id        String         @id @default(cuid())
+  path      String
+  referrer  String?
+  userAgent String?
+  sessionId String
+  session   VisitorSession @relation(fields: [sessionId], references: [id])
+  createdAt DateTime       @default(now())
+
+  @@index([path])
+  @@index([sessionId])
+  @@index([createdAt])
+  @@map("page_views")
+}
+
+model VisitorSession {
+  id        String     @id @default(cuid())
+  ip        String
+  country   String?
+  city      String?
+  device    String?
+  browser   String?
+  os        String?
+  pageViews PageView[]
+  startedAt DateTime   @default(now())
+  endedAt   DateTime?
+
+  @@index([startedAt])
+  @@map("visitor_sessions")
+}
+
+model Download {
+  id        String   @id @default(cuid())
+  fileName  String
+  fileType  String
+  fileSize  Int
+  ip        String?
+  createdAt DateTime @default(now())
+
+  @@map("downloads")
+}
+
+model EventLog {
+  id        String   @id @default(cuid())
+  event     String
+  category  String
+  label     String?
+  value     Float?
+  sessionId String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([event])
+  @@index([category])
+  @@index([createdAt])
+  @@map("event_logs")
+}
+
+model Certificate {
+  id            String   @id @default(cuid())
+  certificateNo String   @unique @map("certificate_no")
+  candidateName String   @map("candidate_name")
+  course        String
+  grade         String
+  duration      String
+  dateOfIssue   DateTime @map("date_of_issue")
+  description   String?  @db.Text
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("certificates")
+}

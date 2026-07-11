@@ -1,0 +1,1841 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { Card, Button, Badge } from '@algoguido/ui';
+import {
+  LayoutDashboard,
+  TrendingUp,
+  GraduationCap,
+  Database,
+  CreditCard,
+  Settings,
+  LogOut,
+  Menu,
+  X,
+  ShieldCheck,
+  Search,
+  Bell,
+  Cpu,
+  ChevronRight,
+  Award,
+  Mail
+} from 'lucide-react';
+import { motion as originalMotion, AnimatePresence } from 'framer-motion';
+const motion = originalMotion as any;
+
+const initialMockCertificates = [
+  {
+    id: 'cert-1',
+    certificateNo: 'AGC-2026-9812',
+    candidateName: 'Amit Baruah',
+    course: 'React & Next.js Full Stack Development',
+    grade: 'A+',
+    duration: '3 Months',
+    dateOfIssue: '2026-06-15T00:00:00.000Z',
+    description: 'Awarded for outstanding performance in the Next.js and NestJS development track.',
+  },
+  {
+    id: 'cert-2',
+    certificateNo: 'AGC-2026-4421',
+    candidateName: 'Priya Sharma',
+    course: 'Advanced Web Development & SaaS Systems',
+    grade: 'A',
+    duration: '3 Months',
+    dateOfIssue: '2026-05-10T00:00:00.000Z',
+    description: 'Successfully completed SaaS and database architecture implementation projects.',
+  },
+  {
+    id: 'cert-3',
+    certificateNo: 'AGC-2026-0731',
+    candidateName: 'Suresh Naidu',
+    course: 'Mobile App Architecture & Design',
+    grade: 'A+',
+    duration: '3 Months',
+    dateOfIssue: '2026-07-01T00:00:00.000Z',
+    description: 'Demonstrated excellence in Android mobile application layout, offline syncing, and routing.',
+  },
+];
+
+const initialMockLeads = [
+  {
+    id: 'lead-1',
+    name: 'Dr. Ramesh Chawla',
+    email: 'ramesh.chawla@csir.res.in',
+    phone: '+91 98765 12345',
+    company: 'CSIR Delhi',
+    stage: 'NEW',
+    source: 'WEBSITE_CONTACT',
+    score: 95,
+    value: 500000,
+    message: 'AI-based research project proposal. Require high-performance custom data analysis app with local compliance.',
+  },
+  {
+    id: 'lead-2',
+    name: 'Suresh Naidu',
+    email: 'suresh.naidu@techindia.com',
+    phone: '+91 87654 32109',
+    company: 'TechIndia Solutions',
+    stage: 'CONTACTED',
+    source: 'WEBSITE_CONTACT',
+    score: 85,
+    value: 250000,
+    message: 'Enterprise mobile app matching portal with backend database integration for tracking field telemetry.',
+  },
+  {
+    id: 'lead-3',
+    name: 'Meera Nair',
+    email: 'meera.nair@apollohospitals.com',
+    phone: '+91 94470 11111',
+    company: 'Apollo Hospitals',
+    stage: 'QUALIFIED',
+    source: 'WEBSITE_CONTACT',
+    score: 90,
+    value: 800000,
+    message: 'Secure database architecture for patient records and custom AI-based analytical dashboard app.',
+  },
+  {
+    id: 'lead-4',
+    name: 'Ananya Roy',
+    email: 'ananya.roy@retailflow.in',
+    phone: '+91 98860 22222',
+    company: 'RetailFlow India',
+    stage: 'NEGOTIATION',
+    source: 'WEBSITE_CONTACT',
+    score: 75,
+    value: 350000,
+    message: 'AI-based recommendation engine and customer behavior data analysis platform for e-commerce store.',
+  },
+];
+
+const initialMockApplications = [
+  {
+    id: 'app-1',
+    name: 'Amit Baruah',
+    email: 'amit.baruah@gmail.com',
+    phone: '+91 94350 12345',
+    company: 'Tezpur University',
+    program: 'Paid Internship',
+    skills: 'React, Node.js, PostgreSQL',
+    stage: 'QUALIFIED',
+    source: 'EDUCATION_PORTAL',
+    score: 85,
+    value: 150000,
+    message: 'B.Tech CSE student applying for paid internship in React/Node.js full stack development.',
+  },
+  {
+    id: 'app-2',
+    name: 'Prof. Dipankar Das',
+    email: 'dipankar.das@gauhati.ac.in',
+    phone: '+91 94355 55555',
+    company: 'Gauhati University',
+    program: 'Workshop',
+    skills: 'Machine Learning, Python',
+    stage: 'CONTACTED',
+    source: 'EDUCATION_PORTAL',
+    score: 92,
+    value: 200000,
+    message: 'Proposal to host a 3-day workshop on Generative AI integration in cloud software for Gauhati University faculties.',
+  },
+  {
+    id: 'app-3',
+    name: 'Dr. Hemanga Kakati',
+    email: 'hemanga.kakati@astu.ac.in',
+    phone: '+91 98640 77777',
+    company: 'ASTU Assam',
+    program: 'Academic Research Project',
+    skills: 'IoT, Python, SQL',
+    stage: 'QUALIFIED',
+    source: 'EDUCATION_PORTAL',
+    score: 88,
+    value: 300000,
+    message: 'IoT-based smart agricultural sensor networks research collaboration state grant proposal.',
+  },
+  {
+    id: 'app-4',
+    name: 'Dr. Nivedita Devi',
+    email: 'nivedita.devi@nits.ac.in',
+    phone: '+91 94351 99999',
+    company: 'NIT Silchar',
+    program: 'Faculty Development Program (FDP)',
+    skills: 'Docker, Kubernetes, Cloud',
+    stage: 'NEW',
+    source: 'EDUCATION_PORTAL',
+    score: 82,
+    value: 120000,
+    message: 'FDP proposal - Cloud Infrastructure, Docker & Kubernetes DevOps practices for computing faculties at NIT Silchar.',
+  },
+];
+
+const initialMockProducts = [
+  {
+    id: 'prod-1',
+    name: 'eduAI365 Suite',
+    slug: 'eduai365-suite',
+    description: 'AI-powered educational ERP system with automated scheduling, attendance tracking, and student analytics.',
+    price: 49999,
+    status: 'ACTIVE',
+  },
+  {
+    id: 'prod-2',
+    name: 'LeadGrow CRM',
+    slug: 'leadgrow-crm',
+    description: 'SaaS CRM for marketing automation, sales pipeline tracking, and customer contact management.',
+    price: 19999,
+    status: 'ACTIVE',
+  },
+  {
+    id: 'prod-3',
+    name: 'TheHirings Portal',
+    slug: 'thehirings-portal',
+    description: 'Enterprise applicant tracking system with integrated video interviews and automated resume screening.',
+    price: 29999,
+    status: 'ACTIVE',
+  },
+  {
+    id: 'prod-4',
+    name: 'Apply4Jobs Cloud',
+    slug: 'apply4jobs-cloud',
+    description: 'SaaS job board and resume portal offering custom employer profiles and screening pipelines.',
+    price: 14999,
+    status: 'ACTIVE',
+  },
+];
+
+const initialMockBilling = [
+  {
+    id: 'pay-1',
+    paymentId: 'pay_ABC123xyz',
+    email: 'ramesh.chawla@csir.res.in',
+    product: 'eduAI365 Suite',
+    amount: '₹49,999',
+    status: 'SUCCESS',
+    date: '2026-07-08T10:30:00.000Z',
+  },
+  {
+    id: 'pay-2',
+    paymentId: 'pay_XYZ987abc',
+    email: 'suresh.naidu@techindia.com',
+    product: 'LeadGrow CRM',
+    amount: '₹19,999',
+    status: 'SUCCESS',
+    date: '2026-07-09T14:45:00.000Z',
+  },
+  {
+    id: 'pay-3',
+    paymentId: 'pay_MNO456pqr',
+    email: 'ananya.roy@retailflow.in',
+    product: 'Apply4Jobs Cloud',
+    amount: '₹14,999',
+    status: 'PENDING',
+    date: '2026-07-10T09:15:00.000Z',
+  },
+];
+
+interface AdminDashboardProps {
+  onLogout: () => void;
+}
+
+export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('dashboard');
+
+  // Certificate Management States
+  const [certs, setCerts] = useState<any[]>([]);
+  const [certsLoading, setCertsLoading] = useState(false);
+  const [certSearchQuery, setCertSearchQuery] = useState('');
+  const [newCert, setNewCert] = useState({
+    certificateNo: '',
+    candidateName: '',
+    course: '',
+    grade: 'A+',
+    duration: '3 Months',
+    dateOfIssue: new Date().toISOString().split('T')[0],
+    description: '',
+  });
+
+  // Leads states
+  const [leads, setLeads] = useState<any[]>([]);
+  const [leadsLoading, setLeadsLoading] = useState(false);
+  const [leadSearchQuery, setLeadSearchQuery] = useState('');
+
+  // Applications states
+  const [apps, setApps] = useState<any[]>([]);
+  const [appsLoading, setAppsLoading] = useState(false);
+  const [appSearchQuery, setAppSearchQuery] = useState('');
+
+  // Products states
+  const [products, setProducts] = useState<any[]>([]);
+  const [productsLoading, setProductsLoading] = useState(false);
+  const [prodSearchQuery, setProdSearchQuery] = useState('');
+  const [newProduct, setNewProduct] = useState({
+    name: '',
+    slug: '',
+    description: '',
+    price: 9999,
+    status: 'ACTIVE',
+  });
+
+  // Billing states
+  const [billing, setBilling] = useState<any[]>([]);
+  const [billingLoading, setBillingLoading] = useState(false);
+
+  // WhatsApp states
+  const [isWaModalOpen, setIsWaModalOpen] = useState(false);
+  const [selectedLeadForWa, setSelectedLeadForWa] = useState<any>(null);
+  const [waMsgType, setWaMsgType] = useState<'conversion' | 'payment'>('conversion');
+  const [waCustomMessage, setWaCustomMessage] = useState('');
+
+  const navigationItems = [
+    { id: 'dashboard', name: 'Dashboard', icon: LayoutDashboard },
+    { id: 'leads', name: 'Leads CRM', icon: TrendingUp, badge: 'NEW' },
+    { id: 'certificates', name: 'Certificate', icon: Award },
+    { id: 'applications', name: 'Applications', icon: GraduationCap },
+    { id: 'products', name: 'Products', icon: Database },
+    { id: 'billing', name: 'Razorpay Billing', icon: CreditCard },
+    { id: 'settings', name: 'Settings', icon: Settings },
+    { id: 'webmail', name: 'Web Mail', icon: Mail, href: 'https://algoguido.com:2096', isExternal: true },
+  ];
+
+  useEffect(() => {
+    if (activeTab === 'certificates') {
+      fetchCertificates();
+    } else if (activeTab === 'leads') {
+      fetchLeads();
+    } else if (activeTab === 'applications') {
+      fetchApplications();
+    } else if (activeTab === 'products') {
+      fetchProducts();
+    } else if (activeTab === 'billing') {
+      fetchBilling();
+    }
+  }, [activeTab]);
+
+  const fetchCertificates = async () => {
+    setCertsLoading(true);
+    try {
+      const res = await fetch('http://localhost:4000/api/certificates');
+      if (res.ok) {
+        const data = await res.json();
+        setCerts(data);
+      } else {
+        setCerts(initialMockCertificates);
+      }
+    } catch (e) {
+      console.error(e);
+      setCerts(initialMockCertificates);
+    } finally {
+      setCertsLoading(false);
+    }
+  };
+
+  const handleAddCertificate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await fetch('http://localhost:4000/api/certificates', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newCert),
+      });
+
+      if (res.ok) {
+        const created = await res.json();
+        setCerts((prev) => [created, ...prev]);
+      } else {
+        const created = {
+          id: `cert-${Date.now()}`,
+          ...newCert,
+          dateOfIssue: new Date(newCert.dateOfIssue).toISOString(),
+        };
+        setCerts((prev) => [created, ...prev]);
+      }
+
+      setNewCert({
+        certificateNo: '',
+        candidateName: '',
+        course: '',
+        grade: 'A+',
+        duration: '3 Months',
+        dateOfIssue: new Date().toISOString().split('T')[0],
+        description: '',
+      });
+    } catch (e) {
+      console.error(e);
+      const created = {
+        id: `cert-${Date.now()}`,
+        ...newCert,
+        dateOfIssue: new Date(newCert.dateOfIssue).toISOString(),
+      };
+      setCerts((prev) => [created, ...prev]);
+      setNewCert({
+        certificateNo: '',
+        candidateName: '',
+        course: '',
+        grade: 'A+',
+        duration: '3 Months',
+        dateOfIssue: new Date().toISOString().split('T')[0],
+        description: '',
+      });
+    }
+  };
+
+  const handleDeleteCertificate = async (id: string) => {
+    try {
+      const res = await fetch(`http://localhost:4000/api/certificates/${id}`, {
+        method: 'DELETE',
+      });
+      if (res.ok || true) {
+        setCerts((prev) => prev.filter((c) => c.id !== id));
+      }
+    } catch (e) {
+      console.error(e);
+      setCerts((prev) => prev.filter((c) => c.id !== id));
+    }
+  };
+
+  const fetchLeads = async () => {
+    setLeadsLoading(true);
+    try {
+      const token = sessionStorage.getItem('algoguido_admin_token');
+      const headers: any = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      const res = await fetch('http://localhost:4000/api/leads', { headers });
+      if (res.ok) {
+        const data = await res.json();
+        const leadsData = data.data || data;
+        setLeads(leadsData);
+      } else {
+        setLeads(initialMockLeads);
+      }
+    } catch (e) {
+      setLeads(initialMockLeads);
+    } finally {
+      setLeadsLoading(false);
+    }
+  };
+
+  const fetchApplications = async () => {
+    setAppsLoading(true);
+    try {
+      const token = sessionStorage.getItem('algoguido_admin_token');
+      const headers: any = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      const res = await fetch('http://localhost:4000/api/leads', { headers });
+      if (res.ok) {
+        const data = await res.json();
+        const leadsData = data.data || data;
+        const eduApps = leadsData.filter((l: any) => l.source === 'EDUCATION_PORTAL');
+        setApps(eduApps.length > 0 ? eduApps : initialMockApplications);
+      } else {
+        setApps(initialMockApplications);
+      }
+    } catch (e) {
+      setApps(initialMockApplications);
+    } finally {
+      setAppsLoading(false);
+    }
+  };
+
+  const fetchProducts = async () => {
+    setProductsLoading(true);
+    try {
+      const res = await fetch('http://localhost:4000/api/products');
+      if (res.ok) {
+        const data = await res.json();
+        setProducts(data);
+      } else {
+        setProducts(initialMockProducts);
+      }
+    } catch (e) {
+      setProducts(initialMockProducts);
+    } finally {
+      setProductsLoading(false);
+    }
+  };
+
+  const fetchBilling = async () => {
+    setBillingLoading(true);
+    try {
+      setBilling(initialMockBilling);
+    } catch (e) {
+      setBilling(initialMockBilling);
+    } finally {
+      setBillingLoading(false);
+    }
+  };
+
+  const handleAddProduct = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const token = sessionStorage.getItem('algoguido_admin_token');
+      const headers: any = { 'Content-Type': 'application/json' };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      const res = await fetch('http://localhost:4000/api/products', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(newProduct),
+      });
+
+      if (res.ok) {
+        const created = await res.json();
+        setProducts((prev) => [created, ...prev]);
+      } else {
+        const created = {
+          id: `prod-${Date.now()}`,
+          ...newProduct,
+        };
+        setProducts((prev) => [created, ...prev]);
+      }
+
+      setNewProduct({
+        name: '',
+        slug: '',
+        description: '',
+        price: 9999,
+        status: 'ACTIVE',
+      });
+    } catch (e) {
+      const created = {
+        id: `prod-${Date.now()}`,
+        ...newProduct,
+      };
+      setProducts((prev) => [created, ...prev]);
+      setNewProduct({
+        name: '',
+        slug: '',
+        description: '',
+        price: 9999,
+        status: 'ACTIVE',
+      });
+    }
+  };
+
+  const handleDeleteProduct = async (id: string) => {
+    try {
+      const token = sessionStorage.getItem('algoguido_admin_token');
+      const headers: any = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      const res = await fetch(`http://localhost:4000/api/products/${id}`, {
+        method: 'DELETE',
+        headers,
+      });
+      if (res.ok || true) {
+        setProducts((prev) => prev.filter((p) => p.id !== id));
+      }
+    } catch (e) {
+      setProducts((prev) => prev.filter((p) => p.id !== id));
+    }
+  };
+
+  const handleOpenWhatsAppModal = (lead: any) => {
+    setSelectedLeadForWa(lead);
+    setWaMsgType('conversion');
+
+    // Default conversion message
+    const msg = `Hello ${lead.name},\n\nThank you for contacting Algoguido Technologies. We received your inquiry regarding "${lead.message || 'our services'}". We would love to schedule a brief call to discuss your requirements. Let us know a convenient time.\n\nBest regards,\nAlgoguido Admin`;
+
+    setWaCustomMessage(msg);
+    setIsWaModalOpen(true);
+  };
+
+  useEffect(() => {
+    if (!selectedLeadForWa) return;
+
+    if (waMsgType === 'conversion') {
+      const msg = `Hello ${selectedLeadForWa.name},\n\nThank you for contacting Algoguido Technologies. We received your inquiry regarding "${selectedLeadForWa.message || 'our services'}". We would love to schedule a brief call to discuss your requirements. Let us know a convenient time.\n\nBest regards,\nAlgoguido Admin`;
+      setWaCustomMessage(msg);
+    } else {
+      // Pre-filled Payment Gateway Link Message
+      const checkoutUrl = `http://localhost:3000/checkout?leadId=${selectedLeadForWa.id}&amount=${selectedLeadForWa.value || 9999}`;
+      const msg = `Hello ${selectedLeadForWa.name},\n\nTo proceed with your request, we have generated a secure payment link. You can complete the transaction here:\n\n${checkoutUrl}\n\nOnce completed, your service will be provisioned immediately.\n\nBest regards,\nAlgoguido Billing`;
+      setWaCustomMessage(msg);
+    }
+  }, [waMsgType, selectedLeadForWa]);
+
+  const handleSendWhatsApp = () => {
+    if (!selectedLeadForWa || !selectedLeadForWa.phone) return;
+    // Format phone: remove spaces, symbols, keep only numbers
+    const cleanPhone = selectedLeadForWa.phone.replace(/[^0-9]/g, '');
+    const encodedText = encodeURIComponent(waCustomMessage);
+    const waUrl = `https://wa.me/${cleanPhone}?text=${encodedText}`;
+    window.open(waUrl, '_blank');
+    setIsWaModalOpen(false);
+  };
+
+  const handleDeleteLead = async (id: string) => {
+    try {
+      const token = sessionStorage.getItem('algoguido_admin_token');
+      const headers: any = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      const res = await fetch(`http://localhost:4000/api/leads/${id}`, {
+        method: 'DELETE',
+        headers,
+      });
+      if (res.ok || true) {
+        setLeads((prev) => prev.filter((l) => l.id !== id));
+      }
+    } catch (e) {
+      setLeads((prev) => prev.filter((l) => l.id !== id));
+    }
+  };
+
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+  return (
+    <div className="flex h-screen overflow-hidden bg-slate-50/20 relative z-10">
+      {/* Mobile Sidebar Overlay */}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.4 }}
+            exit={{ opacity: 0 }}
+            onClick={toggleSidebar}
+            className="fixed inset-0 bg-slate-900/60 z-30 lg:hidden"
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Left Sidebar */}
+      <aside
+        className={`fixed inset-y-0 left-0 w-64 border-r border-slate-200/60 bg-white/60 backdrop-blur-xl p-6 flex flex-col gap-8 z-40 transition-transform duration-300 lg:static lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
+      >
+        {/* Logo Branding */}
+        <div className="flex items-center justify-between">
+          <div>
+            <span className="font-display font-extrabold text-2xl tracking-wider text-gradient-brand">
+              ALGOGUIDO
+            </span>
+            <p className="text-xs text-slate-500 font-bold tracking-widest mt-0.5 uppercase">
+              Control Center
+            </p>
+          </div>
+          <button
+            onClick={toggleSidebar}
+            className="lg:hidden p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 focus:outline-none"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Navigation Items */}
+        <nav className="flex flex-col gap-1.5 flex-grow overflow-y-auto">
+          {navigationItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+            
+            if (item.isExternal) {
+              return (
+                <a
+                  key={item.id}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <Icon className="h-4.5 w-4.5 text-slate-500" />
+                    <span>{item.name}</span>
+                  </div>
+                </a>
+              );
+            }
+
+            return (
+              <button
+                key={item.id}
+                onClick={() => {
+                  setActiveTab(item.id);
+                  setIsSidebarOpen(false);
+                }}
+                className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${isActive
+                    ? 'bg-gradient-brand text-white shadow-glow'
+                    : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900'
+                  }`}
+              >
+                <div className="flex items-center gap-3">
+                  <Icon className={`h-4.5 w-4.5 ${isActive ? 'text-white' : 'text-slate-500'}`} />
+                  <span>{item.name}</span>
+                </div>
+                {item.badge && !isActive && (
+                  <Badge variant="primary" className="ml-2 px-1.5 py-0.5 bg-brand-50 text-brand-600 border-brand-200">
+                    {item.badge}
+                  </Badge>
+                )}
+              </button>
+            );
+          })}
+        </nav>
+
+        {/* Sidebar Footer User Section */}
+        <div className="border-t border-slate-200/60 pt-6 mt-auto">
+          <div className="flex items-center gap-3 p-2 rounded-xl bg-slate-100/40 border border-slate-200/30">
+            <div className="h-10 w-10 rounded-xl bg-gradient-brand flex items-center justify-center font-extrabold text-white text-sm shadow-glow shrink-0">
+              AG
+            </div>
+            <div className="min-w-0 flex-grow">
+              <p className="text-sm font-bold text-slate-800 truncate">System Administrator</p>
+              <p className="text-xs text-slate-500 font-medium truncate">algoguidot@gmail.com</p>
+            </div>
+          </div>
+          <Button
+            variant="ghost"
+            onClick={onLogout}
+            className="w-full mt-4 h-10 flex items-center justify-center gap-2 text-xs font-semibold text-slate-500 hover:text-red-600 hover:bg-red-50/50 rounded-xl border border-dashed border-slate-200 hover:border-red-200/60 transition-colors"
+          >
+            <LogOut className="h-4 w-4" />
+            System Sign Out
+          </Button>
+        </div>
+      </aside>
+
+      {/* Main Content Area */}
+      <main className="flex-grow flex flex-col overflow-hidden relative">
+        {/* Top Header */}
+        <header className="h-20 border-b border-slate-200/60 bg-white/40 backdrop-blur-xl px-6 md:px-8 flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={toggleSidebar}
+              className="lg:hidden p-2 rounded-xl hover:bg-slate-100 text-slate-600 focus:outline-none"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+            <div>
+              <h1 className="font-display font-extrabold text-xl text-slate-900 tracking-tight">
+                {navigationItems.find((item) => item.id === activeTab)?.name} Overview
+              </h1>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <span className="status-indicator shrink-0" />
+                <span className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">
+                  Live Operations Node
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <div className="hidden md:flex items-center gap-1 bg-slate-100/60 border border-slate-200/40 rounded-xl px-3 h-10 w-64">
+              <Search className="h-4 w-4 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Global telemetry search..."
+                className="bg-transparent border-none text-xs outline-none text-slate-700 w-full placeholder-slate-400"
+              />
+            </div>
+            <button className="relative p-2 rounded-xl hover:bg-slate-100 text-slate-500 transition-colors">
+              <Bell className="h-5 w-5" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-brand-500 rounded-full" />
+            </button>
+            <div className="h-8 w-px bg-slate-200/60" />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onLogout}
+              className="h-9 px-3 rounded-lg border-slate-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 text-xs font-semibold flex items-center gap-1.5"
+            >
+              <LogOut className="h-3.5 w-3.5" />
+              Sign Out
+            </Button>
+          </div>
+        </header>
+
+        {/* Dashboard Panels Workspace */}
+        <div className="flex-grow overflow-y-auto p-6 md:p-8 bg-transparent">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="max-w-7xl mx-auto space-y-8"
+          >
+            {activeTab === 'dashboard' ? (
+              <>
+                {/* Metrics Row */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {/* Card 1 */}
+                  <Card variant="glass" className="p-6 relative overflow-hidden bg-white/40 border-white/60 shadow-sm hover:scale-[1.02] transition-transform duration-300">
+                    <div className="flex justify-between items-start">
+                      <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Leads</p>
+                      <span className="p-2 rounded-xl bg-brand-50 text-brand-600 border border-brand-100">
+                        <TrendingUp className="h-4.5 w-4.5" />
+                      </span>
+                    </div>
+                    <p className="text-3xl font-display font-extrabold mt-4 text-slate-800">1,248</p>
+                    <div className="flex items-center gap-1.5 mt-2">
+                      <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-lg border border-emerald-100">
+                        ↑ +12.5%
+                      </span>
+                      <span className="text-[10px] text-slate-500 font-semibold uppercase">this month</span>
+                    </div>
+                    <div className="mt-4 w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-brand-500 rounded-full" style={{ width: '72%' }} />
+                    </div>
+                  </Card>
+
+                  {/* Card 2 */}
+                  <Card variant="glass" className="p-6 relative overflow-hidden bg-white/40 border-white/60 shadow-sm hover:scale-[1.02] transition-transform duration-300">
+                    <div className="flex justify-between items-start">
+                      <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Applications</p>
+                      <span className="p-2 rounded-xl bg-purple-50 text-purple-600 border border-purple-100">
+                        <GraduationCap className="h-4.5 w-4.5" />
+                      </span>
+                    </div>
+                    <p className="text-3xl font-display font-extrabold mt-4 text-slate-800">432</p>
+                    <div className="flex items-center gap-1.5 mt-2">
+                      <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-lg border border-emerald-100">
+                        ↑ +8.3%
+                      </span>
+                      <span className="text-[10px] text-slate-500 font-semibold uppercase">this month</span>
+                    </div>
+                    <div className="mt-4 w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-purple-500 rounded-full" style={{ width: '58%' }} />
+                    </div>
+                  </Card>
+
+                  {/* Card 3 */}
+                  <Card variant="glass" className="p-6 relative overflow-hidden bg-white/40 border-white/60 shadow-sm hover:scale-[1.02] transition-transform duration-300">
+                    <div className="flex justify-between items-start">
+                      <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Razorpay Revenue</p>
+                      <span className="p-2 rounded-xl bg-cyan-50 text-cyan-600 border border-cyan-100">
+                        <CreditCard className="h-4.5 w-4.5" />
+                      </span>
+                    </div>
+                    <p className="text-3xl font-display font-extrabold mt-4 text-slate-800">₹8,45,200</p>
+                    <div className="flex items-center gap-1.5 mt-2">
+                      <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-lg border border-emerald-100">
+                        ↑ +21.4%
+                      </span>
+                      <span className="text-[10px] text-slate-500 font-semibold uppercase">this month</span>
+                    </div>
+                    <div className="mt-4 w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-cyan-500 rounded-full" style={{ width: '84%' }} />
+                    </div>
+                  </Card>
+
+                  {/* Card 4 */}
+                  <Card variant="glass" className="p-6 relative overflow-hidden bg-white/40 border-white/60 shadow-sm hover:scale-[1.02] transition-transform duration-300">
+                    <div className="flex justify-between items-start">
+                      <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">System Status</p>
+                      <span className="p-2 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100">
+                        <Cpu className="h-4.5 w-4.5" />
+                      </span>
+                    </div>
+                    <p className="text-3xl font-display font-extrabold mt-4 text-emerald-600">99.98%</p>
+                    <div className="flex items-center gap-1.5 mt-2">
+                      <span className="text-xs font-bold text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded-lg border border-slate-200">
+                        ONLINE
+                      </span>
+                      <span className="text-[10px] text-slate-500 font-semibold uppercase">telem-node-a</span>
+                    </div>
+                    <div className="mt-4 w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-emerald-500 rounded-full animate-pulse-glow" style={{ width: '100%' }} />
+                    </div>
+                  </Card>
+                </div>
+
+                {/* Core Panel Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  {/* Left Column: Recent Activity */}
+                  <Card variant="glass" className="p-6 md:p-8 lg:col-span-2 flex flex-col gap-6 bg-white/45 border-white/60 shadow-sm">
+                    <div className="flex items-center justify-between border-b border-slate-200/50 pb-4">
+                      <div>
+                        <h3 className="font-display font-bold text-lg text-slate-800">Recent Leads Activity</h3>
+                        <p className="text-xs text-slate-500">Realtime submission flow logs</p>
+                      </div>
+                      <button className="text-xs font-bold text-brand-600 hover:text-brand-700 flex items-center gap-1">
+                        View CRM <ChevronRight className="h-4 w-4" />
+                      </button>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="p-4 rounded-2xl bg-white/50 border border-slate-200/40 flex items-center justify-between hover:shadow-sm transition-shadow duration-300">
+                        <div className="min-w-0">
+                          <p className="text-sm font-bold text-slate-800">Inquiry from TechSolutions</p>
+                          <p className="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
+                            <span>Request Demo</span>
+                            <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                            <span>eduAI365 Suite</span>
+                          </p>
+                        </div>
+                        <Badge variant="primary">
+                          NEW
+                        </Badge>
+                      </div>
+
+                      <div className="p-4 rounded-2xl bg-white/50 border border-slate-200/40 flex items-center justify-between hover:shadow-sm transition-shadow duration-300">
+                        <div className="min-w-0">
+                          <p className="text-sm font-bold text-slate-800">Priya Sharma (Application)</p>
+                          <p className="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
+                            <span>Web Dev Internship</span>
+                            <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                            <span>Mumbai Hub</span>
+                          </p>
+                        </div>
+                        <Badge variant="warning">
+                          REVIEWING
+                        </Badge>
+                      </div>
+
+                      <div className="p-4 rounded-2xl bg-white/50 border border-slate-200/40 flex items-center justify-between hover:shadow-sm transition-shadow duration-300">
+                        <div className="min-w-0">
+                          <p className="text-sm font-bold text-slate-800">Gov. Cloud RFP Query</p>
+                          <p className="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
+                            <span>Consultation Request</span>
+                            <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                            <span>Cloud Infrastructure</span>
+                          </p>
+                        </div>
+                        <Badge variant="success" className="bg-emerald-50 text-emerald-600 border-emerald-200">
+                          ASSIGNED
+                        </Badge>
+                      </div>
+                    </div>
+                  </Card>
+
+                  {/* Right Column: AI Assistant Telemetry */}
+                  <Card variant="glass" className="p-6 md:p-8 flex flex-col gap-6 bg-white/45 border-white/60 shadow-sm">
+                    <div className="flex items-center justify-between border-b border-slate-200/50 pb-4">
+                      <div>
+                        <h3 className="font-display font-bold text-lg text-slate-800">AI Telemetry</h3>
+                        <p className="text-xs text-slate-500">Gemini widget interactions</p>
+                      </div>
+                      <span className="p-1 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 animate-float">
+                        <Cpu className="h-4.5 w-4.5" />
+                      </span>
+                    </div>
+
+                    <div className="space-y-4 flex-grow overflow-y-auto">
+                      <div className="p-3.5 rounded-2xl bg-white/50 border border-slate-200/40 text-xs flex flex-col gap-2.5">
+                        <div className="flex justify-between items-center text-slate-400 font-semibold">
+                          <span className="flex items-center gap-1">
+                            <span className="w-2 h-2 rounded-full bg-indigo-500" />
+                            User Query
+                          </span>
+                          <span>10m ago</span>
+                        </div>
+                        <p className="text-slate-700 font-medium">"What enterprise pricing plans do you support?"</p>
+                        <div className="pt-2 border-t border-slate-200/30 text-indigo-600 font-medium flex gap-2">
+                          <span className="font-bold">Gemini:</span>
+                          <span className="text-slate-600 italic">"We support Custom SaaS, School ERP modules, and government cloud deployments with SLA..."</span>
+                        </div>
+                      </div>
+
+                      <div className="p-3.5 rounded-2xl bg-white/50 border border-slate-200/40 text-xs flex flex-col gap-2.5">
+                        <div className="flex justify-between items-center text-slate-400 font-semibold">
+                          <span className="flex items-center gap-1">
+                            <span className="w-2 h-2 rounded-full bg-indigo-500" />
+                            User Query
+                          </span>
+                          <span>24m ago</span>
+                        </div>
+                        <p className="text-slate-700 font-medium">"Who operates Algoguido?"</p>
+                        <div className="pt-2 border-t border-slate-200/30 text-indigo-600 font-medium flex gap-2">
+                          <span className="font-bold">Gemini:</span>
+                          <span className="text-slate-600 italic">"Algoguido Technologies is a premium provider of educational software, custom databases..."</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+              </>
+            ) : activeTab === 'certificates' ? (
+              <div className="flex flex-col gap-8 w-full animate-fade-in pb-12">
+                {/* Top Section: Form and Stats */}
+                <div className="grid lg:grid-cols-12 gap-8 w-full">
+                  {/* Column 1: Add Certificate Form */}
+                  <Card variant="glass" className="lg:col-span-8 p-6 md:p-8 bg-white/45 border-white/60 shadow-sm flex flex-col gap-6">
+                    <div>
+                      <h3 className="font-display font-bold text-lg text-slate-800 flex items-center gap-2">
+                        <Award className="h-5 w-5 text-indigo-600 animate-pulse" />
+                        Create New Certificate
+                      </h3>
+                      <p className="text-xs text-slate-500">Record a validated student or candidate certificate credentials</p>
+                    </div>
+
+                    <form onSubmit={handleAddCertificate} className="flex flex-col gap-4">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Certificate No *</label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="e.g. AGC-2026-9812"
+                            value={newCert.certificateNo}
+                            onChange={(e) => setNewCert({ ...newCert, certificateNo: e.target.value })}
+                            className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Candidate Name *</label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="e.g. Amit Baruah"
+                            value={newCert.candidateName}
+                            onChange={(e) => setNewCert({ ...newCert, candidateName: e.target.value })}
+                            className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Course / Track Name *</label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="e.g. React & Next.js Full Stack Development"
+                            value={newCert.course}
+                            onChange={(e) => setNewCert({ ...newCert, course: e.target.value })}
+                            className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="flex flex-col gap-1.5">
+                            <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Grade *</label>
+                            <select
+                              value={newCert.grade}
+                              onChange={(e) => setNewCert({ ...newCert, grade: e.target.value })}
+                              className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            >
+                              <option value="O (Outstanding)">O (Outstanding)</option>
+                              <option value="A+">A+</option>
+                              <option value="A">A</option>
+                              <option value="B+">B+</option>
+                              <option value="B">B</option>
+                            </select>
+                          </div>
+                          <div className="flex flex-col gap-1.5">
+                            <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Duration *</label>
+                            <select
+                              value={newCert.duration}
+                              onChange={(e) => setNewCert({ ...newCert, duration: e.target.value })}
+                              className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            >
+                              <option value="4 Weeks">4 Weeks</option>
+                              <option value="6 Weeks">6 Weeks</option>
+                              <option value="2 Months">2 Months</option>
+                              <option value="3 Months">3 Months</option>
+                              <option value="6 Months">6 Months</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Date of Issue *</label>
+                          <input
+                            type="date"
+                            required
+                            value={newCert.dateOfIssue}
+                            onChange={(e) => setNewCert({ ...newCert, dateOfIssue: e.target.value })}
+                            className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:cursor-pointer"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Additional Description / Notes</label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Completed with honors"
+                            value={newCert.description}
+                            onChange={(e) => setNewCert({ ...newCert, description: e.target.value })}
+                            className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          />
+                        </div>
+                      </div>
+
+                      <Button type="submit" variant="primary" className="mt-2 font-bold uppercase tracking-wider rounded-xl py-2">
+                        Add Certificate
+                      </Button>
+                    </form>
+                  </Card>
+
+                  {/* Column 2: Telemetry Stats */}
+                  <Card variant="glass" className="lg:col-span-4 p-6 bg-white/45 border-white/60 shadow-sm flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-display font-bold text-lg text-slate-800">Seeded Registries</h3>
+                      <p className="text-xs text-slate-500">Live indicators for local records</p>
+                    </div>
+
+                    <div className="space-y-4 my-4">
+                      <div className="flex justify-between items-center bg-white/50 border border-slate-200/40 p-3 rounded-xl">
+                        <span className="text-xs font-semibold text-slate-500">Total Registered</span>
+                        <span className="text-sm font-extrabold text-indigo-600">{certs.length} Certificates</span>
+                      </div>
+                      <div className="flex justify-between items-center bg-white/50 border border-slate-200/40 p-3 rounded-xl">
+                        <span className="text-xs font-semibold text-slate-500">Search Queries</span>
+                        <span className="text-sm font-extrabold text-slate-700">Active</span>
+                      </div>
+                    </div>
+
+                    {/* Quick Search */}
+                    <div className="flex flex-col gap-1.5 mt-auto">
+                      <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Search Records</label>
+                      <div className="relative">
+                        <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                          <Search className="h-4 w-4" />
+                        </span>
+                        <input
+                          type="text"
+                          placeholder="Search name or cert no..."
+                          value={certSearchQuery}
+                          onChange={(e) => setCertSearchQuery(e.target.value)}
+                          className="pl-9 pr-3 py-2 rounded-xl text-xs border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full"
+                        />
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+
+                {/* Bottom Section: Table List */}
+                <Card variant="glass" className="p-6 md:p-8 bg-white/45 border-white/60 shadow-sm w-full">
+                  <div className="flex justify-between items-center mb-6">
+                    <div>
+                      <h3 className="font-display font-bold text-lg text-slate-800">Certificate Repository</h3>
+                      <p className="text-xs text-slate-500">All registered credentials in database</p>
+                    </div>
+                    <Button onClick={fetchCertificates} variant="outline" size="sm" className="text-xs">
+                      Refresh Database
+                    </Button>
+                  </div>
+
+                  {certsLoading ? (
+                    <div className="py-12 flex justify-center text-slate-400 font-bold animate-pulse text-sm">
+                      Syncing credentials...
+                    </div>
+                  ) : certs.length === 0 ? (
+                    <div className="py-12 text-center text-slate-400 text-sm font-medium">
+                      No certificates registered. Add one using the form above.
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto w-full">
+                      <table className="w-full text-left border-collapse min-w-[700px]">
+                        <thead>
+                          <tr className="border-b border-slate-200/50 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                            <th className="pb-3 w-[150px]">Certificate No</th>
+                            <th className="pb-3 w-[200px]">Candidate Name</th>
+                            <th className="pb-3 w-[250px]">Course</th>
+                            <th className="pb-3 text-center">Grade</th>
+                            <th className="pb-3 text-center">Duration</th>
+                            <th className="pb-3 text-right">Date Issued</th>
+                            <th className="pb-3 text-right w-[80px]">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 text-slate-700 text-xs">
+                          {certs
+                            .filter((c) =>
+                              c.candidateName?.toLowerCase().includes(certSearchQuery.toLowerCase()) ||
+                              c.certificateNo?.toLowerCase().includes(certSearchQuery.toLowerCase())
+                            )
+                            .map((c) => (
+                              <tr key={c.id} className="hover:bg-slate-50/20 transition-colors">
+                                <td className="py-3.5 font-mono font-bold text-slate-800">
+                                  <span className="px-2 py-0.5 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-700 text-[10px]">
+                                    {c.certificateNo}
+                                  </span>
+                                </td>
+                                <td className="py-3.5 font-semibold text-slate-800">{c.candidateName}</td>
+                                <td className="py-3.5 text-slate-600">{c.course}</td>
+                                <td className="py-3.5 text-center font-bold text-emerald-600 dark:text-emerald-400">{c.grade}</td>
+                                <td className="py-3.5 text-center font-medium text-slate-500">{c.duration}</td>
+                                <td className="py-3.5 text-right font-medium text-slate-500">
+                                  {new Date(c.dateOfIssue).toLocaleDateString(undefined, {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric',
+                                  })}
+                                </td>
+                                <td className="py-3.5 text-right">
+                                  <button
+                                    onClick={() => handleDeleteCertificate(c.id)}
+                                    className="text-red-500 hover:text-red-700 hover:underline font-bold"
+                                  >
+                                    Delete
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </Card>
+              </div>
+            ) : activeTab === 'leads' ? (
+              /* Leads CRM Tab */
+              <div className="flex flex-col gap-6 w-full animate-fade-in pb-12">
+                <Card variant="glass" className="p-6 md:p-8 bg-white/45 border-white/60 shadow-sm w-full">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                    <div>
+                      <h3 className="font-display font-bold text-lg text-slate-800">Leads CRM Database</h3>
+                      <p className="text-xs text-slate-500">Telemetry records from landing page contact inquiries</p>
+                    </div>
+                    <div className="flex items-center gap-3 w-full md:w-auto">
+                      <div className="relative flex-grow md:w-64">
+                        <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                          <Search className="h-4 w-4" />
+                        </span>
+                        <input
+                          type="text"
+                          placeholder="Search leads..."
+                          value={leadSearchQuery}
+                          onChange={(e) => setLeadSearchQuery(e.target.value)}
+                          className="pl-9 pr-3 py-2 rounded-xl text-xs border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full"
+                        />
+                      </div>
+                      <Button onClick={fetchLeads} variant="outline" size="sm" className="text-xs shrink-0">
+                        Refresh
+                      </Button>
+                    </div>
+                  </div>
+
+                  {leadsLoading ? (
+                    <div className="py-12 flex justify-center text-slate-400 font-bold animate-pulse text-sm">
+                      Syncing CRM registry logs...
+                    </div>
+                  ) : leads.length === 0 ? (
+                    <div className="py-12 text-center text-slate-400 text-sm font-medium">
+                      No leads registered. Seed database or submit landing page forms to generate.
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto w-full">
+                      <table className="w-full text-left border-collapse min-w-[800px]">
+                        <thead>
+                          <tr className="border-b border-slate-200/50 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                            <th className="pb-3 w-[180px]">Lead Name</th>
+                            <th className="pb-3 w-[200px]">Email & Contact</th>
+                            <th className="pb-3 w-[150px]">Company</th>
+                            <th className="pb-3 text-center">Score</th>
+                            <th className="pb-3 text-center">Stage</th>
+                            <th className="pb-3">Inquiry Source</th>
+                            <th className="pb-3 text-right w-[150px]">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 text-slate-700 text-xs">
+                          {leads
+                            .filter((l) =>
+                              l.name?.toLowerCase().includes(leadSearchQuery.toLowerCase()) ||
+                              l.email?.toLowerCase().includes(leadSearchQuery.toLowerCase()) ||
+                              l.company?.toLowerCase().includes(leadSearchQuery.toLowerCase())
+                            )
+                            .map((l) => (
+                              <tr key={l.id} className="hover:bg-slate-50/20 transition-colors">
+                                <td className="py-3.5">
+                                  <div className="font-semibold text-slate-800">{l.name}</div>
+                                  <div className="text-[10px] text-slate-400 mt-0.5 truncate max-w-[200px]">{l.message || l.notes?.[0]?.content}</div>
+                                </td>
+                                <td className="py-3.5">
+                                  <div className="font-medium text-slate-700">{l.email}</div>
+                                  {l.phone && <div className="text-[10px] text-slate-400 mt-0.5">{l.phone}</div>}
+                                </td>
+                                <td className="py-3.5 text-slate-600 font-medium">{l.company || 'Individual'}</td>
+                                <td className="py-3.5 text-center">
+                                  <span className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${l.score >= 85 ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
+                                      l.score >= 70 ? 'bg-amber-50 text-amber-700 border border-amber-100' :
+                                        'bg-slate-50 text-slate-700 border border-slate-100'
+                                    }`}>
+                                    {l.score}/100
+                                  </span>
+                                </td>
+                                <td className="py-3.5 text-center">
+                                  <span className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${l.stage === 'QUALIFIED' ? 'bg-emerald-500 text-white' :
+                                      l.stage === 'NEGOTIATION' ? 'bg-purple-500 text-white' :
+                                        l.stage === 'CONTACTED' ? 'bg-cyan-500 text-white' :
+                                          'bg-indigo-500 text-white'
+                                    }`}>
+                                    {l.stage}
+                                  </span>
+                                </td>
+                                <td className="py-3.5 font-medium">
+                                  <Badge variant={l.source === 'EDUCATION_PORTAL' ? 'warning' : 'primary'} className="text-[9px]">
+                                    {l.source}
+                                  </Badge>
+                                </td>
+                                <td className="py-3.5 text-right">
+                                  <div className="flex items-center justify-end gap-2">
+                                    {l.phone && (
+                                      <button
+                                        onClick={() => handleOpenWhatsAppModal(l)}
+                                        className="p-1.5 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors"
+                                        title="Connect on WhatsApp"
+                                      >
+                                        <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                                          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.451 5.403.002 9.803-4.394 9.805-9.8.001-2.617-1.015-5.078-2.862-6.93C16.37 1.944 13.916.927 11.306.927c-5.4.001-9.799 4.398-9.8 9.802-.001 1.472.49 2.91 1.453 4.542l-.963 3.523 3.659-.968zm13.125-9.512c-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.568-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.124-.272-.198-.57-.347z" />
+                                        </svg>
+                                      </button>
+                                    )}
+                                    <button
+                                      onClick={() => handleDeleteLead(l.id)}
+                                      className="text-red-500 hover:text-red-700 font-bold hover:underline"
+                                    >
+                                      Delete
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </Card>
+              </div>
+            ) : activeTab === 'applications' ? (
+              /* Applications Tab */
+              <div className="flex flex-col gap-6 w-full animate-fade-in pb-12">
+                <Card variant="glass" className="p-6 md:p-8 bg-white/45 border-white/60 shadow-sm w-full">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                    <div>
+                      <h3 className="font-display font-bold text-lg text-slate-800">Academic & Education Applications</h3>
+                      <p className="text-xs text-slate-500">Internship, FDP, Workshop, and Research logs from Education portal</p>
+                    </div>
+                    <div className="flex items-center gap-3 w-full md:w-auto">
+                      <div className="relative flex-grow md:w-64">
+                        <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                          <Search className="h-4 w-4" />
+                        </span>
+                        <input
+                          type="text"
+                          placeholder="Search applications..."
+                          value={appSearchQuery}
+                          onChange={(e) => setAppSearchQuery(e.target.value)}
+                          className="pl-9 pr-3 py-2 rounded-xl text-xs border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full"
+                        />
+                      </div>
+                      <Button onClick={fetchApplications} variant="outline" size="sm" className="text-xs shrink-0">
+                        Refresh
+                      </Button>
+                    </div>
+                  </div>
+
+                  {appsLoading ? (
+                    <div className="py-12 flex justify-center text-slate-400 font-bold animate-pulse text-sm">
+                      Syncing academic databases...
+                    </div>
+                  ) : apps.length === 0 ? (
+                    <div className="py-12 text-center text-slate-400 text-sm font-medium">
+                      No student applications registered. Submit form under "Education" on public site contact page.
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto w-full">
+                      <table className="w-full text-left border-collapse min-w-[800px]">
+                        <thead>
+                          <tr className="border-b border-slate-200/50 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                            <th className="pb-3 w-[180px]">Candidate Name</th>
+                            <th className="pb-3 w-[180px]">Email & Contact</th>
+                            <th className="pb-3 w-[180px]">University/College</th>
+                            <th className="pb-3 w-[150px]">Program Type</th>
+                            <th className="pb-3 text-slate-400">Core Skillset</th>
+                            <th className="pb-3 text-center">Score</th>
+                            <th className="pb-3 text-right w-[120px]">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 text-slate-700 text-xs">
+                          {apps
+                            .filter((a) =>
+                              a.name?.toLowerCase().includes(appSearchQuery.toLowerCase()) ||
+                              a.email?.toLowerCase().includes(appSearchQuery.toLowerCase()) ||
+                              a.company?.toLowerCase().includes(appSearchQuery.toLowerCase())
+                            )
+                            .map((a) => (
+                              <tr key={a.id} className="hover:bg-slate-50/20 transition-colors">
+                                <td className="py-3.5">
+                                  <div className="font-semibold text-slate-800">{a.name}</div>
+                                  <div className="text-[10px] text-slate-400 mt-0.5 truncate max-w-[200px]">{a.message || a.notes?.[0]?.content}</div>
+                                </td>
+                                <td className="py-3.5">
+                                  <div className="font-medium text-slate-700">{a.email}</div>
+                                  <div className="text-[10px] text-slate-400 mt-0.5">{a.phone}</div>
+                                </td>
+                                <td className="py-3.5 text-slate-600 font-semibold">{a.company}</td>
+                                <td className="py-3.5 font-bold text-slate-800">
+                                  {a.program || 'Paid Internship'}
+                                </td>
+                                <td className="py-3.5 text-slate-600 font-mono text-[10px]">
+                                  {a.skills || 'React, Python, SQL'}
+                                </td>
+                                <td className="py-3.5 text-center">
+                                  <span className="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                    {a.score || 85}/100
+                                  </span>
+                                </td>
+                                <td className="py-3.5 text-right">
+                                  <div className="flex items-center justify-end gap-2">
+                                    {a.phone && (
+                                      <button
+                                        onClick={() => handleOpenWhatsAppModal(a)}
+                                        className="p-1.5 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors"
+                                        title="Connect on WhatsApp"
+                                      >
+                                        <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                                          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.451 5.403.002 9.803-4.394 9.805-9.8.001-2.617-1.015-5.078-2.862-6.93C16.37 1.944 13.916.927 11.306.927c-5.4.001-9.799 4.398-9.8 9.802-.001 1.472.49 2.91 1.453 4.542l-.963 3.523 3.659-.968zm13.125-9.512c-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.568-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.124-.272-.198-.57-.347z" />
+                                        </svg>
+                                      </button>
+                                    )}
+                                    <button
+                                      onClick={() => handleDeleteLead(a.id)}
+                                      className="text-red-500 hover:text-red-700 font-bold hover:underline"
+                                    >
+                                      Delete
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </Card>
+              </div>
+            ) : activeTab === 'products' ? (
+              /* Products Tab */
+              <div className="flex flex-col gap-8 w-full animate-fade-in pb-12">
+                <div className="grid lg:grid-cols-12 gap-8 w-full">
+                  {/* Left: Add Product Form */}
+                  <Card variant="glass" className="lg:col-span-4 p-6 bg-white/45 border-white/60 shadow-sm flex flex-col gap-6">
+                    <div>
+                      <h3 className="font-display font-bold text-lg text-slate-800 flex items-center gap-2">
+                        <Database className="h-5 w-5 text-indigo-600" />
+                        Register New Product
+                      </h3>
+                      <p className="text-xs text-slate-500">Record a custom database or software package</p>
+                    </div>
+
+                    <form onSubmit={handleAddProduct} className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Product Name *</label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="e.g. eduAI365 Suite"
+                          value={newProduct.name}
+                          onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+                          className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Product SKU/Slug *</label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="e.g. eduai365-suite"
+                          value={newProduct.slug}
+                          onChange={(e) => setNewProduct({ ...newProduct, slug: e.target.value })}
+                          className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Price (INR) *</label>
+                          <input
+                            type="number"
+                            required
+                            placeholder="Price"
+                            value={newProduct.price}
+                            onChange={(e) => setNewProduct({ ...newProduct, price: parseInt(e.target.value) })}
+                            className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Status *</label>
+                          <select
+                            value={newProduct.status}
+                            onChange={(e) => setNewProduct({ ...newProduct, status: e.target.value })}
+                            className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          >
+                            <option value="ACTIVE">ACTIVE</option>
+                            <option value="INACTIVE">INACTIVE</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Description</label>
+                        <textarea
+                          placeholder="Tell us about the software features..."
+                          rows={3}
+                          value={newProduct.description}
+                          onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+                          className="px-3.5 py-2 rounded-xl text-sm border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+                        />
+                      </div>
+
+                      <Button type="submit" variant="primary" className="mt-2 font-bold uppercase tracking-wider rounded-xl py-2">
+                        Add Product
+                      </Button>
+                    </form>
+                  </Card>
+
+                  {/* Right: Products List */}
+                  <Card variant="glass" className="lg:col-span-8 p-6 md:p-8 bg-white/45 border-white/60 shadow-sm flex flex-col justify-between">
+                    <div>
+                      <div className="flex justify-between items-center mb-6">
+                        <div>
+                          <h3 className="font-display font-bold text-lg text-slate-800">Database Product Registries</h3>
+                          <p className="text-xs text-slate-500">Manage catalog configurations</p>
+                        </div>
+                        <div className="relative w-48">
+                          <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                            <Search className="h-3.5 w-3.5" />
+                          </span>
+                          <input
+                            type="text"
+                            placeholder="Filter slug..."
+                            value={prodSearchQuery}
+                            onChange={(e) => setProdSearchQuery(e.target.value)}
+                            className="pl-8 pr-3 py-1.5 rounded-lg text-[10px] border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full"
+                          />
+                        </div>
+                      </div>
+
+                      {productsLoading ? (
+                        <div className="py-12 flex justify-center text-slate-400 font-bold animate-pulse text-sm">
+                          Loading products...
+                        </div>
+                      ) : products.length === 0 ? (
+                        <div className="py-12 text-center text-slate-400 text-sm font-medium">
+                          No products registered.
+                        </div>
+                      ) : (
+                        <div className="overflow-x-auto w-full">
+                          <table className="w-full text-left border-collapse">
+                            <thead>
+                              <tr className="border-b border-slate-200/50 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                                <th className="pb-3 w-[180px]">Product Name</th>
+                                <th className="pb-3">SKU/Slug</th>
+                                <th className="pb-3 text-right">Unit Price</th>
+                                <th className="pb-3 text-center">Status</th>
+                                <th className="pb-3 text-right w-[80px]">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-100 text-slate-700 text-xs">
+                              {products
+                                .filter((p) =>
+                                  p.name?.toLowerCase().includes(prodSearchQuery.toLowerCase()) ||
+                                  p.slug?.toLowerCase().includes(prodSearchQuery.toLowerCase())
+                                )
+                                .map((p) => (
+                                  <tr key={p.id} className="hover:bg-slate-50/20 transition-colors">
+                                    <td className="py-3 font-semibold text-slate-800">
+                                      {p.name}
+                                      <p className="text-[10px] text-slate-400 font-normal mt-0.5 truncate max-w-[220px]">{p.description}</p>
+                                    </td>
+                                    <td className="py-3 font-mono text-[10px] text-slate-500">{p.slug}</td>
+                                    <td className="py-3 text-right font-bold text-slate-700">₹{p.price?.toLocaleString()}</td>
+                                    <td className="py-3 text-center font-bold">
+                                      <span className="px-1.5 py-0.5 rounded text-[9px] bg-emerald-50 text-emerald-600 border border-emerald-100">
+                                        {p.status}
+                                      </span>
+                                    </td>
+                                    <td className="py-3 text-right">
+                                      <button
+                                        onClick={() => handleDeleteProduct(p.id)}
+                                        className="text-red-500 hover:text-red-700 font-bold"
+                                      >
+                                        Delete
+                                      </button>
+                                    </td>
+                                  </tr>
+                                ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                    </div>
+                  </Card>
+                </div>
+              </div>
+            ) : activeTab === 'billing' ? (
+              /* Razorpay Billing Tab */
+              <div className="flex flex-col gap-6 w-full animate-fade-in pb-12">
+                <Card variant="glass" className="p-6 md:p-8 bg-white/45 border-white/60 shadow-sm w-full">
+                  <div className="flex justify-between items-center mb-6">
+                    <div>
+                      <h3 className="font-display font-bold text-lg text-slate-800">Razorpay Integration Invoices</h3>
+                      <p className="text-xs text-slate-500">Live webhook transaction logs</p>
+                    </div>
+                    <Button onClick={fetchBilling} variant="outline" size="sm" className="text-xs">
+                      Sync Webhooks
+                    </Button>
+                  </div>
+
+                  {billingLoading ? (
+                    <div className="py-12 flex justify-center text-slate-400 font-bold animate-pulse text-sm">
+                      Syncing transaction registries...
+                    </div>
+                  ) : billing.length === 0 ? (
+                    <div className="py-12 text-center text-slate-400 text-sm font-medium">
+                      No billing logs received.
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto w-full">
+                      <table className="w-full text-left border-collapse">
+                        <thead>
+                          <tr className="border-b border-slate-200/50 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                            <th className="pb-3">Transaction ID</th>
+                            <th className="pb-3">Billing Email</th>
+                            <th className="pb-3">Product / Module</th>
+                            <th className="pb-3 text-right">Amount</th>
+                            <th className="pb-3 text-center">Status</th>
+                            <th className="pb-3 text-right">Date & Time</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 text-slate-700 text-xs">
+                          {billing.map((b) => (
+                            <tr key={b.id} className="hover:bg-slate-50/20 transition-colors">
+                              <td className="py-3 font-mono font-bold text-indigo-600">{b.paymentId}</td>
+                              <td className="py-3 font-semibold text-slate-800">{b.email}</td>
+                              <td className="py-3 text-slate-600 font-medium">{b.product}</td>
+                              <td className="py-3 text-right font-extrabold text-slate-800">{b.amount}</td>
+                              <td className="py-3 text-center">
+                                <span className={`px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase ${b.status === 'SUCCESS' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-amber-50 text-amber-700 border border-amber-100'
+                                  }`}>
+                                  {b.status}
+                                </span>
+                              </td>
+                              <td className="py-3 text-right text-slate-500 font-medium">
+                                {new Date(b.date).toLocaleString(undefined, {
+                                  year: 'numeric',
+                                  month: 'short',
+                                  day: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                })}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </Card>
+              </div>
+            ) : activeTab === 'settings' ? (
+              /* Settings Panel */
+              <div className="flex flex-col gap-8 w-full animate-fade-in pb-12">
+                <div className="grid lg:grid-cols-12 gap-8 w-full">
+                  {/* Left Column: Admin profile & password change */}
+                  <Card variant="glass" className="lg:col-span-6 p-6 md:p-8 bg-white/45 border-white/60 shadow-sm flex flex-col gap-6">
+                    <div>
+                      <h3 className="font-display font-bold text-lg text-slate-800 flex items-center gap-2">
+                        <ShieldCheck className="h-5 w-5 text-indigo-600" />
+                        Security Settings
+                      </h3>
+                      <p className="text-xs text-slate-500">Modify administrative console gatekeeper credentials</p>
+                    </div>
+
+                    <form onSubmit={(e) => { e.preventDefault(); alert('Administrative credentials updated successfully!'); }} className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Administrative ID</label>
+                        <input
+                          type="text"
+                          disabled
+                          value="algoguidot@gmail.com"
+                          className="px-3.5 py-2 rounded-xl text-xs border border-slate-200 bg-slate-100/60 text-slate-500 cursor-not-allowed font-medium"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Current Password</label>
+                        <input
+                          type="password"
+                          placeholder="••••••••••••"
+                          className="px-3.5 py-2 rounded-xl text-xs border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-850 font-medium"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">New Password</label>
+                          <input
+                            type="password"
+                            placeholder="New password"
+                            className="px-3.5 py-2 rounded-xl text-xs border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-850 font-medium"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Confirm Password</label>
+                          <input
+                            type="password"
+                            placeholder="Confirm password"
+                            className="px-3.5 py-2 rounded-xl text-xs border border-slate-200 bg-white/65 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-850 font-medium"
+                          />
+                        </div>
+                      </div>
+                      <Button type="submit" variant="primary" className="mt-2 font-bold uppercase tracking-wider rounded-xl py-2 flex items-center justify-center h-10">
+                        Update Password
+                      </Button>
+                    </form>
+                  </Card>
+
+                  {/* Right Column: API Keys & General Config */}
+                  <Card variant="glass" className="lg:col-span-6 p-6 md:p-8 bg-white/45 border-white/60 shadow-sm flex flex-col gap-6">
+                    <div>
+                      <h3 className="font-display font-bold text-lg text-slate-800 flex items-center gap-2">
+                        <Settings className="h-5 w-5 text-indigo-600 animate-spin" style={{ animationDuration: '6s' }} />
+                        System Configurations
+                      </h3>
+                      <p className="text-xs text-slate-500">Configure global telemetry nodes and AI APIs</p>
+                    </div>
+
+                    <div className="flex flex-col gap-5 text-slate-800">
+                      {/* SMTP Node */}
+                      <div className="flex flex-col gap-2 p-4 rounded-2xl bg-white/60 border border-slate-200/40">
+                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">SMTP Email Dispatch Node</span>
+                        <div className="grid grid-cols-3 gap-2 mt-1">
+                          <div className="col-span-2">
+                            <input
+                              type="text"
+                              value="smtp.algoguido.com"
+                              disabled
+                              className="px-3 py-1.5 rounded-lg text-xs border border-slate-200 bg-slate-50 text-slate-500 w-full cursor-not-allowed font-medium"
+                            />
+                          </div>
+                          <div>
+                            <input
+                              type="text"
+                              value="Port 465"
+                              disabled
+                              className="px-3 py-1.5 rounded-lg text-xs border border-slate-200 bg-slate-50 text-slate-500 w-full text-center cursor-not-allowed font-medium"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* AI Model Config */}
+                      <div className="flex flex-col gap-2 p-4 rounded-2xl bg-white/60 border border-slate-200/40">
+                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Active AI Reasoning Agent</span>
+                        <select className="px-3 py-1.5 rounded-lg text-xs border border-slate-200 bg-white/70 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-medium text-slate-700">
+                          <option>Gemini 2.0 Flash (Recommended)</option>
+                          <option>Gemini 1.5 Pro</option>
+                          <option>GPT-4o Integration</option>
+                        </select>
+                      </div>
+
+                      {/* Razorpay Integration webhook */}
+                      <div className="flex flex-col gap-2 p-4 rounded-2xl bg-white/60 border border-slate-200/40">
+                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Razorpay Webhook Secret</span>
+                        <input
+                          type="password"
+                          value="whsec_123890123890123"
+                          disabled
+                          className="px-3 py-1.5 rounded-lg text-xs border border-slate-200 bg-slate-50 text-slate-500 w-full cursor-not-allowed font-mono font-bold"
+                        />
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+              </div>
+            ) : (
+              /* Default / Fallback */
+              <Card variant="glass" className="p-8 bg-white/40 border-white/60 min-h-[400px] flex flex-col items-center justify-center text-center">
+                <span className="p-4 rounded-2xl bg-slate-100 text-slate-500 border border-slate-200/60 mb-4 animate-float">
+                  <ShieldCheck className="h-8 w-8" />
+                </span>
+                <h3 className="font-display font-bold text-xl text-slate-800">Component Workspace</h3>
+                <p className="text-slate-500 text-sm max-w-sm mt-2">
+                  This console module is connected to telemetry nodes. Database operations for {navigationItems.find((item) => item.id === activeTab)?.name} are currently operational in the backend.
+                </p>
+              </Card>
+            )}
+          </motion.div>
+        </div>
+      </main>
+
+      {/* WhatsApp Send Dialog Modal */}
+      <AnimatePresence>
+        {isWaModalOpen && selectedLeadForWa && (
+          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[9999] flex items-center justify-center p-4 overflow-y-auto">
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white border border-slate-200/50 w-full max-w-lg rounded-3xl p-6 md:p-8 flex flex-col gap-6 shadow-2xl relative text-slate-800"
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setIsWaModalOpen(false)}
+                className="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all focus:outline-none"
+              >
+                <X className="h-5 w-5" />
+              </button>
+
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-bold text-emerald-600 uppercase tracking-widest flex items-center gap-1.5">
+                  💬 WhatsApp Conversion Node
+                </span>
+                <h3 className="font-display font-extrabold text-2xl text-slate-950 tracking-tight">
+                  Connect with {selectedLeadForWa.name}
+                </h3>
+                <p className="text-slate-500 text-xs font-medium">
+                  Choose a template or customize the text to send on WhatsApp to: <span className="font-bold text-slate-850">{selectedLeadForWa.phone}</span>
+                </p>
+              </div>
+
+              {/* Template Selectors */}
+              <div className="flex p-1 rounded-xl bg-slate-100 border border-slate-200/50 w-full">
+                <button
+                  type="button"
+                  onClick={() => setWaMsgType('conversion')}
+                  className={`flex-1 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all duration-300 ${waMsgType === 'conversion'
+                      ? 'bg-emerald-500 text-white shadow-sm'
+                      : 'text-slate-600 hover:text-slate-800'
+                    }`}
+                >
+                  🚀 Conversion Pitch
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setWaMsgType('payment')}
+                  className={`flex-1 py-2 rounded-lg text-xs font-bold uppercase tracking-wide transition-all duration-300 ${waMsgType === 'payment'
+                      ? 'bg-emerald-500 text-white shadow-sm'
+                      : 'text-slate-600 hover:text-slate-800'
+                    }`}
+                >
+                  💳 Invoice Payment Link
+                </button>
+              </div>
+
+              {/* Message Editor Box */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Customize Message</label>
+                <textarea
+                  rows={6}
+                  value={waCustomMessage}
+                  onChange={(e) => setWaCustomMessage(e.target.value)}
+                  className="px-3.5 py-2.5 rounded-xl text-xs border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none font-medium text-slate-700 leading-relaxed"
+                />
+              </div>
+
+              <div className="flex gap-4 mt-2">
+                <Button
+                  onClick={() => setIsWaModalOpen(false)}
+                  variant="outline"
+                  className="flex-1 rounded-xl py-2"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleSendWhatsApp}
+                  variant="primary"
+                  className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold uppercase tracking-wider rounded-xl py-2 flex items-center justify-center gap-1.5 border-none"
+                >
+                  Launch WhatsApp
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}

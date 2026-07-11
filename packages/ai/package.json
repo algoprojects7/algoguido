@@ -1,0 +1,21 @@
+{
+  "name": "@algoguido/ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI services for Lead Scoring, Chat Assistant, SEO, Resume Screening, Proposal Gen, OCR, and Recommendations",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "lint": "eslint .",
+    "clean": "rimraf dist .turbo"
+  },
+  "dependencies": {
+    "@algoguido/types": "workspace:*",
+    "@algoguido/config": "workspace:*",
+    "@google/genai": "^0.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}
