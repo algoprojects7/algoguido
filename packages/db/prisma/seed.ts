@@ -13,6 +13,11 @@ function hashPassword(password: string): string {
 async function main() {
   console.log('🌱 Seeding database...\n');
 
+  // Clean up existing leads and inquiries
+  console.log('🧹 Clearing previous leads data...');
+  await prisma.lead.deleteMany();
+  console.log('✅ Leads cleared.');
+
   // ── Admin Users ───────────────────────────────────────────────────────
   const superAdmin = await prisma.adminUser.upsert({
     where: { email: 'admin@algoguido.com' },
@@ -226,132 +231,7 @@ async function main() {
   console.log('✅ Settings created:', settings.length);
 
   // ── Demo Inquiries and Leads ──────────────────────────────────────────
-  console.log('\n🌱 Seeding leads and education inquiries...');
-  
-  const sysUser = await prisma.adminUser.findUnique({
-    where: { email: 'system@algoguido.com' }
-  });
-  const sysUserId = sysUser ? sysUser.id : superAdmin.id;
-
-  const demoLeads = [
-    // Development Leads
-    {
-      name: 'Dr. Ramesh Chawla',
-      email: 'ramesh.chawla@iitg.ac.in',
-      phone: '+91 94350 12345',
-      company: 'IIT Guwahati',
-      stage: 'NEW' as const,
-      source: 'WEBSITE_CONTACT',
-      score: 85,
-      value: 120000,
-      message: 'AI based research & collaboration on Natural Language Processing for regional languages. Looking for pilot phase implementation details.',
-    },
-    {
-      name: 'Suresh Naidu',
-      email: 'suresh@naidulogistics.com',
-      phone: '+91 98640 54321',
-      company: 'Naidu Logistics',
-      stage: 'CONTACTED' as const,
-      source: 'WEBSITE_CONTACT',
-      score: 75,
-      value: 250000,
-      message: 'Mobile App for fleet tracking, driver allocation, and logistics route optimization. Need offline sync capabilities.',
-    },
-    {
-      name: 'Meera Nair',
-      email: 'meera.nair@healthcareplus.org',
-      phone: '+91 70020 98765',
-      company: 'HealthCare Plus',
-      stage: 'QUALIFIED' as const,
-      source: 'WEBSITE_CONTACT',
-      score: 90,
-      value: 650000,
-      message: 'Database audit and migration to custom Hospital ERP database. Highly confidential patient record data mapping is required.',
-    },
-    {
-      name: 'Ananya Roy',
-      email: 'ananya.roy@retailflow.ai',
-      phone: '+91 88888 12345',
-      company: 'RetailFlow AI',
-      stage: 'PROPOSAL' as const,
-      source: 'WEBSITE_CONTACT',
-      score: 95,
-      value: 450000,
-      message: 'AI based recommendation system app for e-commerce store catalog. Seeking integration details with Shopify API.',
-    },
-    // Education Sector Leads
-    {
-      name: 'Amit Baruah',
-      email: 'amit.baruah.student@gmail.com',
-      phone: '+91 99540 67890',
-      company: 'Tezpur University',
-      stage: 'NEW' as const,
-      source: 'EDUCATION_PORTAL',
-      score: 70,
-      value: 15000,
-      message: 'Paid Internship - React & Next.js Full Stack Development. Student from Department of Computer Science, 6th Semester. Skills: HTML, CSS, Basic JS.',
-    },
-    {
-      name: 'Prof. Dipankar Das',
-      email: 'ddas@aec.ac.in',
-      phone: '+91 98765 00001',
-      company: 'Assam Engineering College',
-      stage: 'CONTACTED' as const,
-      source: 'EDUCATION_PORTAL',
-      score: 80,
-      value: 50000,
-      message: 'Workshop request on GenAI integration in engineering curriculum for AEC computing department faculties.',
-    },
-    {
-      name: 'Dr. Hemanga Kakati',
-      email: 'hkakati@cottonuniversity.ac.in',
-      phone: '+91 90850 55555',
-      company: 'Cotton University',
-      stage: 'QUALIFIED' as const,
-      source: 'EDUCATION_PORTAL',
-      score: 88,
-      value: 300000,
-      message: 'Academic Research Project - IoT-based smart agricultural sensor networks. Joint collaboration proposal for state grant.',
-    },
-    {
-      name: 'Dr. Nivedita Devi',
-      email: 'nivedita.devi@nits.ac.in',
-      phone: '+91 94351 99999',
-      company: 'NIT Silchar',
-      stage: 'NEW' as const,
-      source: 'EDUCATION_PORTAL',
-      score: 82,
-      value: 120000,
-      message: 'FDP proposal - Cloud Infrastructure, Docker & Kubernetes DevOps practices for computing faculties at NIT Silchar.',
-    },
-  ];
-
-  for (const leadData of demoLeads) {
-    const existing = await prisma.lead.findFirst({
-      where: { email: leadData.email, source: leadData.source }
-    });
-    if (!existing) {
-      await prisma.lead.create({
-        data: {
-          name: leadData.name,
-          email: leadData.email,
-          phone: leadData.phone,
-          company: leadData.company,
-          stage: leadData.stage,
-          source: leadData.source,
-          score: leadData.score,
-          value: leadData.value,
-          notes: {
-            create: {
-              content: `Initial message: "${leadData.message}"\n\nAI Lead Score: ${leadData.score}/100\nReasoning: Generated from seeded demo records.`,
-              authorId: sysUserId,
-            }
-          }
-        }
-      });
-    }
-  }
-  console.log('✅ Demo leads & education applications created:', demoLeads.length);
+  console.log('\n🌱 Skipping leads and education inquiries seeding.');
 
   // ── Seed Certificates ─────────────────────────────────────────────────
   console.log('\n🌱 Seeding certificates...');

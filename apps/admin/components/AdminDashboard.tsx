@@ -201,36 +201,6 @@ const initialMockProducts = [
   },
 ];
 
-const initialMockBilling = [
-  {
-    id: 'pay-1',
-    paymentId: 'pay_ABC123xyz',
-    email: 'ramesh.chawla@csir.res.in',
-    product: 'eduAI365 Suite',
-    amount: '₹49,999',
-    status: 'SUCCESS',
-    date: '2026-07-08T10:30:00.000Z',
-  },
-  {
-    id: 'pay-2',
-    paymentId: 'pay_XYZ987abc',
-    email: 'suresh.naidu@techindia.com',
-    product: 'LeadGrow CRM',
-    amount: '₹19,999',
-    status: 'SUCCESS',
-    date: '2026-07-09T14:45:00.000Z',
-  },
-  {
-    id: 'pay-3',
-    paymentId: 'pay_MNO456pqr',
-    email: 'ananya.roy@retailflow.in',
-    product: 'Apply4Jobs Cloud',
-    amount: '₹14,999',
-    status: 'PENDING',
-    date: '2026-07-10T09:15:00.000Z',
-  },
-];
-
 interface AdminDashboardProps {
   onLogout: () => void;
 }
@@ -468,9 +438,30 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
   const fetchBilling = async () => {
     setBillingLoading(true);
     try {
-      setBilling(initialMockBilling);
+      const token = sessionStorage.getItem('algoguido_admin_token');
+      const headers: any = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const res = await fetch(`${apiUrl}/payments`, { headers });
+      if (res.ok) {
+        const data = await res.json();
+        const formatted = data.map((pay: any) => ({
+          id: pay.id,
+          paymentId: pay.razorpayPaymentId || pay.razorpayOrderId || 'N/A',
+          email: pay.customerEmail,
+          product: pay.description || 'Payment Transaction',
+          amount: `₹${(pay.amount / 100).toLocaleString()}`,
+          status: pay.status === 'CAPTURED' ? 'SUCCESS' : pay.status === 'CREATED' ? 'PENDING' : 'FAILED',
+          date: pay.createdAt,
+        }));
+        setBilling(formatted);
+      } else {
+        setBilling([]);
+      }
     } catch (e) {
-      setBilling(initialMockBilling);
+      setBilling([]);
     } finally {
       setBillingLoading(false);
     }

@@ -1,12 +1,24 @@
-import { Controller, Post, Body, Req, Headers, HttpCode, HttpStatus } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Req, Headers, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import * as express from 'express';
 import { PaymentsService } from './payments.service';
+import { JwtAuthGuard } from '../../common/guards/auth.guard';
+import { RolesGuard } from '../../common/guards/roles.guard';
+import { RequirePermissions } from '../../common/decorators/permissions.decorator';
 
 @ApiTags('Payments')
 @Controller('payments')
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
+
+  @Get()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @RequirePermissions('payments:read')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get all payment transactions (Admin)' })
+  async findAll() {
+    return this.paymentsService.findAll();
+  }
 
   @Post('order')
   @ApiOperation({ summary: 'Create a new Razorpay order' })

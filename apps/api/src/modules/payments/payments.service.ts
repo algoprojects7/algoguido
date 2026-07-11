@@ -26,6 +26,15 @@ export class PaymentsService {
   }
 
   /**
+   * Retrieve all payment transactions (Admin)
+   */
+  async findAll() {
+    return this.prisma.payment.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  /**
    * Create Razorpay Order
    * @param amount Amount in Rupees (will be converted to paise internally)
    * @param customerInfo Name, email, phone details
