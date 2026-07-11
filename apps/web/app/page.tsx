@@ -1239,7 +1239,7 @@ export default function Home() {
               <div className="flex gap-4 mt-2">
                 <a
                   href="#contact"
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => handleNavClick('contact', 'Contact', e)}
                   className="flex-grow inline-flex items-center justify-center rounded-xl bg-gradient-brand text-white shadow-md font-bold text-xs tracking-wider uppercase h-11 px-6 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
                 >
                   Request Demo
