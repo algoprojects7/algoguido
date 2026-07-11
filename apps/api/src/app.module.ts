@@ -7,6 +7,7 @@ import { LeadsModule } from './modules/leads/leads.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { CertificatesModule } from './modules/certificates/certificates.module';
 import { UploadsModule } from './modules/uploads/uploads.module';
+import { SeedModule } from './modules/seed/seed.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { UploadsModule } from './modules/uploads/uploads.module';
     PaymentsModule,
     CertificatesModule,
     UploadsModule,
+    SeedModule,
   ],
   controllers: [],
   providers: [],

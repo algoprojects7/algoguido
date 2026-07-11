@@ -4,7 +4,8 @@
   "globalEnv": [
     "DATABASE_URL",
     "PRISMA_DATABASE_URL",
-    "POSTGRES_URL"
+    "POSTGRES_URL",
+    "SEED_SECRET"
   ],
   "tasks": {
     "build": {
