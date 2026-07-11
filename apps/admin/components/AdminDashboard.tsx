@@ -359,12 +359,14 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
       const res = await fetch(`${apiUrl}/certificates/${id}`, {
         method: 'DELETE',
       });
-      if (res.ok || true) {
+      if (res.ok) {
         setCerts((prev) => prev.filter((c) => c.id !== id));
+        alert('Certificate deleted successfully.');
+      } else {
+        alert(`Failed to delete certificate: ${res.status}`);
       }
-    } catch (e) {
-      console.error(e);
-      setCerts((prev) => prev.filter((c) => c.id !== id));
+    } catch (e: any) {
+      alert(`Network error: ${e.message}`);
     }
   };
 
@@ -531,11 +533,14 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
         method: 'DELETE',
         headers,
       });
-      if (res.ok || true) {
+      if (res.ok) {
         setProducts((prev) => prev.filter((p) => p.id !== id));
+        alert('Product deleted successfully.');
+      } else {
+        alert(`Failed to delete product: ${res.status}`);
       }
-    } catch (e) {
-      setProducts((prev) => prev.filter((p) => p.id !== id));
+    } catch (e: any) {
+      alert(`Network error: ${e.message}`);
     }
   };
 
@@ -590,11 +595,16 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
         method: 'DELETE',
         headers,
       });
-      if (res.ok || true) {
+      if (res.ok) {
         setLeads((prev) => prev.filter((l) => l.id !== id));
+        setApps((prev) => prev.filter((a) => a.id !== id));
+        alert(`${type === 'application' ? 'Application' : 'Lead'} deleted successfully.`);
+      } else {
+        const errText = await res.text();
+        alert(`Failed to delete: ${res.status} - ${errText || 'Unauthorized or forbidden.'}`);
       }
-    } catch (e) {
-      setLeads((prev) => prev.filter((l) => l.id !== id));
+    } catch (e: any) {
+      alert(`Network error: ${e.message}`);
     }
   };
 

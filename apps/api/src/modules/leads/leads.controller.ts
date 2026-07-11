@@ -79,7 +79,7 @@ export class LeadsController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @RequirePermissions('leads:write')
+  @RequirePermissions('leads:delete')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete a lead by ID (Admin)' })
   async remove(@Param('id') id: string) {

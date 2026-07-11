@@ -57,9 +57,9 @@ export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     'education:read', 'education:write', 'education:delete',
   ],
   ADMIN: [
-    'leads:read', 'leads:write',
-    'applications:read', 'applications:write',
-    'products:read', 'products:write',
+    'leads:read', 'leads:write', 'leads:delete',
+    'applications:read', 'applications:write', 'applications:delete',
+    'products:read', 'products:write', 'products:delete',
     'projects:read', 'projects:write',
     'services:read', 'services:write',
     'blog:read', 'blog:write',
