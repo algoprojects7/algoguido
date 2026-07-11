@@ -5,7 +5,7 @@
   "description": "Algoguido Technologies NestJS REST API",
   "main": "dist/main.js",
   "scripts": {
-    "build": "nest build",
+    "build": "node -e \"const url = process.env.DATABASE_URL || process.env.PRISMA_DATABASE_URL || process.env.POSTGRES_URL; if (url) process.env.DATABASE_URL = url; require('child_process').execSync('pnpm --filter @algoguido/db prisma:db:push', {stdio: 'inherit'})\" && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "dev": "ts-node --project tsconfig.json -r tsconfig-paths/register src/main.ts",
