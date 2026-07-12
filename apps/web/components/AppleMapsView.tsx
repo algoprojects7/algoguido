@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion as originalMotion, AnimatePresence } from 'framer-motion';
+const motion = originalMotion as any;
 import {
   Navigation,
-  Compass,
   ZoomIn,
   ZoomOut,
   Map as MapIcon,
@@ -12,13 +12,10 @@ import {
   Share2,
   Phone,
   Globe,
-  ChevronRight,
-  ChevronLeft,
   Volume2,
   VolumeX,
   Play,
   Square,
-  Clock,
   Compass as CompassIcon,
   Info,
   Route,

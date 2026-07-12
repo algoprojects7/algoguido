@@ -1410,7 +1410,7 @@ export default function Home() {
               >
                 <motion.a
                   href="/#services"
-                  onClick={(e) => handleNavClick('services', 'Solutions', e)}
+                  onClick={(e: any) => handleNavClick('services', 'Solutions', e)}
                   whileHover={{
                     scale: 1.04,
                     boxShadow: "0 10px 25px rgba(0, 82, 204, 0.25)"
@@ -1423,7 +1423,7 @@ export default function Home() {
                 </motion.a>
                 <motion.a
                   href="/#contact"
-                  onClick={(e) => handleNavClick('contact', 'Contact', e)}
+                  onClick={(e: any) => handleNavClick('contact', 'Contact', e)}
                   whileHover={{
                     scale: 1.04,
                     boxShadow: "0 10px 25px rgba(0, 82, 204, 0.08)"
@@ -1583,6 +1583,8 @@ export default function Home() {
                       style={{
                         x: heroMouse.x * (idx % 2 === 0 ? 8 : -8),
                         y: heroMouse.y * (idx % 2 === 0 ? 8 : -8),
+                        left: `${x}px`,
+                        top: `${y}px`
                       }}
                       animate={{
                         y: [y, y - 6, y],
@@ -1594,7 +1596,6 @@ export default function Home() {
                         delay: idx * 0.2
                       }}
                       className="absolute w-10 h-10 rounded-xl bg-white/60 dark:bg-navy-900/60 border border-slate-200/40 dark:border-white/10 shadow-lg backdrop-blur-md flex items-center justify-center p-2 z-10 hover:scale-115 transition-all duration-300 group"
-                      style={{ left: `${x}px`, top: `${y}px` }}
                     >
                       <node.icon className={`h-5 w-5 ${node.color}`} />
                       <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[7px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 dark:bg-navy-950/90 border border-slate-200 dark:border-white/10 px-1.5 py-0.5 rounded shadow-sm">
