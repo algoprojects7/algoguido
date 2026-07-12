@@ -3095,7 +3095,53 @@ export default function Home() {
                 <span className="text-[10px] font-bold text-[#0052cc] dark:text-blue-400 mt-auto flex items-center gap-1">Explore Programs &rarr;</span>
               </Card>
 
-              {/* Track 2: Research Collaboration */}
+              {/* Track 2: Professional & Industry Training */}
+              <Card
+                variant="interactive"
+                onClick={() => {
+                  setEduFormData((prev) => ({
+                    ...prev,
+                    program: 'Industry Training',
+                  }));
+                  setStatus('idle');
+                  setIsEduModalOpen(true);
+                }}
+                className="flex flex-col gap-4 p-6 bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 transition-all duration-300 text-slate-800 dark:text-slate-200"
+              >
+                <div className="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                  <Monitor className="h-5 w-5" />
+                </div>
+                <h3 className="font-bold text-slate-900 dark:text-white text-lg">Professional & Industry Training</h3>
+                <p className="text-slate-655 dark:text-slate-400 text-xs leading-relaxed">
+                  Industry-focused certification programs in Artificial Intelligence, Data Analytics, Data Science, Cloud Computing, Enterprise Software, and emerging technologies designed for students and working professionals.
+                </p>
+                <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 mt-auto flex items-center gap-1">View Courses &rarr;</span>
+              </Card>
+
+              {/* Track 3: Data Science & Analytics */}
+              <Card
+                variant="interactive"
+                onClick={() => {
+                  setEduFormData((prev) => ({
+                    ...prev,
+                    program: 'Data Science',
+                  }));
+                  setStatus('idle');
+                  setIsEduModalOpen(true);
+                }}
+                className="flex flex-col gap-4 p-6 bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 transition-all duration-300 text-slate-800 dark:text-slate-200"
+              >
+                <div className="h-10 w-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center">
+                  <Database className="h-5 w-5" />
+                </div>
+                <h3 className="font-bold text-slate-900 dark:text-white text-lg">Data Science & Analytics</h3>
+                <p className="text-slate-655 dark:text-slate-400 text-xs leading-relaxed">
+                  Develop expertise in data engineering, business intelligence, predictive analytics, visualization, and AI-powered decision-making to transform data into actionable business insights.
+                </p>
+                <span className="text-[10px] font-bold text-teal-600 dark:text-teal-400 mt-auto flex items-center gap-1">Explore Data Science &rarr;</span>
+              </Card>
+
+              {/* Track 4: Research Collaboration */}
               <Card
                 variant="interactive"
                 onClick={() => {
@@ -3120,7 +3166,7 @@ export default function Home() {
                 <span className="text-[10px] font-bold text-purple-600 dark:text-purple-400 mt-auto flex items-center gap-1">Collaborate With Us &rarr;</span>
               </Card>
 
-              {/* Track 3: Faculty Development Programs */}
+              {/* Track 5: Faculty Development Programs */}
               <Card
                 variant="interactive"
                 onClick={() => {
@@ -3145,30 +3191,7 @@ export default function Home() {
                 <span className="text-[10px] font-bold text-orange-600 dark:text-orange-400 mt-auto flex items-center gap-1">Learn More &rarr;</span>
               </Card>
 
-              {/* Track 4: Professional & Industry Training */}
-              <Card
-                variant="interactive"
-                onClick={() => {
-                  setEduFormData((prev) => ({
-                    ...prev,
-                    program: 'Industry Training',
-                  }));
-                  setStatus('idle');
-                  setIsEduModalOpen(true);
-                }}
-                className="flex flex-col gap-4 p-6 bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 transition-all duration-300 text-slate-800 dark:text-slate-200"
-              >
-                <div className="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                  <Monitor className="h-5 w-5" />
-                </div>
-                <h3 className="font-bold text-slate-900 dark:text-white text-lg">Professional & Industry Training</h3>
-                <p className="text-slate-655 dark:text-slate-400 text-xs leading-relaxed">
-                  Industry-focused certification programs in Artificial Intelligence, Data Analytics, Data Science, Cloud Computing, Enterprise Software, and emerging technologies designed for students and working professionals.
-                </p>
-                <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 mt-auto flex items-center gap-1">View Courses &rarr;</span>
-              </Card>
-
-              {/* Track 5: AI Research & Innovation */}
+              {/* Track 6: AI Research & Innovation */}
               <Card
                 variant="interactive"
                 onClick={() => {
@@ -3191,29 +3214,6 @@ export default function Home() {
                   Advance the future of intelligent technologies through research in Machine Learning, Large Language Models (LLMs), Natural Language Processing, Computer Vision, Predictive Analytics, and Intelligent Automation.
                 </p>
                 <span className="text-[10px] font-bold text-pink-600 dark:text-pink-400 mt-auto flex items-center gap-1">Discover Research &rarr;</span>
-              </Card>
-
-              {/* Track 6: Data Science & Analytics */}
-              <Card
-                variant="interactive"
-                onClick={() => {
-                  setEduFormData((prev) => ({
-                    ...prev,
-                    program: 'Data Science',
-                  }));
-                  setStatus('idle');
-                  setIsEduModalOpen(true);
-                }}
-                className="flex flex-col gap-4 p-6 bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 transition-all duration-300 text-slate-800 dark:text-slate-200"
-              >
-                <div className="h-10 w-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center">
-                  <Database className="h-5 w-5" />
-                </div>
-                <h3 className="font-bold text-slate-900 dark:text-white text-lg">Data Science & Analytics</h3>
-                <p className="text-slate-655 dark:text-slate-400 text-xs leading-relaxed">
-                  Develop expertise in data engineering, business intelligence, predictive analytics, visualization, and AI-powered decision-making to transform data into actionable business insights.
-                </p>
-                <span className="text-[10px] font-bold text-teal-600 dark:text-teal-400 mt-auto flex items-center gap-1">Explore Data Science &rarr;</span>
               </Card>
             </div>
           </div>
