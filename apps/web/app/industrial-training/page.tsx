@@ -196,7 +196,7 @@ Details/Notes: ${formData.message || 'None'}
     },
     {
       q: "Are the internships remote or in-office?",
-      a: "We offer hybrid and remote-first internship options. High-performing interns may be invited for in-office collaborations at our headquarters in Guwahati."
+      a: "All our programs are conducted 100% online in remote mode, featuring daily virtual syncs, online code reviews, and remote pair programming sessions."
     },
     {
       q: "Is there a selection process for the Paid Internship?",
@@ -252,7 +252,7 @@ Details/Notes: ${formData.message || 'None'}
           transition={{ duration: 0.5 }}
           className="flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-extrabold text-blue-400 uppercase tracking-widest"
         >
-          <Sparkles className="h-3 w-3 animate-pulse" /> Summer & Monsoon 2026 Intake Open
+          <Sparkles className="h-3 w-3 animate-pulse" /> 100% Online / Remote · Summer & Monsoon 2026 Intake Open
         </motion.div>
 
         {/* Cinematic Headline */}
@@ -275,7 +275,7 @@ Details/Notes: ${formData.message || 'None'}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-slate-400 text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed mt-2"
         >
-          Skip the standard tutorials. Step into a production monorepo deploying live software. Get paid stipends, professional certificates, and daily code reviews under senior engineering mentors.
+          Skip the standard tutorials. Step into a production monorepo deploying live software in a 100% remote online model. Get paid stipends, professional certificates, and daily virtual code reviews under senior engineering mentors.
         </motion.p>
 
         {/* Dual Actions CTA */}

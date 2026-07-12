@@ -18,7 +18,8 @@ import {
   Shield,
   FileText,
   HelpCircle,
-  Hash
+  Hash,
+  Coins
 } from 'lucide-react';
 
 const motion = originalMotion as any;
@@ -95,7 +96,8 @@ export default function SitemapPage() {
       color: 'from-slate-600 to-slate-800',
       items: [
         { name: 'Privacy Policy', href: '/privacy-policy', description: 'Rules governing your personal data, safety, and options.', icon: Shield },
-        { name: 'Terms of Service', href: '/terms-of-service', description: 'Guwahati court jurisdiction, usage terms, and billing rules.', icon: FileText }
+        { name: 'Terms of Service', href: '/terms-of-service', description: 'Guwahati court jurisdiction, usage terms, and billing rules.', icon: FileText },
+        { name: 'Payment Portal', href: 'https://razorpay.me/@algoguidotechnologiesprivatel', description: 'Make secure online payments directly via our verified Razorpay gateway.', icon: Coins }
       ]
     }
   ];
@@ -248,6 +250,8 @@ export default function SitemapPage() {
             <Link href="/privacy-policy" className="text-[11px] text-slate-400 hover:text-white transition-colors">Privacy Policy</Link>
             <span className="text-slate-600 text-[10px]">·</span>
             <Link href="/terms-of-service" className="text-[11px] text-slate-400 hover:text-white transition-colors">Terms of Service</Link>
+            <span className="text-slate-600 text-[10px]">·</span>
+            <a href="https://razorpay.me/@algoguidotechnologiesprivatel" target="_blank" rel="noopener noreferrer" className="text-[11px] text-slate-400 hover:text-white transition-colors">Pay Online</a>
           </div>
         </div>
       </footer>

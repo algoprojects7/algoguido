@@ -340,6 +340,8 @@ export default function TermsOfServicePage() {
             <span className="text-slate-600 text-[10px]">·</span>
             <Link href="/sitemap" className="text-[11px] text-slate-400 hover:text-white transition-colors">Sitemap</Link>
             <span className="text-slate-600 text-[10px]">·</span>
+            <a href="https://razorpay.me/@algoguidotechnologiesprivatel" target="_blank" rel="noopener noreferrer" className="text-[11px] text-slate-400 hover:text-white transition-colors">Pay Online</a>
+            <span className="text-slate-600 text-[10px]">·</span>
             <a href="mailto:info@algoguido.com" className="text-[11px] text-slate-400 hover:text-white transition-colors">Contact</a>
           </div>
         </div>

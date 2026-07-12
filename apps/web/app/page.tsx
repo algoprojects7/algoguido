@@ -4300,6 +4300,8 @@ export default function Home() {
               <a href="/terms-of-service" className="text-[11px] text-slate-400 hover:text-white transition-colors">Terms of Service</a>
               <span className="text-slate-600 text-[10px]">·</span>
               <a href="/sitemap" className="text-[11px] text-slate-400 hover:text-white transition-colors">Sitemap</a>
+              <span className="text-slate-600 text-[10px]">·</span>
+              <a href="https://razorpay.me/@algoguidotechnologiesprivatel" target="_blank" rel="noopener noreferrer" className="text-[11px] text-slate-400 hover:text-white transition-colors">Pay Online</a>
             </div>
           </div>
         </div>
