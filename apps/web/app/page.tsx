@@ -3099,12 +3099,14 @@ export default function Home() {
               <Card
                 variant="interactive"
                 onClick={() => {
-                  setEduFormData((prev) => ({
+                  setActiveFormTab('research_fdp');
+                  setResearchFormData((prev) => ({
                     ...prev,
-                    program: 'Research Collaboration',
+                    area: 'Research Collaboration',
                   }));
                   setStatus('idle');
-                  setIsEduModalOpen(true);
+                  const el = document.getElementById('contact');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
                 className="flex flex-col gap-4 p-6 bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 transition-all duration-300 text-slate-800 dark:text-slate-200"
               >
@@ -3122,12 +3124,14 @@ export default function Home() {
               <Card
                 variant="interactive"
                 onClick={() => {
-                  setEduFormData((prev) => ({
+                  setActiveFormTab('research_fdp');
+                  setResearchFormData((prev) => ({
                     ...prev,
-                    program: 'Faculty Development',
+                    area: 'Faculty Development Program (FDP)',
                   }));
                   setStatus('idle');
-                  setIsEduModalOpen(true);
+                  const el = document.getElementById('contact');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
                 className="flex flex-col gap-4 p-6 bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 transition-all duration-300 text-slate-800 dark:text-slate-200"
               >
@@ -3168,12 +3172,14 @@ export default function Home() {
               <Card
                 variant="interactive"
                 onClick={() => {
-                  setEduFormData((prev) => ({
+                  setActiveFormTab('research_fdp');
+                  setResearchFormData((prev) => ({
                     ...prev,
-                    program: 'AI Research',
+                    area: 'AI Research & Innovation',
                   }));
                   setStatus('idle');
-                  setIsEduModalOpen(true);
+                  const el = document.getElementById('contact');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
                 className="flex flex-col gap-4 p-6 bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 transition-all duration-300 text-slate-800 dark:text-slate-200"
               >
