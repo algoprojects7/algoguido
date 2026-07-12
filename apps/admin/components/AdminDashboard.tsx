@@ -1399,7 +1399,7 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
 
                 {/* Lead Detail Panel */}
                 {selectedLeadDetail && (
-                  <div className="fixed inset-0 z-50 flex items-start justify-center pt-6 px-4 pb-4 overflow-y-auto" style={{background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(4px)'}} onClick={() => setSelectedLeadDetail(null)}>
+                  <div className="fixed inset-0 top-20 z-50 flex items-start justify-center pt-6 px-4 pb-4 overflow-y-auto" style={{background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(4px)'}} onClick={() => setSelectedLeadDetail(null)}>
                     <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl p-0" onClick={e => e.stopPropagation()}>
                       {/* Header */}
                       <div className="flex items-center justify-between px-7 py-5 border-b border-slate-100">
@@ -1622,7 +1622,7 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
 
                 {/* Application Detail Panel */}
                 {selectedAppDetail && (
-                  <div className="fixed inset-0 z-50 flex items-start justify-center pt-6 px-4 pb-4 overflow-y-auto" style={{background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(4px)'}} onClick={() => setSelectedAppDetail(null)}>
+                  <div className="fixed inset-0 top-20 z-50 flex items-start justify-center pt-6 px-4 pb-4 overflow-y-auto" style={{background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(4px)'}} onClick={() => setSelectedAppDetail(null)}>
                     <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl p-0" onClick={e => e.stopPropagation()}>
                       {/* Header */}
                       <div className="flex items-center justify-between px-7 py-5 border-b border-slate-100">
