@@ -19,6 +19,7 @@ import {
   Database,
   Cpu,
   MapPin,
+  Cloud,
   Globe,
   Building2,
   Code,
@@ -47,7 +48,10 @@ import {
 } from 'lucide-react';
 import { Button, Card, Badge, Input, Select, Textarea } from '@algoguido/ui';
 import { motion as originalMotion, AnimatePresence } from 'framer-motion';
+import dynamic from 'next/dynamic';
+
 const motion = originalMotion as any;
+const AppleMapsView = dynamic(() => import('@/components/AppleMapsView'), { ssr: false });
 
 function DynamicBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -488,6 +492,17 @@ export default function Home() {
     }
   }, []);
 
+  const [heroMouse, setHeroMouse] = useState({ x: 0, y: 0 });
+  const [activeWordIdx, setActiveWordIdx] = useState(0);
+  const rotatingWords = ['Education', 'Healthcare', 'Enterprise', 'Finance', 'Manufacturing', 'Research', 'Government'];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveWordIdx((prev) => (prev + 1) % rotatingWords.length);
+    }, 2500);
+    return () => clearInterval(timer);
+  }, []);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -562,11 +577,15 @@ export default function Home() {
     setIsNavigating(true);
     setLoadingProgress(15);
 
-    const targetElement = document.getElementById(sectionId);
-    if (targetElement) {
-      targetElement.scrollIntoView({ behavior: 'smooth' });
-    } else if (sectionId === 'home') {
+    if (sectionId === 'home') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.history.pushState(null, '', '/');
+    } else {
+      const targetElement = document.getElementById(sectionId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+        window.history.pushState(null, '', `/#${sectionId}`);
+      }
     }
 
     let currentProgress = 15;
@@ -1051,7 +1070,16 @@ export default function Home() {
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${isScrolled ? 'h-16 bg-white/75 dark:bg-navy-950/75 backdrop-blur-xl border-b border-slate-200/50 dark:border-white/5 shadow-sm' : 'h-20 bg-transparent border-b border-transparent'}`}>
         <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between relative">
           {/* Logo Brand */}
-          <div className="flex items-center gap-3 cursor-pointer group">
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              window.history.pushState(null, '', '/');
+              setActiveSection('home');
+            }}
+            className="flex items-center gap-3 group"
+          >
             <div className="relative">
               <img src="/logo.png" alt="Algoguido Logo" className="h-10 w-10 object-contain transition-transform duration-500 group-hover:rotate-[360deg]" />
               <div className="absolute inset-0 bg-brand-500/10 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -1064,7 +1092,7 @@ export default function Home() {
                 Technologies Pvt. Ltd.
               </span>
             </div>
-          </div>
+          </a>
 
           {/* Navigation Links */}
           <nav className="hidden xl:flex items-center gap-1.5 relative">
@@ -1077,7 +1105,7 @@ export default function Home() {
             </a>
 
             <a
-              href="#about"
+              href="/#about"
               onClick={(e) => handleNavClick('about', 'About', e)}
               className={`px-3.5 py-2 text-xs font-bold tracking-wide uppercase transition-all duration-200 rounded-full ${activeSection === 'about' ? 'text-[#0052cc] bg-[#0052cc]/5' : 'text-slate-700 dark:text-slate-200 hover:text-[#0052cc] hover:bg-slate-100/50 dark:hover:bg-white/5'}`}
             >
@@ -1085,7 +1113,7 @@ export default function Home() {
             </a>
 
             <a
-              href="#why"
+              href="/#why"
               onClick={(e) => handleNavClick('why', 'Why Algogudo', e)}
               className={`px-3.5 py-2 text-xs font-bold tracking-wide uppercase transition-all duration-200 rounded-full ${activeSection === 'why' ? 'text-[#0052cc] bg-[#0052cc]/5' : 'text-slate-700 dark:text-slate-200 hover:text-[#0052cc] hover:bg-slate-100/50 dark:hover:bg-white/5'}`}
             >
@@ -1093,14 +1121,14 @@ export default function Home() {
             </a>
 
             <a
-              href="#products"
+              href="/#products"
               onClick={(e) => handleNavClick('products', 'Products', e)}
               className={`px-3.5 py-2 text-xs font-bold tracking-wide uppercase transition-all duration-200 rounded-full ${activeSection === 'products' ? 'text-[#0052cc] bg-[#0052cc]/5' : 'text-slate-700 dark:text-slate-200 hover:text-[#0052cc] hover:bg-slate-100/50 dark:hover:bg-white/5'}`}
             >
               Products
             </a>
             <a
-              href="#services"
+              href="/#services"
               onClick={(e) => handleNavClick('services', 'Solutions', e)}
               className={`px-3.5 py-2 text-xs font-bold tracking-wide uppercase transition-all duration-200 rounded-full ${activeSection === 'services' || activeSection === 'tech' ? 'text-[#0052cc] bg-[#0052cc]/5' : 'text-slate-700 dark:text-slate-200 hover:text-[#0052cc] hover:bg-slate-100/50 dark:hover:bg-white/5'}`}
             >
@@ -1108,28 +1136,28 @@ export default function Home() {
             </a>
 
             <a
-              href="#projects"
+              href="/#projects"
               onClick={(e) => handleNavClick('projects', 'Projects', e)}
               className={`px-3.5 py-2 text-xs font-bold tracking-wide uppercase transition-all duration-200 rounded-full ${activeSection === 'projects' ? 'text-[#0052cc] bg-[#0052cc]/5' : 'text-slate-700 dark:text-slate-200 hover:text-[#0052cc] hover:bg-slate-100/50 dark:hover:bg-white/5'}`}
             >
               Projects
             </a>
             <a
-              href="#research"
+              href="/#research"
               onClick={(e) => handleNavClick('research', 'Research', e)}
               className={`px-3.5 py-2 text-xs font-bold tracking-wide uppercase transition-all duration-200 rounded-full ${activeSection === 'research' ? 'text-[#0052cc] bg-[#0052cc]/5' : 'text-slate-700 dark:text-slate-200 hover:text-[#0052cc] hover:bg-slate-100/50 dark:hover:bg-white/5'}`}
             >
               Research
             </a>
             <a
-              href="#insights"
+              href="/#insights"
               onClick={(e) => handleNavClick('insights', 'Blog', e)}
               className={`px-3.5 py-2 text-xs font-bold tracking-wide uppercase transition-all duration-200 rounded-full ${activeSection === 'insights' ? 'text-[#0052cc] bg-[#0052cc]/5' : 'text-slate-700 dark:text-slate-200 hover:text-[#0052cc] hover:bg-slate-100/50 dark:hover:bg-white/5'}`}
             >
               Blog
             </a>
             <a
-              href="#contact"
+              href="/#contact"
               onClick={(e) => handleNavClick('contact', 'Contact', e)}
               className={`px-3.5 py-2 text-xs font-bold tracking-wide uppercase transition-all duration-200 rounded-full ${activeSection === 'contact' ? 'text-[#0052cc] bg-[#0052cc]/5' : 'text-slate-700 dark:text-slate-200 hover:text-[#0052cc] hover:bg-slate-100/50 dark:hover:bg-white/5'}`}
             >
@@ -1172,7 +1200,7 @@ export default function Home() {
               </a>
 
               <a
-                href="#about"
+                href="/#about"
                 onClick={(e) => handleNavClick('about', 'About', e)}
                 className={`text-sm font-bold py-2 border-b border-slate-100 dark:border-white/5 ${activeSection === 'about' ? 'text-[#0052cc]' : 'text-slate-700 dark:text-slate-200'}`}
               >
@@ -1180,7 +1208,7 @@ export default function Home() {
               </a>
 
               <a
-                href="#why"
+                href="/#why"
                 onClick={(e) => handleNavClick('why', 'Why Algoguido', e)}
                 className={`text-sm font-bold py-2 border-b border-slate-100 dark:border-white/5 ${activeSection === 'why' ? 'text-[#0052cc]' : 'text-slate-700 dark:text-slate-200'}`}
               >
@@ -1190,46 +1218,46 @@ export default function Home() {
               <div className="flex flex-col gap-2 py-2 border-b border-slate-100 dark:border-white/5">
                 <span className={`text-[10px] font-bold uppercase tracking-widest ${activeSection === 'products' ? 'text-[#0052cc]' : 'text-slate-400'}`}>Products</span>
                 <div className="grid grid-cols-2 gap-2 pl-2">
-                  <a href="#products" onClick={(e) => handleNavClick('products', 'Products', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">eduAI365</a>
-                  <a href="#products" onClick={(e) => handleNavClick('products', 'Products', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">Apply4Jobs</a>
-                  <a href="#products" onClick={(e) => handleNavClick('products', 'Products', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">LeadGrowAI</a>
-                  <a href="#products" onClick={(e) => handleNavClick('products', 'Products', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">TheHirings</a>
+                  <a href="/#products" onClick={(e) => handleNavClick('products', 'Products', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">eduAI365</a>
+                  <a href="/#products" onClick={(e) => handleNavClick('products', 'Products', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">Apply4Jobs</a>
+                  <a href="/#products" onClick={(e) => handleNavClick('products', 'Products', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">LeadGrowAI</a>
+                  <a href="/#products" onClick={(e) => handleNavClick('products', 'Products', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">TheHirings</a>
                 </div>
               </div>
 
               <div className="flex flex-col gap-2 py-2 border-b border-slate-100 dark:border-white/5">
                 <span className={`text-[10px] font-bold uppercase tracking-widest ${activeSection === 'services' || activeSection === 'tech' ? 'text-[#0052cc]' : 'text-slate-400'}`}>Solutions</span>
                 <div className="grid grid-cols-2 gap-2 pl-2">
-                  <a href="#services" onClick={(e) => handleNavClick('services', 'Solutions', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">ERP Platforms</a>
-                  <a href="#services" onClick={(e) => handleNavClick('services', 'Solutions', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">CRM & Growth</a>
-                  <a href="#services" onClick={(e) => handleNavClick('services', 'Solutions', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">AI Automation</a>
-                  <a href="#tech" onClick={(e) => handleNavClick('services', 'Solutions', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">Cloud & Infra</a>
+                  <a href="/#services" onClick={(e) => handleNavClick('services', 'Solutions', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">ERP Platforms</a>
+                  <a href="/#services" onClick={(e) => handleNavClick('services', 'Solutions', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">CRM & Growth</a>
+                  <a href="/#services" onClick={(e) => handleNavClick('services', 'Solutions', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">AI Automation</a>
+                  <a href="/#tech" onClick={(e) => handleNavClick('services', 'Solutions', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">Cloud & Infra</a>
                 </div>
               </div>
 
               <a
-                href="#projects"
+                href="/#projects"
                 onClick={(e) => handleNavClick('projects', 'Projects', e)}
                 className={`text-sm font-bold py-2 border-b border-slate-100 dark:border-white/5 ${activeSection === 'projects' ? 'text-[#0052cc]' : 'text-slate-700 dark:text-slate-200'}`}
               >
                 Projects
               </a>
               <a
-                href="#research"
+                href="/#research"
                 onClick={(e) => handleNavClick('research', 'Research', e)}
                 className={`text-sm font-bold py-2 border-b border-slate-100 dark:border-white/5 ${activeSection === 'research' ? 'text-[#0052cc]' : 'text-slate-700 dark:text-slate-200'}`}
               >
                 Research & Education
               </a>
               <a
-                href="#insights"
+                href="/#insights"
                 onClick={(e) => handleNavClick('insights', 'Blog', e)}
                 className={`text-sm font-bold py-2 border-b border-slate-100 dark:border-white/5 ${activeSection === 'insights' ? 'text-[#0052cc]' : 'text-slate-700 dark:text-slate-200'}`}
               >
                 Blog
               </a>
               <a
-                href="#contact"
+                href="/#contact"
                 onClick={(e) => handleNavClick('contact', 'Contact', e)}
                 className={`text-sm font-bold py-2 border-b border-slate-100 dark:border-white/5 ${activeSection === 'contact' ? 'text-[#0052cc]' : 'text-slate-700 dark:text-slate-200'}`}
               >
@@ -1252,35 +1280,52 @@ export default function Home() {
 
       {/* Hero Section */}
       <main className="flex-grow pt-16">
-        <section id="home" className="relative min-h-[70vh] flex flex-col items-center justify-center overflow-hidden px-4 sm:px-6 py-10 lg:py-8 bg-mesh">
-          {/* Animated Background Glow Blobs */}
+        <section
+          id="home"
+          onMouseMove={(e) => {
+            const { clientX, clientY, currentTarget } = e;
+            const { left, top, width, height } = currentTarget.getBoundingClientRect();
+            const x = (clientX - left - width / 2) / (width / 2);
+            const y = (clientY - top - height / 2) / (height / 2);
+            setHeroMouse({ x, y });
+          }}
+          onMouseLeave={() => setHeroMouse({ x: 0, y: 0 })}
+          className="relative min-h-[85vh] flex flex-col items-center justify-center overflow-hidden px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 py-12 lg:py-16 bg-white dark:bg-navy-950"
+        >
+          {/* Animated Background Glow Blobs / Apple Vision Pro-style Aurora */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
+            {/* Blue Aurora */}
             <motion.div
               animate={{
-                x: [0, 30, -20, 0],
-                y: [0, -40, 30, 0],
-                scale: [1, 1.1, 0.95, 1]
+                x: [0, 40, -30, 0],
+                y: [0, -60, 40, 0],
+                scale: [1, 1.15, 0.9, 1],
+                opacity: [0.25, 0.35, 0.25]
               }}
               transition={{
-                duration: 18,
+                duration: 20,
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
-              className="absolute top-[-10%] left-[-5%] w-[45%] h-[45%] rounded-full bg-brand-200/30 blur-[100px] dark:bg-brand-500/10"
+              className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-gradient-to-br from-blue-400 to-cyan-300 blur-[130px] opacity-25 dark:from-blue-600/20 dark:to-cyan-500/20"
             />
+            {/* Purple Glow */}
             <motion.div
               animate={{
-                x: [0, -40, 20, 0],
-                y: [0, 30, -40, 0],
-                scale: [1, 0.95, 1.1, 1]
+                x: [0, -50, 30, 0],
+                y: [0, 50, -60, 0],
+                scale: [1, 0.9, 1.2, 1],
+                opacity: [0.2, 0.3, 0.2]
               }}
               transition={{
-                duration: 22,
+                duration: 25,
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
-              className="absolute bottom-[-5%] right-[-5%] w-[50%] h-[50%] rounded-full bg-purple-200/30 blur-[120px] dark:bg-purple-500/10"
+              className="absolute bottom-[-15%] right-[-10%] w-[65%] h-[65%] rounded-full bg-gradient-to-tr from-purple-400 to-pink-300 blur-[150px] opacity-20 dark:from-purple-600/20 dark:to-pink-500/20"
             />
+            {/* Moving light ray */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.15),transparent_70%)] pointer-events-none" />
           </div>
 
           {/* Apple Premium Badge at the very top of the Hero content */}
@@ -1288,7 +1333,7 @@ export default function Home() {
             initial={{ opacity: 0, y: -15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="w-full flex justify-center px-4 mb-2 lg:mb-3 relative z-10"
+            className="w-full flex justify-center px-4 mb-4 relative z-10"
           >
             <div className="inline-flex flex-wrap md:flex-nowrap items-center justify-center gap-y-2.5 gap-x-5 px-6 py-2.5 rounded-full bg-white/40 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-md shadow-sm text-[10px] sm:text-xs font-semibold text-slate-700 dark:text-slate-300 tracking-wide">
               <span className="flex items-center gap-1.5 whitespace-nowrap">
@@ -1318,7 +1363,7 @@ export default function Home() {
             </div>
           </motion.div>
 
-          <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
+          <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-12 gap-10 lg:gap-16 items-center relative z-10">
             {/* Hero Left Content */}
             <motion.div
               variants={containerVariants}
@@ -1326,19 +1371,37 @@ export default function Home() {
               animate="visible"
               className="lg:col-span-6 flex flex-col items-center lg:items-start gap-5 lg:gap-6 text-center lg:text-left"
             >
-
               <motion.h1
                 variants={itemVariants}
-                className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight text-slate-900 dark:text-white tracking-tight"
+                className="font-display font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.08] text-slate-900 dark:text-white tracking-[-0.02em]"
               >
-                AI-Powered Enterprise Application Built for <span className="bg-gradient-to-r from-brand-600 via-[#0052cc] to-purple-600 bg-clip-text text-transparent dark:from-brand-400 dark:to-purple-400">Education, Healthcare, Government & Business</span>
+                Engineering the Future with <span className="bg-gradient-to-r from-[#0052cc] via-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-purple-400">Artificial Intelligence</span>
               </motion.h1>
+
+              {/* OpenAI-style rotating word subtitle */}
+              <motion.div
+                variants={itemVariants}
+                className="flex items-center justify-center lg:justify-start gap-2 text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400"
+              >
+                <span>AI-driven platforms built for</span>
+                <span className="relative inline-flex px-3 py-1 rounded-lg bg-[#0052cc]/5 dark:bg-blue-500/10 text-[#0052cc] dark:text-blue-400 border border-[#0052cc]/10 dark:border-blue-500/20 overflow-hidden min-w-[110px] justify-center transition-all duration-300">
+                  <motion.span
+                    key={activeWordIdx}
+                    initial={{ y: 15, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -15, opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                  >
+                    {rotatingWords[activeWordIdx]}
+                  </motion.span>
+                </span>
+              </motion.div>
 
               <motion.p
                 variants={itemVariants}
-                className="text-base md:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-xl"
+                className="text-sm sm:text-base text-slate-650 dark:text-slate-300 leading-relaxed max-w-xl"
               >
-                Transforming organizations through Artificial Intelligence, Enterprise Applications, Cloud Infrastructure, and Digital Innovation.
+                We build intelligent enterprise software, AI-powered products, cloud-native platforms, and digital ecosystems that enable organizations to innovate faster, automate smarter, and grow with confidence.
               </motion.p>
 
               <motion.div
@@ -1346,44 +1409,63 @@ export default function Home() {
                 className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mt-2 items-stretch sm:items-center w-full"
               >
                 <motion.a
-                  href="#services"
+                  href="/#services"
+                  onClick={(e) => handleNavClick('services', 'Solutions', e)}
                   whileHover={{
                     scale: 1.04,
                     boxShadow: "0 10px 25px rgba(0, 82, 204, 0.25)"
                   }}
                   whileTap={{ scale: 0.96 }}
-                  className="relative inline-flex items-center justify-center rounded-xl font-bold uppercase tracking-wider text-xs h-13 px-8 bg-gradient-brand text-white overflow-hidden gap-2 transition-all duration-300 w-full sm:w-auto group/cta shadow-md"
+                  className="relative inline-flex items-center justify-center rounded-xl font-bold uppercase tracking-wider text-xs h-13 px-8 bg-gradient-brand text-white overflow-hidden gap-2 transition-all duration-300 w-full sm:w-auto group/cta shadow-md z-10"
                 >
                   <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/cta:translate-x-full transition-transform duration-1000 ease-out" />
-                  Explore Products <ArrowRight className="h-4 w-4 transition-transform group-hover/cta:translate-x-1" />
+                  Explore Solutions <ArrowRight className="h-4 w-4 transition-transform group-hover/cta:translate-x-1" />
                 </motion.a>
                 <motion.a
-                  href="#contact"
+                  href="/#contact"
+                  onClick={(e) => handleNavClick('contact', 'Contact', e)}
                   whileHover={{
                     scale: 1.04,
                     boxShadow: "0 10px 25px rgba(0, 82, 204, 0.08)"
                   }}
                   whileTap={{ scale: 0.96 }}
-                  className="inline-flex items-center justify-center rounded-xl font-bold uppercase tracking-wider text-xs h-13 px-8 bg-white/40 dark:bg-white/5 text-slate-800 dark:text-white border border-slate-200/80 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/10 backdrop-blur-md transition-all duration-300 w-full sm:w-auto"
+                  className="inline-flex items-center justify-center rounded-xl font-bold uppercase tracking-wider text-xs h-13 px-8 bg-white/40 dark:bg-white/5 text-slate-800 dark:text-white border border-slate-200/80 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/10 backdrop-blur-md transition-all duration-300 w-full sm:w-auto z-10"
                 >
-                  Talk to Experts
+                  Schedule Consultation
                 </motion.a>
                 <motion.button
                   onClick={() => setIsDemoModalOpen(true)}
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
-                  className="flex items-center justify-center sm:justify-start gap-2 text-slate-700 dark:text-slate-300 hover:text-[#0052cc] dark:hover:text-brand-400 font-semibold text-sm sm:ml-2 group transition-colors"
+                  className="flex items-center justify-center sm:justify-start gap-2 text-slate-700 dark:text-slate-300 hover:text-[#0052cc] dark:hover:text-brand-400 font-semibold text-sm sm:ml-2 group transition-colors z-10"
                 >
                   <span className="h-10 w-10 rounded-full border border-slate-200 dark:border-navy-800 flex items-center justify-center group-hover:border-[#0052cc] dark:group-hover:border-brand-400 group-hover:bg-[#0052cc]/5 transition-colors relative">
                     <span className="absolute inset-0 rounded-full bg-brand-500/10 animate-ping opacity-75 group-hover:block hidden" />
                     <Play className="h-3.5 w-3.5 fill-current text-slate-600 dark:text-slate-400 group-hover:text-[#0052cc] dark:group-hover:text-brand-400 relative z-10" />
                   </span>
-                  <span>Watch Demo</span>
+                  <span>Watch Product Demo</span>
                 </motion.button>
+              </motion.div>
+
+              <motion.div
+                variants={itemVariants}
+                className="mt-4 pt-6 border-t border-slate-200/50 dark:border-white/5 flex flex-col gap-2.5 text-left w-full"
+              >
+                <span className="text-[10px] font-extrabold text-slate-450 uppercase tracking-widest">
+                  Target Industries
+                </span>
+                <div className="flex flex-wrap gap-x-3 gap-y-1.5 text-xs text-slate-500 dark:text-slate-400">
+                  {['Healthcare', 'Education', 'Enterprise', 'Government', 'Research', 'HR Tech', 'CRM', 'SaaS'].map((ind, i, arr) => (
+                    <span key={ind} className="flex items-center gap-3">
+                      <span className="font-semibold hover:text-[#0052cc] transition-colors">{ind}</span>
+                      {i < arr.length - 1 && <span className="text-slate-300 dark:text-white/10">•</span>}
+                    </span>
+                  ))}
+                </div>
               </motion.div>
             </motion.div>
 
-            {/* Hero Right Visuals (System Connected Map with center hero-image.png) */}
+            {/* Hero Right Visuals (Apple-inspired 3D AI Ecosystem Map) */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -1392,178 +1474,274 @@ export default function Home() {
             >
               {/* Centered coordinate system container */}
               <div className="relative w-[500px] h-[500px] flex-shrink-0">
-                {/* Soft background glow */}
+                {/* Soft background glows */}
                 <div className="absolute w-[80%] h-[80%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute w-[60%] h-[60%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
 
                 {/* SVG connection lines with animation */}
                 <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 500 500">
                   <defs>
-                    <linearGradient id="gradient-line" x1="0%" y1="0%" x2="100%" y2="100%" gradientUnits="userSpaceOnUse">
-                      <stop offset="0%" stopColor="#0052cc" stopOpacity="0.8" />
-                      <stop offset="100%" stopColor="#d946ef" stopOpacity="0.2" />
+                    <linearGradient id="gradient-glow-line" x1="0%" y1="0%" x2="100%" y2="100%" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stopColor="#0052cc" stopOpacity="0.4" />
+                      <stop offset="100%" stopColor="#d946ef" stopOpacity="0.1" />
                     </linearGradient>
                   </defs>
 
-                  {/* Node 1: Web Client (Top Left) to Center */}
-                  <motion.line
-                    x1="100" y1="100" x2="250" y2="250"
-                    stroke="url(#gradient-line)" strokeWidth="2" strokeDasharray="5,5"
-                    animate={{ strokeDashoffset: [0, -20] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                  />
-
-                  {/* Node 2: Admin Panel (Top Right) to Center */}
-                  <motion.line
-                    x1="400" y1="100" x2="250" y2="250"
-                    stroke="url(#gradient-line)" strokeWidth="2" strokeDasharray="5,5"
-                    animate={{ strokeDashoffset: [0, 20] }}
-                    transition={{ duration: 2.2, repeat: Infinity, ease: "linear" }}
-                  />
-
-                  {/* Node 3: Auth Security (Top Center) to Center */}
-                  <motion.line
-                    x1="250" y1="60" x2="250" y2="250"
-                    stroke="url(#gradient-line)" strokeWidth="2" strokeDasharray="5,5"
-                    animate={{ strokeDashoffset: [0, -20] }}
-                    transition={{ duration: 1.8, repeat: Infinity, ease: "linear" }}
-                  />
-
-                  {/* Node 4: DB Client (Bottom Left) to Center */}
-                  <motion.line
-                    x1="100" y1="400" x2="250" y2="250"
-                    stroke="url(#gradient-line)" strokeWidth="2" strokeDasharray="5,5"
-                    animate={{ strokeDashoffset: [0, 20] }}
-                    transition={{ duration: 2.4, repeat: Infinity, ease: "linear" }}
-                  />
-
-                  {/* Node 5: AI Engine (Bottom Right) to Center */}
-                  <motion.line
-                    x1="400" y1="400" x2="250" y2="250"
-                    stroke="url(#gradient-line)" strokeWidth="2" strokeDasharray="5,5"
-                    animate={{ strokeDashoffset: [0, -20] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                  />
-
-                  {/* Node 6: Redis Cache (Bottom Center) to Center */}
-                  <motion.line
-                    x1="250" y1="440" x2="250" y2="250"
-                    stroke="url(#gradient-line)" strokeWidth="2" strokeDasharray="5,5"
-                    animate={{ strokeDashoffset: [0, 20] }}
-                    transition={{ duration: 1.8, repeat: Infinity, ease: "linear" }}
-                  />
+                  {/* Radiating connector lines */}
+                  {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => {
+                    const rad = (angle * Math.PI) / 180;
+                    const x = 250 + Math.cos(rad) * 140;
+                    const y = 250 + Math.sin(rad) * 140;
+                    return (
+                      <g key={i}>
+                        <line
+                          x1="250"
+                          y1="250"
+                          x2={x}
+                          y2={y}
+                          stroke="url(#gradient-glow-line)"
+                          strokeWidth="1.5"
+                          className="opacity-50"
+                        />
+                        <motion.circle
+                          r="3"
+                          fill="#0052cc"
+                          animate={{
+                            cx: [250, x],
+                            cy: [250, y],
+                            opacity: [1, 0]
+                          }}
+                          transition={{
+                            duration: 2.2 + (i % 2) * 0.4,
+                            repeat: Infinity,
+                            ease: "easeOut",
+                            delay: i * 0.3
+                          }}
+                        />
+                      </g>
+                    );
+                  })}
                 </svg>
 
-                {/* Heartbeat radar rings */}
-                <div className="absolute top-[204px] left-[204px] w-24 h-24 pointer-events-none">
+                {/* Heartbeat radar rings around the central sphere */}
+                <div className="absolute top-[170px] left-[170px] w-40 h-40 pointer-events-none z-0">
                   <motion.div
-                    animate={{ scale: [1, 2], opacity: [0.5, 0] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeOut" }}
-                    className="absolute inset-0 rounded-full border-2 border-brand-500/30"
+                    animate={{ scale: [1, 1.8], opacity: [0.4, 0] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeOut" }}
+                    className="absolute inset-0 rounded-full border border-blue-500/20"
                   />
                   <motion.div
-                    animate={{ scale: [1, 1.5], opacity: [0.3, 0] }}
-                    transition={{ duration: 3, delay: 1.5, repeat: Infinity, ease: "easeOut" }}
-                    className="absolute inset-0 rounded-full border-2 border-brand-500/20"
+                    animate={{ scale: [1, 1.4], opacity: [0.25, 0] }}
+                    transition={{ duration: 4, delay: 2, repeat: Infinity, ease: "easeOut" }}
+                    className="absolute inset-0 rounded-full border border-purple-500/15"
                   />
                 </div>
 
-                {/* Central Element (hero-image.png) */}
+                {/* Center Core: Glass AI Core with animated neural sphere */}
                 <motion.div
-                  animate={{ y: [0, -4, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute top-[194px] left-[194px] w-28 h-28 z-20 cursor-pointer transition-all duration-300"
-                >
-                  <img
-                    src="/hero-image.png"
-                    alt="Algoguido Monorepo Core"
-                    className="w-full h-full object-contain filter drop-shadow-lg"
-                    style={{ mixBlendMode: 'multiply' }}
-                  />
-                  <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[9px] font-extrabold text-[#0052cc] dark:text-brand-400 tracking-wider uppercase whitespace-nowrap bg-white/90 dark:bg-navy-900/90 px-2.5 py-0.5 rounded-full border border-slate-200/50 dark:border-white/10 shadow-sm z-30">
-                    Core API
-                  </span>
-                </motion.div>
-
-                {/* Surrounding Connected Node 1: Web Client */}
-                <motion.div
+                  style={{
+                    x: heroMouse.x * 12,
+                    y: heroMouse.y * 12,
+                  }}
                   animate={{ y: [0, -6, 0] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                  whileHover={{ scale: 1.05 }}
-                  className="absolute top-[60px] left-[60px] w-20 h-20 rounded-2xl bg-white/40 dark:bg-navy-900/40 border border-white/25 dark:border-white/10 shadow-xl backdrop-blur-md flex flex-col items-center justify-center p-3 z-10 cursor-pointer hover:shadow-blue-500/20 hover:border-blue-500/40 transition-all duration-300 group/node"
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute top-[180px] left-[180px] w-36 h-36 z-20 cursor-pointer"
                 >
-                  <div className="p-2 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 mb-1">
-                    <Monitor className="h-5 w-5" />
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#0052cc] to-purple-600 opacity-20 blur-xl animate-pulse" />
+                  <div className="w-full h-full rounded-full bg-white/20 dark:bg-navy-900/40 border border-white/40 dark:border-white/25 backdrop-blur-xl flex flex-col items-center justify-center p-3 shadow-2xl relative group overflow-hidden">
+                    {/* Ring rotation effects */}
+                    <div className="absolute inset-2 rounded-full border border-dashed border-[#0052cc]/40 animate-spin-slow" />
+                    <div className="absolute inset-4 rounded-full border border-dashed border-purple-500/30 animate-spin-reverse" />
+                    <Brain className="h-10 w-10 text-[#0052cc] dark:text-blue-400 group-hover:scale-110 transition-transform duration-300 relative z-10" />
+                    <span className="text-[8px] font-extrabold text-[#0052cc] dark:text-brand-400 tracking-widest uppercase mt-2 relative z-10 text-center">
+                      AI ENGINE
+                    </span>
+                    <span className="text-[6px] text-slate-500 dark:text-slate-400 tracking-wider uppercase relative z-10">
+                      ALGOGUIDO
+                    </span>
                   </div>
-                  <span className="text-[9px] font-extrabold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Web App</span>
                 </motion.div>
 
-                {/* Surrounding Connected Node 2: Admin Panel */}
+                {/* Orbiting nodes with icons */}
+                {[
+                  { name: 'AI Agents', icon: Brain, color: 'text-blue-500', angle: 0, radius: 140 },
+                  { name: 'Enterprise ERP', icon: Building2, color: 'text-purple-500', angle: 45, radius: 140 },
+                  { name: 'CRM Platform', icon: Users, color: 'text-emerald-500', angle: 90, radius: 140 },
+                  { name: 'Cloud Platform', icon: Cloud, color: 'text-amber-500', angle: 135, radius: 140 },
+                  { name: 'Analytics', icon: TrendingUp, color: 'text-cyan-500', angle: 180, radius: 140 },
+                  { name: 'Security Hub', icon: Shield, color: 'text-red-500', angle: 225, radius: 140 },
+                  { name: 'API Hub', icon: Globe, color: 'text-indigo-500', angle: 270, radius: 140 },
+                  { name: 'Mobile Apps', icon: Monitor, color: 'text-rose-500', angle: 315, radius: 140 }
+                ].map((node, idx) => {
+                  const rad = (node.angle * Math.PI) / 180;
+                  const x = 250 + Math.cos(rad) * node.radius - 20; // offset center
+                  const y = 250 + Math.sin(rad) * node.radius - 20;
+
+                  return (
+                    <motion.div
+                      key={node.name}
+                      style={{
+                        x: heroMouse.x * (idx % 2 === 0 ? 8 : -8),
+                        y: heroMouse.y * (idx % 2 === 0 ? 8 : -8),
+                      }}
+                      animate={{
+                        y: [y, y - 6, y],
+                      }}
+                      transition={{
+                        duration: 4 + (idx % 3),
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: idx * 0.2
+                      }}
+                      className="absolute w-10 h-10 rounded-xl bg-white/60 dark:bg-navy-900/60 border border-slate-200/40 dark:border-white/10 shadow-lg backdrop-blur-md flex items-center justify-center p-2 z-10 hover:scale-115 transition-all duration-300 group"
+                      style={{ left: `${x}px`, top: `${y}px` }}
+                    >
+                      <node.icon className={`h-5 w-5 ${node.color}`} />
+                      <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[7px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 dark:bg-navy-950/90 border border-slate-200 dark:border-white/10 px-1.5 py-0.5 rounded shadow-sm">
+                        {node.name}
+                      </span>
+                    </motion.div>
+                  );
+                })}
+
+                {/* Floating Product Card 1: LeadGrowAI */}
                 <motion.div
-                  animate={{ y: [0, 6, 0] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                  whileHover={{ scale: 1.05 }}
-                  className="absolute top-[60px] right-[60px] w-20 h-20 rounded-2xl bg-white/40 dark:bg-navy-900/40 border border-white/25 dark:border-white/10 shadow-xl backdrop-blur-md flex flex-col items-center justify-center p-3 z-10 cursor-pointer hover:shadow-orange-500/20 hover:border-orange-500/40 transition-all duration-300 group/node"
+                  style={{
+                    x: heroMouse.x * -18,
+                    y: heroMouse.y * -18,
+                  }}
+                  animate={{
+                    y: [0, -10, 0],
+                    rotate: [3, -2, 3]
+                  }}
+                  transition={{
+                    duration: 5.5,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  className="absolute -left-[30px] top-[40px] w-40 p-3.5 rounded-2xl bg-white/75 dark:bg-navy-950/75 border border-slate-200/50 dark:border-white/10 backdrop-blur-xl shadow-xl z-30"
                 >
-                  <div className="p-2 rounded-lg bg-orange-500/10 text-orange-600 dark:text-orange-400 mb-1">
-                    <LayoutDashboard className="h-5 w-5" />
+                  <div className="flex items-center justify-between gap-1 mb-1.5">
+                    <span className="text-[7px] font-bold text-emerald-600 bg-emerald-500/10 dark:bg-emerald-500/20 px-1.5 py-0.5 rounded-full uppercase tracking-wider">LIVE</span>
+                    <span className="text-[7px] font-bold text-slate-450 dark:text-slate-400 uppercase">AI CRM</span>
                   </div>
-                  <span className="text-[9px] font-extrabold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Admin</span>
+                  <p className="text-[11px] font-extrabold text-slate-800 dark:text-white tracking-tight">LeadGrowAI</p>
+                  <p className="text-[8px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">Intelligent Lead Discovery</p>
                 </motion.div>
 
-                {/* Surrounding Connected Node 3: Auth Security */}
+                {/* Floating Product Card 2: EduAI365 */}
                 <motion.div
-                  animate={{ y: [0, -4, 0] }}
-                  transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-                  whileHover={{ scale: 1.05 }}
-                  className="absolute top-[10px] left-[210px] w-20 h-20 rounded-2xl bg-white/40 dark:bg-navy-900/40 border border-white/25 dark:border-white/10 shadow-xl backdrop-blur-md flex flex-col items-center justify-center p-3 z-10 cursor-pointer hover:shadow-amber-500/20 hover:border-amber-500/40 transition-all duration-300 group/node"
+                  style={{
+                    x: heroMouse.x * 15,
+                    y: heroMouse.y * 15,
+                  }}
+                  animate={{
+                    y: [0, -12, 0],
+                    rotate: [-2, 3, -2]
+                  }}
+                  transition={{
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 1
+                  }}
+                  className="absolute -right-[30px] top-[40px] w-40 p-3.5 rounded-2xl bg-white/75 dark:bg-navy-950/75 border border-slate-200/50 dark:border-white/10 backdrop-blur-xl shadow-xl z-30"
                 >
-                  <div className="p-2 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 mb-1">
-                    <ShieldCheck className="h-5 w-5" />
+                  <div className="flex items-center justify-between gap-1 mb-1.5">
+                    <span className="text-[7px] font-bold text-blue-600 bg-blue-500/10 dark:bg-blue-500/20 px-1.5 py-0.5 rounded-full uppercase tracking-wider">ACTIVE</span>
+                    <span className="text-[7px] font-bold text-slate-450 dark:text-slate-400 uppercase">AI EDU</span>
                   </div>
-                  <span className="text-[9px] font-extrabold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Auth</span>
+                  <p className="text-[11px] font-extrabold text-slate-800 dark:text-white tracking-tight">eduAI365</p>
+                  <p className="text-[8px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">Smart Learning Platform</p>
                 </motion.div>
 
-                {/* Surrounding Connected Node 4: DB Client */}
+                {/* Floating Product Card 3: Nidaan */}
                 <motion.div
-                  animate={{ y: [0, 4, 0] }}
-                  transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-                  whileHover={{ scale: 1.05 }}
-                  className="absolute bottom-[60px] left-[60px] w-20 h-20 rounded-2xl bg-white/40 dark:bg-navy-900/40 border border-white/25 dark:border-white/10 shadow-xl backdrop-blur-md flex flex-col items-center justify-center p-3 z-10 cursor-pointer hover:shadow-emerald-500/20 hover:border-emerald-500/40 transition-all duration-300 group/node"
+                  style={{
+                    x: heroMouse.x * -15,
+                    y: heroMouse.y * -15,
+                  }}
+                  animate={{
+                    y: [0, -8, 0],
+                    rotate: [-3, 2, -3]
+                  }}
+                  transition={{
+                    duration: 5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 2
+                  }}
+                  className="absolute -left-[40px] bottom-[40px] w-40 p-3.5 rounded-2xl bg-white/75 dark:bg-navy-950/75 border border-slate-200/50 dark:border-white/10 backdrop-blur-xl shadow-xl z-30"
                 >
-                  <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 mb-1">
-                    <Database className="h-5 w-5" />
+                  <div className="flex items-center justify-between gap-1 mb-1.5">
+                    <span className="text-[7px] font-bold text-purple-600 bg-purple-500/10 dark:bg-purple-500/20 px-1.5 py-0.5 rounded-full uppercase tracking-wider">LIVE</span>
+                    <span className="text-[7px] font-bold text-slate-450 dark:text-slate-400 uppercase">Health AI</span>
                   </div>
-                  <span className="text-[9px] font-extrabold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Database</span>
+                  <p className="text-[11px] font-extrabold text-slate-800 dark:text-white tracking-tight">Nidaan Polyclinic</p>
+                  <p className="text-[8px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">AI Healthcare Workflow</p>
                 </motion.div>
 
-                {/* Surrounding Connected Node 5: AI Engine */}
+                {/* Floating Product Card 4: Apply4Jobs */}
                 <motion.div
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{ duration: 5.2, repeat: Infinity, ease: "easeInOut" }}
-                  whileHover={{ scale: 1.05 }}
-                  className="absolute bottom-[60px] right-[60px] w-20 h-20 rounded-2xl bg-white/40 dark:bg-navy-900/40 border border-white/25 dark:border-white/10 shadow-xl backdrop-blur-md flex flex-col items-center justify-center p-3 z-10 cursor-pointer hover:shadow-pink-500/20 hover:border-pink-500/40 transition-all duration-300 group/node"
+                  style={{
+                    x: heroMouse.x * 18,
+                    y: heroMouse.y * 18,
+                  }}
+                  animate={{
+                    y: [0, -11, 0],
+                    rotate: [2, -3, 2]
+                  }}
+                  transition={{
+                    duration: 6.2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 3
+                  }}
+                  className="absolute -right-[40px] bottom-[40px] w-40 p-3.5 rounded-2xl bg-white/75 dark:bg-navy-950/75 border border-slate-200/50 dark:border-white/10 backdrop-blur-xl shadow-xl z-30"
                 >
-                  <div className="p-2 rounded-lg bg-pink-500/10 text-pink-600 dark:text-pink-400 mb-1">
-                    <Cpu className="h-5 w-5" />
+                  <div className="flex items-center justify-between gap-1 mb-1.5">
+                    <span className="text-[7px] font-bold text-pink-600 bg-pink-500/10 dark:bg-pink-500/20 px-1.5 py-0.5 rounded-full uppercase tracking-wider">NEW</span>
+                    <span className="text-[7px] font-bold text-slate-450 dark:text-slate-400 uppercase">HR Tech</span>
                   </div>
-                  <span className="text-[9px] font-extrabold text-slate-800 dark:text-slate-200 uppercase tracking-wider">AI Engine</span>
-                </motion.div>
-
-                {/* Surrounding Connected Node 6: Redis Cache */}
-                <motion.div
-                  animate={{ y: [0, 4, 0] }}
-                  transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut" }}
-                  whileHover={{ scale: 1.05 }}
-                  className="absolute bottom-[10px] left-[210px] w-20 h-20 rounded-2xl bg-white/40 dark:bg-navy-900/40 border border-white/25 dark:border-white/10 shadow-xl backdrop-blur-md flex flex-col items-center justify-center p-3 z-10 cursor-pointer hover:shadow-red-500/20 hover:border-red-500/40 transition-all duration-300 group/node"
-                >
-                  <div className="p-2 rounded-lg bg-red-500/10 text-red-600 dark:text-red-400 mb-1">
-                    <Zap className="h-5 w-5 animate-pulse" />
-                  </div>
-                  <span className="text-[9px] font-extrabold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Redis Cache</span>
+                  <p className="text-[11px] font-extrabold text-slate-800 dark:text-white tracking-tight">Apply4Jobs</p>
+                  <p className="text-[8px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">Intelligent Recruitment</p>
                 </motion.div>
               </div>
             </motion.div>
           </div>
+
+          {/* Trust Metrics Bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, type: 'spring', stiffness: 80 }}
+            className="w-full max-w-7xl mx-auto mt-16 md:mt-24 pt-8 border-t border-slate-200/60 dark:border-white/5 relative z-10"
+          >
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-6 text-center">
+              {[
+                { number: '100+', label: 'Enterprise Projects', color: 'text-blue-600 dark:text-blue-400' },
+                { number: '10+', label: 'AI Products', color: 'text-purple-600 dark:text-purple-400' },
+                { number: '500+', label: 'Students Trained', color: 'text-emerald-600 dark:text-emerald-400' },
+                { number: '20+', label: 'Technologies', color: 'text-amber-600 dark:text-amber-400' },
+                { number: '99.9%', label: 'Platform Availability', color: 'text-rose-600 dark:text-rose-400' },
+              ].map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 + i * 0.1 }}
+                  className="flex flex-col items-center p-4 rounded-2xl bg-white/20 dark:bg-white/5 border border-slate-200/30 dark:border-white/5 backdrop-blur-md shadow-sm"
+                >
+                  <span className={`text-2xl sm:text-3xl font-extrabold tracking-tight ${stat.color}`}>
+                    {stat.number}
+                  </span>
+                  <span className="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-1">
+                    {stat.label}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </section>
         <LiquidWaveDivider />
 
@@ -1778,23 +1956,23 @@ export default function Home() {
                 ABOUT US
               </span>
               <h2 className="font-display font-extrabold text-3xl md:text-4xl text-slate-900 dark:text-white tracking-tight leading-tight">
-                Architecting the Future of Enterprise Intelligence
+                Engineering Intelligent Enterprises for the AI Era
               </h2>
               <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                At Algoguido, we build sovereign AI platforms, secure state-grade cloud environments, and robust digital systems. Born from a vision to power critical sectors, we bridge cutting-edge technical breakthroughs with regulatory-compliant security standards.
+                At Algoguido Technologies Private Limited, we are an AI-Driven Enterprise Technology Company dedicated to building intelligent software, enterprise platforms, cloud-native applications, and AI-powered solutions that accelerate digital transformation. By combining artificial intelligence, data engineering, automation, and modern cloud technologies, we help businesses, educational institutions, and government organizations innovate securely, scale confidently, and make data-driven decisions.
               </p>
 
               <div className="grid sm:grid-cols-2 gap-6 mt-4">
                 <div className="p-5 bg-white/60 dark:bg-navy-900/30 border border-slate-200/60 dark:border-white/5 rounded-2xl backdrop-blur-md flex flex-col gap-2">
-                  <span className="text-xs font-extrabold text-[#0052cc] dark:text-blue-400 uppercase tracking-wide">Our Mission</span>
+                  <span className="text-xs font-extrabold text-[#0052cc] dark:text-blue-400 uppercase tracking-wide">OUR MISSION</span>
                   <p className="text-[11px] text-slate-550 dark:text-slate-400 leading-relaxed">
-                    To deliver scalable AI and cloud solutions that ensure privacy compliance, deep automation, and national-grade data sovereignty.
+                    To empower organizations with secure, scalable, and AI-driven technology solutions that simplify operations, accelerate innovation, and create measurable business value.
                   </p>
                 </div>
                 <div className="p-5 bg-white/60 dark:bg-navy-900/30 border border-slate-200/60 dark:border-white/5 rounded-2xl backdrop-blur-md flex flex-col gap-2">
-                  <span className="text-xs font-extrabold text-[#0052cc] dark:text-blue-400 uppercase tracking-wide">Our Vision</span>
+                  <span className="text-xs font-extrabold text-[#0052cc] dark:text-blue-400 uppercase tracking-wide">OUR VISION</span>
                   <p className="text-[11px] text-slate-550 dark:text-slate-400 leading-relaxed">
-                    To lead India's enterprise software expansion with intelligent, secure, and sovereign systems.
+                    To become a globally recognized enterprise technology company shaping the future of intelligent businesses through artificial intelligence, innovation, and digital transformation.
                   </p>
                 </div>
               </div>
@@ -1807,9 +1985,9 @@ export default function Home() {
                   01
                 </div>
                 <div className="flex flex-col gap-1">
-                  <h3 className="font-bold text-slate-800 dark:text-white text-xs uppercase tracking-wider">Sovereign Focus</h3>
+                  <h3 className="font-bold text-slate-800 dark:text-white text-xs uppercase tracking-wider">AI-DRIVEN INNOVATION</h3>
                   <p className="text-[11px] text-slate-550 dark:text-slate-400 leading-relaxed">
-                    Every algorithm, pipeline, and storage server complies with strict Indian data residency mandates.
+                    We develop intelligent enterprise platforms, AI applications, automation systems, and data-driven solutions that solve complex business challenges.
                   </p>
                 </div>
               </div>
@@ -1819,9 +1997,9 @@ export default function Home() {
                   02
                 </div>
                 <div className="flex flex-col gap-1">
-                  <h3 className="font-bold text-slate-800 dark:text-white text-xs uppercase tracking-wider">State-Grade Security</h3>
+                  <h3 className="font-bold text-slate-800 dark:text-white text-xs uppercase tracking-wider">ENTERPRISE SOFTWARE</h3>
                   <p className="text-[11px] text-slate-550 dark:text-slate-400 leading-relaxed">
-                    Integrated cryptography, strict multi-tenant sandboxing, and security compliance audits.
+                    We design scalable web platforms, SaaS products, cloud-native applications, APIs, and digital ecosystems tailored for modern enterprises.
                   </p>
                 </div>
               </div>
@@ -1831,9 +2009,9 @@ export default function Home() {
                   03
                 </div>
                 <div className="flex flex-col gap-1">
-                  <h3 className="font-bold text-slate-800 dark:text-white text-xs uppercase tracking-wider">Advanced AI R&D</h3>
+                  <h3 className="font-bold text-slate-800 dark:text-white text-xs uppercase tracking-wider">RESEARCH & ENGINEERING</h3>
                   <p className="text-[11px] text-slate-550 dark:text-slate-400 leading-relaxed">
-                    Custom large language models, localized sentiment analyzers, and domain-specialized pipelines.
+                    Our team combines AI research, machine learning, data analytics, and software engineering to build innovative, future-ready technology solutions.
                   </p>
                 </div>
               </div>
@@ -1843,15 +2021,15 @@ export default function Home() {
                   04
                 </div>
                 <div className="flex flex-col gap-1">
-                  <h3 className="font-bold text-slate-800 dark:text-white text-xs uppercase tracking-wider">Scalable Delivery</h3>
+                  <h3 className="font-bold text-slate-800 dark:text-white text-xs uppercase tracking-wider">TRUSTED DELIVERY</h3>
                   <p className="text-[11px] text-slate-550 dark:text-slate-400 leading-relaxed">
-                    Robust SLAs, continuous deployment integration, and localized regional support models.
+                    From strategy and development to deployment and ongoing support, we deliver secure, reliable, and scalable technology that grows with your business.
                   </p>
                 </div>
-              </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
         {/* Why Algoguido Section */}
         <section id="why" className="py-14 md:py-24 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 border-t border-b border-slate-200/60 dark:border-navy-900 relative z-10 overflow-hidden" style={{ background: 'linear-gradient(180deg, #fcfbfa 0%, #f7f5f0 100%)' }}>
@@ -1860,37 +2038,43 @@ export default function Home() {
           <div className="max-w-4xl mx-auto flex flex-col items-center gap-6 text-center relative z-10 mb-16">
             <span className="text-xs font-extrabold text-[#0052cc] uppercase tracking-widest bg-[#0052cc]/5 px-3 py-1 rounded-full">WHY ALGOGUIDO</span>
             <h2 className="font-display font-extrabold text-3xl md:text-4xl text-slate-900 dark:text-white tracking-tight leading-tight max-w-2xl">
-              Building AI-Powered Solutions for a Smarter Tomorrow
+              Why Organizations Choose Algoguido
             </h2>
-            <p className="text-slate-650 dark:text-slate-400 text-sm leading-relaxed max-w-xl">
-              We combine industry-leading artificial intelligence with modern cloud architecture to deliver scalable, secure, and government-compliant platforms.
+            <p className="text-slate-655 dark:text-slate-400 text-sm leading-relaxed max-w-2xl">
+              We combine Artificial Intelligence, Enterprise Software, Cloud Engineering, and Data Analytics to build secure, scalable, and future-ready digital solutions. From strategy and development to deployment and support, we help organizations accelerate innovation with technology that delivers measurable business impact.
             </p>
 
             {/* Features Bar */}
-            <div className="flex flex-wrap justify-center gap-6 border-t border-slate-200/60 dark:border-navy-800/60 pt-6 w-full max-w-2xl mt-2">
+            <div className="flex flex-wrap justify-center gap-6 border-t border-slate-200/60 dark:border-navy-800/60 pt-6 w-full max-w-3xl mt-2">
               <div className="flex items-center gap-2">
                 <div className="h-5 w-5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-450 flex items-center justify-center shrink-0">
                   <svg className="h-3 w-3 fill-current" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z" /></svg>
                 </div>
-                <span className="text-xs font-bold text-slate-600 dark:text-slate-350">Enterprise SLA Compliant</span>
+                <span className="text-xs font-bold text-slate-600 dark:text-slate-350">AI-Driven Innovation</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="h-5 w-5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-450 flex items-center justify-center shrink-0">
                   <svg className="h-3 w-3 fill-current" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z" /></svg>
                 </div>
-                <span className="text-xs font-bold text-slate-600 dark:text-slate-350">Continuous CI/CD Delivery</span>
+                <span className="text-xs font-bold text-slate-600 dark:text-slate-350">Enterprise-Grade Solutions</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="h-5 w-5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-450 flex items-center justify-center shrink-0">
                   <svg className="h-3 w-3 fill-current" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z" /></svg>
                 </div>
-                <span className="text-xs font-bold text-slate-600 dark:text-slate-350">Dedicated Technical Support</span>
+                <span className="text-xs font-bold text-slate-600 dark:text-slate-350">Cloud-Native Architecture</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-5 w-5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-450 flex items-center justify-center shrink-0">
+                  <svg className="h-3 w-3 fill-current" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z" /></svg>
+                </div>
+                <span className="text-xs font-bold text-slate-600 dark:text-slate-350">End-to-End Technology Partner</span>
               </div>
             </div>
           </div>
-          {/* 4-Column 3D Grid */}
-          <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10 w-full" style={{ perspective: 1200 }}>
-            {/* Feature 1: AI First */}
+          {/* 6-Column 3D Grid */}
+          <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10 w-full" style={{ perspective: 1200 }}>
+            {/* Feature 1: AI-Driven Innovation */}
             <motion.div
               initial={{ opacity: 0, y: 50, rotateX: 15 }}
               whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
@@ -1911,44 +2095,16 @@ export default function Home() {
               <div className="h-12 w-12 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-[#0052cc] dark:text-brand-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm shrink-0 relative z-10">
                 <Brain className="h-6 w-6" />
               </div>
+              <span className="text-[10px] font-extrabold text-[#0052cc] dark:text-blue-400 uppercase tracking-widest bg-blue-500/5 px-2.5 py-0.5 rounded-full relative z-10">01</span>
               <div className="flex flex-col gap-2 relative z-10">
-                <h3 className="font-extrabold text-slate-800 dark:text-white text-base group-hover:text-[#0052cc] transition-colors leading-tight">AI First</h3>
+                <h3 className="font-extrabold text-slate-800 dark:text-white text-base group-hover:text-[#0052cc] transition-colors leading-tight">AI-Driven Innovation</h3>
                 <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                  Intelligent solutions powered by cutting-edge artificial intelligence & machine learning technologies.
+                  Harness the power of Artificial Intelligence, Machine Learning, and intelligent automation to streamline operations, improve decision-making, and unlock new business opportunities.
                 </p>
               </div>
             </motion.div>
 
-            {/* Feature 2: Cloud Native */}
-            <motion.div
-              initial={{ opacity: 0, y: 50, rotateX: 15 }}
-              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, type: "spring", stiffness: 100, damping: 15 }}
-              whileHover={{
-                y: -10,
-                rotateX: 10,
-                rotateY: -10,
-                scale: 1.03,
-                z: 30,
-                boxShadow: "0 25px 50px rgba(16, 185, 129, 0.12)"
-              }}
-              className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 p-6 rounded-2xl shadow-sm transition-all duration-300 group flex flex-col gap-4 cursor-pointer overflow-hidden text-center items-center select-none min-h-[220px]"
-              style={{ transformStyle: 'preserve-3d' }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
-              <div className="h-12 w-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm shrink-0 relative z-10">
-                <Globe className="h-6 w-6" />
-              </div>
-              <div className="flex flex-col gap-2 relative z-10">
-                <h3 className="font-extrabold text-slate-800 dark:text-white text-base group-hover:text-emerald-600 transition-colors leading-tight">Cloud Native</h3>
-                <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                  Modern microservices-based, containerized scaling & cloud-native systems offering unmatched uptime.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Feature 3: Enterprise Ready */}
+            {/* Feature 2: Enterprise Software */}
             <motion.div
               initial={{ opacity: 0, y: 50, rotateX: 15 }}
               whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
@@ -1967,46 +2123,18 @@ export default function Home() {
             >
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
               <div className="h-12 w-12 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm shrink-0 relative z-10">
-                <ShieldCheck className="h-6 w-6" />
-              </div>
-              <div className="flex flex-col gap-2 relative z-10">
-                <h3 className="font-extrabold text-slate-800 dark:text-white text-base group-hover:text-purple-600 transition-colors leading-tight">Enterprise Ready</h3>
-                <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                  Tailored to fit rigorous enterprise environments, featuring automated backups and security features.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Feature 4: Government Focus */}
-            <motion.div
-              initial={{ opacity: 0, y: 50, rotateX: 15 }}
-              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, type: "spring", stiffness: 100, damping: 15 }}
-              whileHover={{
-                y: -10,
-                rotateX: 10,
-                rotateY: -10,
-                scale: 1.03,
-                z: 30,
-                boxShadow: "0 25px 50px rgba(234, 88, 12, 0.12)"
-              }}
-              className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 p-6 rounded-2xl shadow-sm transition-all duration-300 group flex flex-col gap-4 cursor-pointer overflow-hidden text-center items-center select-none min-h-[220px]"
-              style={{ transformStyle: 'preserve-3d' }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
-              <div className="h-12 w-12 rounded-xl bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm shrink-0 relative z-10">
                 <Building2 className="h-6 w-6" />
               </div>
+              <span className="text-[10px] font-extrabold text-purple-600 dark:text-purple-400 uppercase tracking-widest bg-purple-500/5 px-2.5 py-0.5 rounded-full relative z-10">02</span>
               <div className="flex flex-col gap-2 relative z-10">
-                <h3 className="font-extrabold text-slate-800 dark:text-white text-base group-hover:text-orange-600 transition-colors leading-tight">Government Focus</h3>
+                <h3 className="font-extrabold text-slate-800 dark:text-white text-base group-hover:text-purple-600 transition-colors leading-tight">Enterprise Software</h3>
                 <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                  Deep compliance architecture designed for government initiatives, public datasets and security audits.
+                  Custom web platforms, enterprise applications, SaaS products, APIs, ERP solutions, and digital ecosystems designed for scalability and long-term growth.
                 </p>
               </div>
             </motion.div>
 
-            {/* Feature 5: Secure Architecture */}
+            {/* Feature 3: Cloud-Native Engineering */}
             <motion.div
               initial={{ opacity: 0, y: 50, rotateX: 15 }}
               whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
@@ -2018,24 +2146,85 @@ export default function Home() {
                 rotateY: -10,
                 scale: 1.03,
                 z: 30,
-                boxShadow: "0 25px 50px rgba(217, 119, 6, 0.12)"
+                boxShadow: "0 25px 50px rgba(16, 185, 129, 0.12)"
               }}
               className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 p-6 rounded-2xl shadow-sm transition-all duration-300 group flex flex-col gap-4 cursor-pointer overflow-hidden text-center items-center select-none min-h-[220px]"
               style={{ transformStyle: 'preserve-3d' }}
             >
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
-              <div className="h-12 w-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm shrink-0 relative z-10">
+              <div className="h-12 w-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-450 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm shrink-0 relative z-10">
+                <Cloud className="h-6 w-6" />
+              </div>
+              <span className="text-[10px] font-extrabold text-emerald-600 dark:text-emerald-450 uppercase tracking-widest bg-emerald-500/5 px-2.5 py-0.5 rounded-full relative z-10">03</span>
+              <div className="flex flex-col gap-2 relative z-10">
+                <h3 className="font-extrabold text-slate-800 dark:text-white text-base group-hover:text-emerald-600 transition-colors leading-tight">Cloud-Native Engineering</h3>
+                <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                  Modern microservices, containerized deployments, DevOps practices, CI/CD pipelines, and scalable cloud infrastructure for high availability and performance.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Feature 4: Data Intelligence */}
+            <motion.div
+              initial={{ opacity: 0, y: 50, rotateX: 15 }}
+              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, type: "spring", stiffness: 100, damping: 15 }}
+              whileHover={{
+                y: -10,
+                rotateX: 10,
+                rotateY: -10,
+                scale: 1.03,
+                z: 30,
+                boxShadow: "0 25px 50px rgba(245, 158, 11, 0.12)"
+              }}
+              className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 p-6 rounded-2xl shadow-sm transition-all duration-300 group flex flex-col gap-4 cursor-pointer overflow-hidden text-center items-center select-none min-h-[220px]"
+              style={{ transformStyle: 'preserve-3d' }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+              <div className="h-12 w-12 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-550 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm shrink-0 relative z-10">
+                <Database className="h-6 w-6" />
+              </div>
+              <span className="text-[10px] font-extrabold text-amber-600 dark:text-amber-550 uppercase tracking-widest bg-amber-500/5 px-2.5 py-0.5 rounded-full relative z-10">04</span>
+              <div className="flex flex-col gap-2 relative z-10">
+                <h3 className="font-extrabold text-slate-800 dark:text-white text-base group-hover:text-amber-600 transition-colors leading-tight">Data Intelligence</h3>
+                <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                  Transform data into actionable insights through advanced analytics, dashboards, business intelligence, predictive modeling, and AI-powered reporting.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Feature 5: Secure by Design */}
+            <motion.div
+              initial={{ opacity: 0, y: 50, rotateX: 15 }}
+              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, type: "spring", stiffness: 100, damping: 15 }}
+              whileHover={{
+                y: -10,
+                rotateX: 10,
+                rotateY: -10,
+                scale: 1.03,
+                z: 30,
+                boxShadow: "0 25px 50px rgba(220, 38, 38, 0.12)"
+              }}
+              className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 p-6 rounded-2xl shadow-sm transition-all duration-300 group flex flex-col gap-4 cursor-pointer overflow-hidden text-center items-center select-none min-h-[220px]"
+              style={{ transformStyle: 'preserve-3d' }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+              <div className="h-12 w-12 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-650 dark:text-red-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm shrink-0 relative z-10">
                 <Lock className="h-6 w-6" />
               </div>
+              <span className="text-[10px] font-extrabold text-red-655 dark:text-red-400 uppercase tracking-widest bg-red-500/5 px-2.5 py-0.5 rounded-full relative z-10">05</span>
               <div className="flex flex-col gap-2 relative z-10">
-                <h3 className="font-extrabold text-slate-800 dark:text-white text-base group-hover:text-amber-600 transition-colors leading-tight">Secure Architecture</h3>
+                <h3 className="font-extrabold text-slate-800 dark:text-white text-base group-hover:text-red-650 transition-colors leading-tight">Secure by Design</h3>
                 <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                  End-to-end data encryption in transit and at rest, coupled with strict vulnerability scans.
+                  Security is integrated throughout every stage of development with secure coding practices, role-based access control, encryption, authentication, and reliable deployment strategies.
                 </p>
               </div>
             </motion.div>
 
-            {/* Feature 6: Scalable Solutions */}
+            {/* Feature 6: Research & Emerging Technologies */}
             <motion.div
               initial={{ opacity: 0, y: 50, rotateX: 15 }}
               whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
@@ -2047,48 +2236,20 @@ export default function Home() {
                 rotateY: -10,
                 scale: 1.03,
                 z: 30,
-                boxShadow: "0 25px 50px rgba(236, 72, 153, 0.12)"
+                boxShadow: "0 25px 50px rgba(99, 102, 241, 0.12)"
               }}
               className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 p-6 rounded-2xl shadow-sm transition-all duration-300 group flex flex-col gap-4 cursor-pointer overflow-hidden text-center items-center select-none min-h-[220px]"
               style={{ transformStyle: 'preserve-3d' }}
             >
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
-              <div className="h-12 w-12 rounded-xl bg-pink-50 dark:bg-pink-950/40 text-pink-600 dark:text-pink-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm shrink-0 relative z-10">
-                <TrendingUp className="h-6 w-6" />
+              <div className="h-12 w-12 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-650 dark:text-indigo-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm shrink-0 relative z-10">
+                <Cpu className="h-6 w-6" />
               </div>
+              <span className="text-[10px] font-extrabold text-indigo-655 dark:text-indigo-400 uppercase tracking-widest bg-indigo-500/5 px-2.5 py-0.5 rounded-full relative z-10">06</span>
               <div className="flex flex-col gap-2 relative z-10">
-                <h3 className="font-extrabold text-slate-800 dark:text-white text-base group-hover:text-pink-600 transition-colors leading-tight">Scalable Solutions</h3>
+                <h3 className="font-extrabold text-slate-800 dark:text-white text-base group-hover:text-indigo-600 transition-colors leading-tight">Research & Emerging Tech</h3>
                 <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                  Engineered with serverless auto-scaling structures to handle varying organizations seamlessly.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Feature 7: Modern Technologies */}
-            <motion.div
-              initial={{ opacity: 0, y: 50, rotateX: 15 }}
-              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, type: "spring", stiffness: 100, damping: 15 }}
-              whileHover={{
-                y: -10,
-                rotateX: 10,
-                rotateY: -10,
-                scale: 1.03,
-                z: 30,
-                boxShadow: "0 25px 50px rgba(79, 70, 229, 0.12)"
-              }}
-              className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 p-6 rounded-2xl shadow-sm transition-all duration-300 group flex flex-col gap-4 cursor-pointer overflow-hidden text-center items-center select-none min-h-[220px]"
-              style={{ transformStyle: 'preserve-3d' }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
-              <div className="h-12 w-12 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm shrink-0 relative z-10">
-                <Code className="h-6 w-6" />
-              </div>
-              <div className="flex flex-col gap-2 relative z-10">
-                <h3 className="font-extrabold text-slate-800 dark:text-white text-base group-hover:text-indigo-600 transition-colors leading-tight">Modern Tech</h3>
-                <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                  Leveraging cutting-edge technologies (Next.js, NestJS, Flutter) to build robust systems.
+                  Continuous investment in AI research, Large Language Models (LLMs), Generative AI, automation, and intelligent enterprise solutions ensures our clients stay ahead in a rapidly evolving digital landscape.
                 </p>
               </div>
             </motion.div>
@@ -2101,10 +2262,13 @@ export default function Home() {
             <div className="flex flex-col items-center gap-4 text-center border-b border-slate-200/60 dark:border-white/5 pb-8 relative">
               <span className="text-xs font-extrabold text-[#0052cc] uppercase tracking-widest bg-[#0052cc]/5 px-3 py-1 rounded-full w-fit">PRODUCT PORTFOLIO</span>
               <h2 className="font-display font-extrabold text-3xl md:text-4.5xl text-slate-900 dark:text-white tracking-tight leading-tight">
-                Our AI-Powered Products
+                Innovative AI-Powered Products for Every Industry
               </h2>
+              <p className="text-slate-655 dark:text-slate-400 text-sm leading-relaxed max-w-2xl">
+                From healthcare and education to recruitment, CRM, agriculture, and digital governance, our AI-powered products are designed to automate workflows, enhance decision-making, and accelerate digital transformation for organizations of every size.
+              </p>
               <a href="#contact" className="text-sm font-bold text-[#0052cc] hover:text-blue-600 hover:underline flex items-center gap-1 group/btn transition-colors mt-1">
-                View All Products <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                Explore Our Product Ecosystem <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
               </a>
             </div>
 
@@ -2116,69 +2280,7 @@ export default function Home() {
               className="grid md:grid-cols-2 xl:grid-cols-4 gap-6 w-full"
               style={{ perspective: 1200 }}
             >
-              {/* Product 1: eduAI365 */}
-              <motion.div
-                variants={itemVariants}
-                whileHover={{
-                  y: -12,
-                  rotateY: 8,
-                  rotateX: -4,
-                  scale: 1.03,
-                  boxShadow: "0 25px 50px rgba(0, 82, 204, 0.12)"
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[280px]"
-                style={{ transformStyle: 'preserve-3d' }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
-                <div className="flex flex-wrap gap-2 relative z-10">
-                  <Badge variant="primary">AI</Badge>
-                  <Badge variant="neutral">Education</Badge>
-                  <Badge variant="primary">SaaS</Badge>
-                </div>
-                <div className="relative z-10 flex flex-col gap-2">
-                  <h3 className="font-display font-extrabold text-xl text-slate-900 dark:text-white group-hover:text-[#0052cc] transition-colors leading-snug">eduAI365</h3>
-                  <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                    AI-Powered Education Management System for Schools, Colleges & Institutions to streamline learning and operations.
-                  </p>
-                </div>
-                <a href="#contact" className="inline-flex items-center gap-1.5 text-sm font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
-                  Learn More <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
-                </a>
-              </motion.div>
-
-              {/* Product 2: Apply4Jobs */}
-              <motion.div
-                variants={itemVariants}
-                whileHover={{
-                  y: -12,
-                  rotateY: 8,
-                  rotateX: -4,
-                  scale: 1.03,
-                  boxShadow: "0 25px 50px rgba(217, 119, 6, 0.12)"
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[280px]"
-                style={{ transformStyle: 'preserve-3d' }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
-                <div className="flex flex-wrap gap-2 relative z-10">
-                  <Badge variant="warning">HR Tech</Badge>
-                  <Badge variant="warning">Recruitment</Badge>
-                  <Badge variant="primary">AI</Badge>
-                </div>
-                <div className="relative z-10 flex flex-col gap-2">
-                  <h3 className="font-display font-extrabold text-xl text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors leading-snug">Apply4Jobs</h3>
-                  <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                    Intelligent Job Portal & Recruitment Management Platform that automates resume screening and candidate matching.
-                  </p>
-                </div>
-                <a href="#contact" className="inline-flex items-center gap-1.5 text-sm font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
-                  Learn More <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
-                </a>
-              </motion.div>
-
-              {/* Product 3: LeadGrowAI */}
+              {/* Product 1: Nidaan Polyclinic */}
               <motion.div
                 variants={itemVariants}
                 whileHover={{
@@ -2189,27 +2291,28 @@ export default function Home() {
                   boxShadow: "0 25px 50px rgba(16, 185, 129, 0.12)"
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[280px]"
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
                 style={{ transformStyle: 'preserve-3d' }}
               >
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
                 <div className="flex flex-wrap gap-2 relative z-10">
-                  <Badge variant="success">CRM</Badge>
-                  <Badge variant="success">Sales</Badge>
-                  <Badge variant="danger">Analytics</Badge>
+                  <Badge variant="success">Healthcare</Badge>
+                  <Badge variant="neutral">EMR</Badge>
+                  <Badge variant="primary">AI</Badge>
                 </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">01. Nidaan Polyclinic</span>
                 <div className="relative z-10 flex flex-col gap-2">
-                  <h3 className="font-display font-extrabold text-xl text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors leading-snug">LeadGrowAI</h3>
-                  <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                    AI-Powered Lead Management & Business Growth Platform leveraging intelligent conversational routing.
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors leading-snug">AI-Powered Healthcare Management Platform</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    A comprehensive clinic and hospital management solution featuring patient records, appointment scheduling, billing, pharmacy, diagnostics, telemedicine, and AI-assisted healthcare workflows.
                   </p>
                 </div>
-                <a href="#contact" className="inline-flex items-center gap-1.5 text-sm font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
                   Learn More <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
                 </a>
               </motion.div>
 
-              {/* Product 4: TheHirings */}
+              {/* Product 2: LeadGrowAI */}
               <motion.div
                 variants={itemVariants}
                 whileHover={{
@@ -2217,26 +2320,217 @@ export default function Home() {
                   rotateY: 8,
                   rotateX: -4,
                   scale: 1.03,
-                  boxShadow: "0 25px 50px rgba(124, 58, 237, 0.12)"
+                  boxShadow: "0 25px 50px rgba(16, 185, 129, 0.12)"
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[280px]"
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="success">CRM</Badge>
+                  <Badge variant="success">Sales</Badge>
+                  <Badge variant="primary">AI</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">02. LeadGrowAI</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors leading-snug">AI-Powered Lead Generation & CRM Platform</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    An intelligent B2B marketplace and CRM platform that automates lead discovery, qualification, engagement, pipeline management, and business growth using AI.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  Learn More <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Product 3: Apply4Jobs */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 8,
+                  rotateX: -4,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(217, 119, 6, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
                 style={{ transformStyle: 'preserve-3d' }}
               >
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
                 <div className="flex flex-wrap gap-2 relative z-10">
                   <Badge variant="warning">HR Tech</Badge>
-                  <Badge variant="primary">Assessment</Badge>
+                  <Badge variant="warning">Recruitment</Badge>
                   <Badge variant="primary">AI</Badge>
                 </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">03. Apply4Jobs</span>
                 <div className="relative z-10 flex flex-col gap-2">
-                  <h3 className="font-display font-extrabold text-xl text-slate-900 dark:text-white group-hover:text-purple-650 transition-colors leading-snug">TheHirings</h3>
-                  <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                    Advanced Hiring & Candidate Assessment Platform for Enterprises utilizing custom AI vetting procedures.
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors leading-snug">Intelligent Recruitment & Job Portal</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    A modern hiring platform that streamlines job posting, AI-powered resume screening, applicant tracking, interview management, and recruitment automation.
                   </p>
                 </div>
-                <a href="#contact" className="inline-flex items-center gap-1.5 text-sm font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
                   Learn More <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Product 4: EduAI365 */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 8,
+                  rotateX: -4,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(0, 82, 204, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="primary">Education</Badge>
+                  <Badge variant="neutral">ERP</Badge>
+                  <Badge variant="primary">AI</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">04. EduAI365</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors leading-snug">AI-Powered Education Management System</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    A complete digital ecosystem for schools, colleges, and training institutes with admissions, attendance, academics, examinations, finance, and AI-enabled learning support.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  Learn More <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Product 5: Scholarship */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 8,
+                  rotateX: -4,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(100, 116, 139, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="primary">Education</Badge>
+                  <Badge variant="neutral">Government</Badge>
+                  <Badge variant="neutral">Portal</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">05. Scholarship</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-slate-650 transition-colors leading-snug">Scholarship Management Portal</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    A secure digital platform for scholarship applications, eligibility verification, document management, workflow automation, beneficiary tracking, and administrative reporting.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  Learn More <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Product 6: TheHireAMe */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 8,
+                  rotateX: -4,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(217, 119, 6, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="warning">HR Tech</Badge>
+                  <Badge variant="warning">Workforce</Badge>
+                  <Badge variant="primary">AI</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">06. TheHireAMe</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors leading-snug">AI Workforce & Talent Marketplace</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    A smart hiring platform connecting employers with skilled professionals through intelligent matching, workforce management, candidate verification, and AI-assisted recruitment.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  Learn More <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Product 7: NEHerbalTea */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 8,
+                  rotateX: -4,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(239, 68, 68, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="success">Agriculture</Badge>
+                  <Badge variant="danger">E-Commerce</Badge>
+                  <Badge variant="primary">AI</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">07. NEHerbalTea</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-red-500 transition-colors leading-snug">Smart Herbal Tea Marketplace</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    An AI-enabled platform promoting Northeast India's herbal products through inventory management, digital commerce, customer engagement, analytics, and supply chain optimization.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  Learn More <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Product 8: And Many More... */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(0, 82, 204, 0.2)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-br from-[#0052cc] to-indigo-950 dark:from-[#003d99] dark:to-navy-950 border border-transparent p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px] text-white rounded-2xl"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="primary" className="bg-white/15 border-white/25 text-white">SaaS</Badge>
+                  <Badge variant="primary" className="bg-white/15 border-white/25 text-white">AI R&D</Badge>
+                  <Badge variant="primary" className="bg-white/15 border-white/25 text-white">Future</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-blue-200 uppercase tracking-widest relative z-10">08. And Many More...</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-white leading-snug">Building the Next Generation of AI Products</h3>
+                  <p className="text-blue-100/85 text-xs leading-relaxed">
+                    Our innovation pipeline includes enterprise SaaS platforms, business automation solutions, analytics systems, AI assistants, government platforms, research applications, and industry-specific digital products designed to solve real-world challenges.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-white group/link mt-auto relative z-10 hover:underline">
+                  Discover Our Complete Product Portfolio <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
                 </a>
               </motion.div>
             </motion.div>
@@ -2249,11 +2543,14 @@ export default function Home() {
           <div className="absolute bottom-[-10%] right-[-10%] w-[350px] h-[350px] bg-brand-500/5 rounded-full blur-[100px] pointer-events-none" />
 
           <div className="max-w-7xl mx-auto flex flex-col items-center gap-16 relative z-10">
-            <div className="text-center max-w-2xl flex flex-col gap-4">
+            <div className="text-center max-w-3xl flex flex-col gap-4 mx-auto">
               <span className="text-xs font-extrabold text-[#0052cc] uppercase tracking-widest bg-[#0052cc]/5 px-3 py-1 rounded-full w-fit mx-auto">ENTERPRISE SOLUTIONS</span>
-              <h2 className="font-display font-extrabold text-3xl md:text-4xl text-slate-900 dark:text-white tracking-tight">
-                Powering Digital Transformation
+              <h2 className="font-display font-extrabold text-3xl md:text-4.5xl text-slate-900 dark:text-white tracking-tight leading-tight">
+                Empowering Organizations with Intelligent Enterprise Solutions
               </h2>
+              <p className="text-slate-655 dark:text-slate-400 text-sm leading-relaxed max-w-2xl mx-auto">
+                At Algoguido Technologies Private Limited, we combine Artificial Intelligence, Enterprise Software Engineering, Cloud Computing, Data Analytics, and Intelligent Automation to build secure, scalable, and future-ready digital solutions. Our enterprise offerings help organizations streamline operations, accelerate digital transformation, improve customer experiences, and achieve sustainable growth through intelligent, scalable, and secure digital ecosystems.
+              </p>
             </div>
 
             <motion.div
@@ -2264,30 +2561,83 @@ export default function Home() {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full"
             >
               {[
-                { title: "ERP Solutions", icon: LayoutDashboard, bg: "bg-blue-500/10 text-cyan-600" },
-                { title: "CRM Solutions", icon: Users, bg: "bg-orange-500/10 text-orange-600" },
-                { title: "SaaS Platforms", icon: Monitor, bg: "bg-purple-500/10 text-purple-600" },
-                { title: "AI Automation", icon: Cpu, bg: "bg-indigo-500/10 text-indigo-600" },
-                { title: "Business Intelligence", icon: TrendingUp, bg: "bg-pink-500/10 text-pink-600" },
-                { title: "Custom Software", icon: Code, bg: "bg-amber-500/10 text-amber-600" },
-                { title: "Cloud Applications", icon: Globe, bg: "bg-emerald-500/10 text-emerald-600" },
-                { title: "API Integration", icon: FolderSync, bg: "bg-teal-500/10 text-teal-600" },
+                { 
+                  title: "Enterprise ERP", 
+                  desc: "Integrate finance, HR, procurement, inventory, operations, and reporting into a unified enterprise platform that enhances efficiency, collaboration, and operational visibility.",
+                  icon: LayoutDashboard, 
+                  bg: "bg-blue-500/10 text-cyan-600",
+                  hoverBorder: "hover:border-blue-500/30 dark:hover:border-blue-500/20"
+                },
+                { 
+                  title: "Intelligent CRM", 
+                  desc: "Transform customer engagement with AI-powered CRM solutions featuring lead management, sales automation, customer support, marketing workflows, and business insights.",
+                  icon: Users, 
+                  bg: "bg-orange-500/10 text-orange-600",
+                  hoverBorder: "hover:border-orange-500/30 dark:hover:border-orange-500/20"
+                },
+                { 
+                  title: "Enterprise SaaS Platforms", 
+                  desc: "Build scalable, multi-tenant SaaS applications with cloud-native architecture, secure user management, subscription billing, and enterprise-grade performance.",
+                  icon: Monitor, 
+                  bg: "bg-purple-500/10 text-purple-600",
+                  hoverBorder: "hover:border-purple-500/30 dark:hover:border-purple-500/20"
+                },
+                { 
+                  title: "AI & Intelligent Automation", 
+                  desc: "Harness Artificial Intelligence, Machine Learning, Large Language Models (LLMs), and intelligent automation to optimize workflows, enhance decision-making, and improve productivity.",
+                  icon: Cpu, 
+                  bg: "bg-indigo-500/10 text-indigo-600",
+                  hoverBorder: "hover:border-indigo-500/30 dark:hover:border-indigo-500/20"
+                },
+                { 
+                  title: "Business Intelligence & Analytics", 
+                  desc: "Convert enterprise data into actionable insights through interactive dashboards, real-time reporting, KPI monitoring, predictive analytics, and AI-powered business intelligence.",
+                  icon: TrendingUp, 
+                  bg: "bg-pink-500/10 text-pink-600",
+                  hoverBorder: "hover:border-pink-500/30 dark:hover:border-pink-500/20"
+                },
+                { 
+                  title: "Custom Software Development", 
+                  desc: "Design and develop secure, scalable, and high-performance web, mobile, and enterprise applications tailored to your unique business requirements and digital transformation goals.",
+                  icon: Code, 
+                  bg: "bg-amber-500/10 text-amber-600",
+                  hoverBorder: "hover:border-amber-500/30 dark:hover:border-amber-500/20"
+                },
+                { 
+                  title: "Cloud & Digital Platforms", 
+                  desc: "Develop cloud-native applications, enterprise portals, digital ecosystems, and modern platforms that deliver high availability, seamless scalability, and exceptional user experiences.",
+                  icon: Globe, 
+                  bg: "bg-emerald-500/10 text-emerald-600",
+                  hoverBorder: "hover:border-emerald-500/30 dark:hover:border-emerald-500/20"
+                },
+                { 
+                  title: "API Integration & System Connectivity", 
+                  desc: "Integrate enterprise applications with payment gateways, ERP systems, CRM platforms, cloud services, authentication providers, communication APIs, and third-party business applications through secure, reliable, and scalable integrations.",
+                  icon: FolderSync, 
+                  bg: "bg-teal-500/10 text-teal-600",
+                  hoverBorder: "hover:border-teal-500/30 dark:hover:border-teal-500/20"
+                },
               ].map((service, index) => {
                 const IconComponent = service.icon;
                 return (
                   <motion.div key={index} variants={itemVariants}>
                     <Card
                       variant="default"
-                      className="flex items-center gap-4 p-5 hover:-translate-y-1.5 hover:shadow-lg bg-white/70 hover:bg-white border border-slate-200/60 hover:border-[#0052cc]/30 dark:bg-navy-900/40 dark:border-white/5 transition-all duration-300 group cursor-pointer h-full"
+                      className={`flex flex-col gap-4 p-6 hover:-translate-y-1.5 hover:shadow-lg bg-white/70 hover:bg-white border border-slate-200/60 ${service.hoverBorder} dark:bg-navy-900/40 dark:border-white/5 transition-all duration-300 group cursor-pointer h-full`}
                     >
                       <div className={`h-11 w-11 rounded-xl ${service.bg} flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm`}>
                         <IconComponent className="h-5 w-5" />
                       </div>
-                      <div className="flex items-center justify-between w-full">
-                        <span className="font-bold text-slate-800 dark:text-slate-200 text-sm group-hover:text-[#0052cc] transition-colors">
+                      <div className="flex flex-col gap-2 h-full">
+                        <h3 className="font-bold text-slate-800 dark:text-white text-base group-hover:text-[#0052cc] transition-colors leading-tight">
                           {service.title}
-                        </span>
-                        <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-[#0052cc] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 shrink-0" />
+                        </h3>
+                        <p className="text-slate-655 dark:text-slate-400 text-xs leading-relaxed">
+                          {service.desc}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/btn mt-auto">
+                        Learn More <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                       </div>
                     </Card>
                   </motion.div>
@@ -2302,12 +2652,15 @@ export default function Home() {
           <div className="absolute top-[20%] right-[-10%] w-[350px] h-[350px] bg-brand-500/5 rounded-full blur-[100px] pointer-events-none" />
           <div className="max-w-7xl mx-auto flex flex-col gap-12 relative z-10">
             <div className="flex flex-col items-center gap-4 text-center border-b border-slate-200/60 dark:border-white/5 pb-8 relative">
-              <span className="text-xs font-extrabold text-[#0052cc] uppercase tracking-widest bg-[#0052cc]/5 px-3 py-1 rounded-full w-fit">IMPACT AND DEPLOYMENTS</span>
+              <span className="text-xs font-extrabold text-[#0052cc] uppercase tracking-widest bg-[#0052cc]/5 px-3 py-1 rounded-full w-fit">CASE STUDIES & DEPLOYMENTS</span>
               <h2 className="font-display font-extrabold text-3xl md:text-4.5xl text-slate-900 dark:text-white tracking-tight leading-tight">
-                Government & Client Projects
+                Engineering Digital Transformation Across Industries
               </h2>
+              <p className="text-slate-655 dark:text-slate-400 text-sm leading-relaxed max-w-2xl">
+                From intelligent healthcare systems and education platforms to enterprise software, AI-powered automation, and digital registries, Algoguido delivers innovative technology solutions that empower organizations to modernize operations, improve efficiency, and achieve sustainable growth through intelligent, scalable, and secure digital ecosystems.
+              </p>
               <a href="#contact" className="text-sm font-bold text-[#0052cc] hover:text-blue-600 hover:underline flex items-center gap-1 group/btn transition-colors mt-1">
-                View All Projects <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                Explore Our Project Portfolio <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
               </a>
             </div>
 
@@ -2316,32 +2669,33 @@ export default function Home() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
-              className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 w-full"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full"
               style={{ perspective: 1200 }}
             >
-              {/* Case 1: Nidaan Hospital */}
+              {/* Case 1: Nidaan Polyclinic */}
               <motion.div
                 variants={itemVariants}
                 whileHover={{
                   y: -12,
-                  rotateY: 8,
-                  rotateX: -4,
+                  rotateY: 6,
+                  rotateX: -3,
                   scale: 1.03,
                   boxShadow: "0 25px 50px rgba(16, 185, 129, 0.12)"
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[260px]"
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
                 style={{ transformStyle: 'preserve-3d' }}
               >
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
                 <div className="flex flex-wrap gap-2 relative z-10">
                   <Badge variant="success">Healthcare</Badge>
-                  <Badge variant="neutral">Deployment</Badge>
+                  <Badge variant="primary">Digital Health</Badge>
                 </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">01. Nidaan Polyclinic</span>
                 <div className="relative z-10 flex flex-col gap-2">
-                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors leading-snug">Nidaan Hospital</h3>
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors leading-snug">AI-Enabled Healthcare Management</h3>
                   <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                    Hospital Management System & Healthcare Digitalization.
+                    Designed and deployed a comprehensive healthcare management platform supporting patient records, appointments, diagnostics, pharmacy, billing, and administrative operations to streamline clinical workflows.
                   </p>
                 </div>
                 <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
@@ -2354,24 +2708,25 @@ export default function Home() {
                 variants={itemVariants}
                 whileHover={{
                   y: -12,
-                  rotateY: 8,
-                  rotateX: -4,
+                  rotateY: 6,
+                  rotateX: -3,
                   scale: 1.03,
                   boxShadow: "0 25px 50px rgba(217, 119, 6, 0.12)"
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[260px]"
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
                 style={{ transformStyle: 'preserve-3d' }}
               >
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
                 <div className="flex flex-wrap gap-2 relative z-10">
-                  <Badge variant="warning">Government</Badge>
-                  <Badge variant="neutral">Registry</Badge>
+                  <Badge variant="warning">Community</Badge>
+                  <Badge variant="neutral">Digital Registry</Badge>
                 </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">02. Syed Community Registry</span>
                 <div className="relative z-10 flex flex-col gap-2">
-                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors leading-snug">Syed Community Registry</h3>
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors leading-snug">Community Registration & Digital Records</h3>
                   <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                    Community Management & Digital Registry Platform.
+                    Developed a secure digital registry platform for community data management, member registration, document verification, and administrative reporting with a scalable cloud architecture.
                   </p>
                 </div>
                 <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
@@ -2379,29 +2734,30 @@ export default function Home() {
                 </a>
               </motion.div>
 
-              {/* Case 3: Healthcare AI Platform */}
+              {/* Case 3: Enterprise AI Solutions */}
               <motion.div
                 variants={itemVariants}
                 whileHover={{
                   y: -12,
-                  rotateY: 8,
-                  rotateX: -4,
+                  rotateY: 6,
+                  rotateX: -3,
                   scale: 1.03,
-                  boxShadow: "0 25px 50px rgba(16, 185, 129, 0.12)"
+                  boxShadow: "0 25px 50px rgba(0, 82, 204, 0.12)"
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[260px]"
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
                 style={{ transformStyle: 'preserve-3d' }}
               >
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
                 <div className="flex flex-wrap gap-2 relative z-10">
-                  <Badge variant="success">Healthcare</Badge>
-                  <Badge variant="primary">AI</Badge>
+                  <Badge variant="primary">Artificial Intelligence</Badge>
+                  <Badge variant="danger">Analytics</Badge>
                 </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">03. Enterprise AI Solutions</span>
                 <div className="relative z-10 flex flex-col gap-2">
-                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors leading-snug">Healthcare AI Platform</h3>
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors leading-snug">AI & Business Intelligence Platforms</h3>
                   <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                    AI-Powered Healthcare Analytics & Decision Support.
+                    Building intelligent AI solutions that integrate machine learning, predictive analytics, automation, and conversational AI to enhance operational efficiency and support data-driven decision-making.
                   </p>
                 </div>
                 <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
@@ -2414,24 +2770,87 @@ export default function Home() {
                 variants={itemVariants}
                 whileHover={{
                   y: -12,
-                  rotateY: 8,
-                  rotateX: -4,
+                  rotateY: 6,
+                  rotateX: -3,
                   scale: 1.03,
                   boxShadow: "0 25px 50px rgba(0, 82, 204, 0.12)"
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[260px]"
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
                 style={{ transformStyle: 'preserve-3d' }}
               >
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
                 <div className="flex flex-wrap gap-2 relative z-10">
                   <Badge variant="primary">Enterprise</Badge>
-                  <Badge variant="primary">Automation</Badge>
+                  <Badge variant="neutral">Workflow Automation</Badge>
                 </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">04. Enterprise Automation</span>
                 <div className="relative z-10 flex flex-col gap-2">
-                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-[#0052cc] transition-colors leading-snug">Enterprise Automation</h3>
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors leading-snug">Intelligent Business Process Automation</h3>
                   <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                    Workflow Automation & Enterprise Process Management.
+                    Delivered custom enterprise software and workflow automation solutions that digitize operations, improve collaboration, optimize business processes, and increase organizational productivity.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  View Case Study <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Case 5: Education Digital Transformation */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 6,
+                  rotateX: -3,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(0, 82, 204, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="primary">Education</Badge>
+                  <Badge variant="success">ERP</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">05. Education Digital Transformation</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors leading-snug">Smart Campus & Learning Platforms</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    Implemented AI-enabled education management systems for academic administration, student lifecycle management, examinations, attendance, and institutional analytics.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  View Case Study <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Case 6: Recruitment & Workforce Technology */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 6,
+                  rotateX: -3,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(217, 119, 6, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="warning">HR Tech</Badge>
+                  <Badge variant="warning">Recruitment</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">06. Recruitment & Workforce Technology</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors leading-snug">AI-Powered Hiring Platforms</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    Developed intelligent recruitment ecosystems featuring applicant tracking, AI-assisted resume screening, candidate assessments, workforce management, and hiring automation.
                   </p>
                 </div>
                 <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
@@ -2443,117 +2862,158 @@ export default function Home() {
         </section>
 
         {/* Scalable Infrastructure & Technology Section */}
-        <section id="tech" className="py-10 md:py-14 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 border-b border-slate-200/60 dark:border-white/5 relative z-10 overflow-hidden" style={{ background: 'linear-gradient(180deg, #fcfbfa 0%, #f7f5f0 100%)' }}>
+        <section id="tech" className="py-14 md:py-24 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 border-b border-slate-200/60 dark:border-white/5 relative z-10 overflow-hidden" style={{ background: 'linear-gradient(180deg, #fcfbfa 0%, #f7f5f0 100%)' }}>
           <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-blue-500/[0.01] to-transparent pointer-events-none" />
           <div className="max-w-7xl mx-auto flex flex-col items-center gap-12">
-            <div className="text-center max-w-2xl flex flex-col gap-2">
+            <div className="text-center max-w-3xl flex flex-col gap-4">
               <span className="text-xs font-extrabold text-[#0052cc] uppercase tracking-widest bg-[#0052cc]/5 px-3 py-1 rounded-full w-fit mx-auto">TECHNOLOGY STACK</span>
-              <h2 className="font-display font-extrabold text-2xl md:text-3xl text-slate-900 dark:text-white tracking-tight">
-                Scalable Infrastructure & Technology
+              <h2 className="font-display font-extrabold text-3xl md:text-4.5xl text-slate-900 dark:text-white tracking-tight leading-tight">
+                Engineering with Modern Technologies
               </h2>
+              <p className="text-slate-655 dark:text-slate-400 text-sm leading-relaxed max-w-2xl mx-auto">
+                At Algoguido Technologies Private Limited, we leverage a robust ecosystem of Artificial Intelligence, cloud-native architecture, enterprise software engineering, modern databases, DevOps, and intelligent integrations to build secure, scalable, and future-ready digital solutions. Our technology stack empowers organizations to innovate faster, optimize operations, and accelerate digital transformation.
+              </p>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-3 sm:gap-5 max-w-5xl w-full">
-              {/* AI & Research Stack */}
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 border-t-2 border-t-[#3b8cff] text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">NLP & LLMs</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">AI Research</span>
-              </Card>
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md border-t-2 border-t-[#3b8cff] bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">Machine Learning</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">AI Research</span>
-              </Card>
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md border-t-2 border-t-[#3b8cff] bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">Deep Learning</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">AI Research</span>
-              </Card>
-
-              {/* Application Frameworks */}
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">Next.js</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">Application</span>
-              </Card>
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">NestJS</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">Application</span>
-              </Card>
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">Flutter</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">Mobile Application</span>
-              </Card>
-
-              {/* Databases */}
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">PostgreSQL</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">Database</span>
-              </Card>
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">MongoDB</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">Database</span>
-              </Card>
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">MySQL</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">Database</span>
-              </Card>
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">SQLite</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">Database</span>
-              </Card>
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">Firebase</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">Backend service</span>
-              </Card>
-
-              {/* Infrastructure & Services */}
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">VPS</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">Hosting</span>
-              </Card>
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">Redis Cache</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">Caching</span>
-              </Card>
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">Docker</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">Containerization</span>
-              </Card>
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">Auth</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">Security</span>
-              </Card>
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">Razorpay</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">Payment Gateway</span>
-              </Card>
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">SMS API</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">Communication</span>
-              </Card>
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">WhatsApp API</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">Communication</span>
-              </Card>
-              <Card variant="default" className="flex flex-col items-center justify-center px-4 py-2.5 sm:px-6 sm:py-4 min-w-[100px] sm:min-w-[140px] hover:-translate-y-1 hover:shadow-md bg-white/70 hover:bg-white border border-slate-200/60 dark:bg-white/[0.02] dark:border-white/5 text-slate-200">
-                <span className="font-bold text-slate-800 dark:text-white text-sm">And More</span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase mt-1">Technologies</span>
-              </Card>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full mt-6">
+              {[
+                {
+                  category: "AI & Intelligence",
+                  borderTop: "border-t-2 border-t-[#0052cc]",
+                  bgGlow: "bg-[#0052cc]/[0.01]",
+                  techs: [
+                    { name: "NLP & LLMs", sub: "ARTIFICIAL INTELLIGENCE" },
+                    { name: "Machine Learning", sub: "ARTIFICIAL INTELLIGENCE" },
+                    { name: "Deep Learning", sub: "ARTIFICIAL INTELLIGENCE" },
+                    { name: "Data Analytics", sub: "BUSINESS INTELLIGENCE" }
+                  ]
+                },
+                {
+                  category: "Frontend & Mobile",
+                  borderTop: "border-t-2 border-t-blue-500",
+                  bgGlow: "bg-blue-500/[0.01]",
+                  techs: [
+                    { name: "Next.js", sub: "WEB FRAMEWORK" },
+                    { name: "React", sub: "UI FRAMEWORK" },
+                    { name: "Flutter", sub: "MOBILE DEVELOPMENT" },
+                    { name: "TypeScript", sub: "PROGRAMMING LANGUAGE" }
+                  ]
+                },
+                {
+                  category: "Backend & APIs",
+                  borderTop: "border-t-2 border-t-purple-500",
+                  bgGlow: "bg-purple-500/[0.01]",
+                  techs: [
+                    { name: "NestJS", sub: "BACKEND FRAMEWORK" },
+                    { name: "Node.js", sub: "RUNTIME ENVIRONMENT" },
+                    { name: "REST APIs", sub: "API DEVELOPMENT" },
+                    { name: "GraphQL", sub: "API TECHNOLOGY" }
+                  ]
+                },
+                {
+                  category: "Databases & Caching",
+                  borderTop: "border-t-2 border-t-emerald-500",
+                  bgGlow: "bg-emerald-500/[0.01]",
+                  techs: [
+                    { name: "PostgreSQL", sub: "RELATIONAL DATABASE" },
+                    { name: "MongoDB", sub: "NoSQL DATABASE" },
+                    { name: "MySQL", sub: "RELATIONAL DATABASE" },
+                    { name: "SQLite", sub: "LIGHTWEIGHT DATABASE" },
+                    { name: "Redis", sub: "IN-MEMORY CACHE" }
+                  ]
+                },
+                {
+                  category: "Cloud & DevOps",
+                  borderTop: "border-t-2 border-t-orange-500",
+                  bgGlow: "bg-orange-500/[0.01]",
+                  techs: [
+                    { name: "Docker", sub: "CONTAINERIZATION" },
+                    { name: "VPS / Cloud", sub: "CLOUD INFRASTRUCTURE" },
+                    { name: "CI/CD", sub: "DEVOPS AUTOMATION" },
+                    { name: "GitHub", sub: "VERSION CONTROL" }
+                  ]
+                },
+                {
+                  category: "Security",
+                  borderTop: "border-t-2 border-t-red-500",
+                  bgGlow: "bg-red-500/[0.01]",
+                  techs: [
+                    { name: "Authentication", sub: "IDENTITY & SECURITY" },
+                    { name: "JWT", sub: "ACCESS MANAGEMENT" },
+                    { name: "OAuth 2.0", sub: "SECURE AUTHORIZATION" },
+                    { name: "Encryption", sub: "DATA PROTECTION" }
+                  ]
+                },
+                {
+                  category: "Integrations",
+                  borderTop: "border-t-2 border-t-teal-500",
+                  bgGlow: "bg-teal-500/[0.01]",
+                  techs: [
+                    { name: "Firebase", sub: "CLOUD PLATFORM" },
+                    { name: "Razorpay", sub: "PAYMENT PLATFORM" },
+                    { name: "WhatsApp API", sub: "BUSINESS MESSAGING" },
+                    { name: "SMS API", sub: "COMMUNICATION" },
+                    { name: "Email Services", sub: "NOTIFICATIONS" }
+                  ]
+                },
+                {
+                  category: "And More...",
+                  borderTop: "border-t-2 border-t-[#0052cc]",
+                  bgGlow: "bg-brand-500/10 dark:bg-[#0052cc]/10",
+                  highlight: true,
+                  techs: [
+                    { name: "40+ Enterprise Technologies", sub: "CONTINUOUSLY EVOLVING" }
+                  ]
+                }
+              ].map((cat, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  <Card
+                    variant="default"
+                    className={`flex flex-col gap-5 p-6 bg-white/70 dark:bg-navy-900/40 border border-slate-200/60 dark:border-white/5 ${cat.borderTop} ${cat.bgGlow} rounded-2xl h-full shadow-sm hover:shadow-md transition-all duration-300`}
+                  >
+                    <h3 className={`font-display font-extrabold text-base border-b border-slate-200/50 dark:border-white/5 pb-2 ${cat.highlight ? 'text-[#0052cc] dark:text-blue-400' : 'text-slate-900 dark:text-white'}`}>
+                      {cat.category}
+                    </h3>
+                    <div className="flex flex-col gap-4">
+                      {cat.techs.map((t, idx) => (
+                        <div key={idx} className="flex flex-col gap-0.5 group/item cursor-pointer">
+                          <span className={`font-bold text-sm transition-colors ${cat.highlight ? 'text-[#0052cc] dark:text-blue-400' : 'text-slate-800 dark:text-slate-200 group-hover/item:text-[#0052cc]'}`}>
+                            {t.name}
+                          </span>
+                          <span className="text-[9px] text-slate-400 dark:text-slate-500 font-extrabold tracking-wider uppercase">
+                            {t.sub}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
 
         {/* Research, Education & Innovation Section */}
-        <section id="research" className="py-12 md:py-16 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 relative z-10 overflow-hidden" style={{ background: 'linear-gradient(180deg, #f7f9fc 0%, #edf1f7 100%)' }}>
+        <section id="research" className="py-14 md:py-24 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 relative z-10 overflow-hidden" style={{ background: 'linear-gradient(180deg, #f7f9fc 0%, #edf1f7 100%)' }}>
           <div className="absolute top-[30%] left-[-10%] w-[350px] h-[350px] bg-purple-500/[0.02] rounded-full blur-[100px] pointer-events-none" />
           <div className="max-w-7xl mx-auto flex flex-col items-center gap-16">
-            <div className="text-center max-w-2xl flex flex-col gap-4">
+            <div className="text-center max-w-3xl flex flex-col gap-4">
               <span className="text-xs font-extrabold text-[#0052cc] uppercase tracking-widest bg-[#0052cc]/5 px-3 py-1 rounded-full w-fit mx-auto">RESEARCH & EDUCATION</span>
-              <h2 className="font-display font-extrabold text-3xl md:text-4xl text-slate-900 dark:text-white tracking-tight">
-                Research, Education & Innovation
+              <h2 className="font-display font-extrabold text-3xl md:text-4.5xl text-slate-900 dark:text-white tracking-tight leading-tight">
+                Advancing Research, Learning & Innovation
               </h2>
+              <p className="text-slate-655 dark:text-slate-400 text-sm leading-relaxed max-w-2xl mx-auto">
+                At Algoguido Technologies Private Limited, we bridge the gap between academia and industry through AI research, industry-driven education, professional training, and innovation programs. Our initiatives empower students, educators, researchers, and professionals with practical skills, emerging technologies, and real-world experience to thrive in the digital economy.
+              </p>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 w-full">
-              {/* Track 1: Paid Internships */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+              {/* Track 1: Industry Internships */}
               <Card
                 variant="interactive"
                 onClick={() => {
@@ -2569,11 +3029,11 @@ export default function Home() {
                 <div className="h-10 w-10 rounded-xl bg-blue-50 text-[#0052cc] flex items-center justify-center">
                   <GraduationCap className="h-5 w-5" />
                 </div>
-                <h3 className="font-bold text-slate-900 dark:text-white text-lg">Paid Internships</h3>
-                <p className="text-slate-650 dark:text-slate-400 text-sm leading-relaxed">
-                  Hands-on industry experience with real-world projects.
+                <h3 className="font-bold text-slate-900 dark:text-white text-lg">Industry Internships</h3>
+                <p className="text-slate-655 dark:text-slate-400 text-xs leading-relaxed">
+                  Gain hands-on experience by working on live AI, software development, cloud computing, data analytics, and enterprise technology projects under expert mentorship.
                 </p>
-                <span className="text-[10px] font-bold text-[#0052cc] dark:text-blue-400 mt-auto flex items-center gap-1">Apply Now &rarr;</span>
+                <span className="text-[10px] font-bold text-[#0052cc] dark:text-blue-400 mt-auto flex items-center gap-1">Explore Programs &rarr;</span>
               </Card>
 
               {/* Track 2: Research Collaboration */}
@@ -2593,13 +3053,13 @@ export default function Home() {
                   <BookOpen className="h-5 w-5" />
                 </div>
                 <h3 className="font-bold text-slate-900 dark:text-white text-lg">Research Collaboration</h3>
-                <p className="text-slate-650 dark:text-slate-400 text-sm leading-relaxed">
-                  Collaborate on cutting-edge research in AI, ML, and emerging technologies.
+                <p className="text-slate-655 dark:text-slate-400 text-xs leading-relaxed">
+                  Partner with us on interdisciplinary research in Artificial Intelligence, Machine Learning, Data Science, Cloud Computing, and emerging technologies to drive innovation and solve real-world challenges.
                 </p>
-                <span className="text-[10px] font-bold text-purple-600 dark:text-purple-400 mt-auto flex items-center gap-1">Apply Now &rarr;</span>
+                <span className="text-[10px] font-bold text-purple-600 dark:text-purple-400 mt-auto flex items-center gap-1">Collaborate With Us &rarr;</span>
               </Card>
 
-              {/* Track 3: Faculty Development */}
+              {/* Track 3: Faculty Development Programs */}
               <Card
                 variant="interactive"
                 onClick={() => {
@@ -2615,14 +3075,14 @@ export default function Home() {
                 <div className="h-10 w-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center">
                   <Users className="h-5 w-5" />
                 </div>
-                <h3 className="font-bold text-slate-900 dark:text-white text-lg">Faculty Development</h3>
-                <p className="text-slate-650 dark:text-slate-400 text-sm leading-relaxed">
-                  Training programs for educators & academic professionals.
+                <h3 className="font-bold text-slate-900 dark:text-white text-lg">Faculty Development Programs</h3>
+                <p className="text-slate-655 dark:text-slate-400 text-xs leading-relaxed">
+                  Empower educators with industry-aligned training, AI technologies, modern teaching methodologies, curriculum enhancement, and research-oriented professional development.
                 </p>
-                <span className="text-[10px] font-bold text-orange-600 dark:text-orange-400 mt-auto flex items-center gap-1">Apply Now &rarr;</span>
+                <span className="text-[10px] font-bold text-orange-600 dark:text-orange-400 mt-auto flex items-center gap-1">Learn More &rarr;</span>
               </Card>
 
-              {/* Track 4: Industry Training */}
+              {/* Track 4: Professional & Industry Training */}
               <Card
                 variant="interactive"
                 onClick={() => {
@@ -2638,14 +3098,14 @@ export default function Home() {
                 <div className="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
                   <Monitor className="h-5 w-5" />
                 </div>
-                <h3 className="font-bold text-slate-900 dark:text-white text-lg">Industry Training</h3>
-                <p className="text-slate-650 dark:text-slate-400 text-sm leading-relaxed">
-                  Professional training programs for career advancement.
+                <h3 className="font-bold text-slate-900 dark:text-white text-lg">Professional & Industry Training</h3>
+                <p className="text-slate-655 dark:text-slate-400 text-xs leading-relaxed">
+                  Industry-focused certification programs in Artificial Intelligence, Data Analytics, Data Science, Cloud Computing, Enterprise Software, and emerging technologies designed for students and working professionals.
                 </p>
-                <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 mt-auto flex items-center gap-1">Apply Now &rarr;</span>
+                <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 mt-auto flex items-center gap-1">View Courses &rarr;</span>
               </Card>
 
-              {/* Track 5: AI Research */}
+              {/* Track 5: AI Research & Innovation */}
               <Card
                 variant="interactive"
                 onClick={() => {
@@ -2661,14 +3121,14 @@ export default function Home() {
                 <div className="h-10 w-10 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center">
                   <Brain className="h-5 w-5" />
                 </div>
-                <h3 className="font-bold text-slate-900 dark:text-white text-lg">AI Research</h3>
-                <p className="text-slate-650 dark:text-slate-400 text-sm leading-relaxed">
-                  Pioneering research in artificial intelligence & machine learning.
+                <h3 className="font-bold text-slate-900 dark:text-white text-lg">AI Research & Innovation</h3>
+                <p className="text-slate-655 dark:text-slate-400 text-xs leading-relaxed">
+                  Advance the future of intelligent technologies through research in Machine Learning, Large Language Models (LLMs), Natural Language Processing, Computer Vision, Predictive Analytics, and Intelligent Automation.
                 </p>
-                <span className="text-[10px] font-bold text-pink-600 dark:text-pink-400 mt-auto flex items-center gap-1">Apply Now &rarr;</span>
+                <span className="text-[10px] font-bold text-pink-600 dark:text-pink-400 mt-auto flex items-center gap-1">Discover Research &rarr;</span>
               </Card>
 
-              {/* Track 6: Data Science */}
+              {/* Track 6: Data Science & Analytics */}
               <Card
                 variant="interactive"
                 onClick={() => {
@@ -2684,45 +3144,16 @@ export default function Home() {
                 <div className="h-10 w-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center">
                   <Database className="h-5 w-5" />
                 </div>
-                <h3 className="font-bold text-slate-900 dark:text-white text-lg">Data Science</h3>
-                <p className="text-slate-650 dark:text-slate-400 text-sm leading-relaxed">
-                  Data-driven solutions and advanced analytics expertise.
+                <h3 className="font-bold text-slate-900 dark:text-white text-lg">Data Science & Analytics</h3>
+                <p className="text-slate-655 dark:text-slate-400 text-xs leading-relaxed">
+                  Develop expertise in data engineering, business intelligence, predictive analytics, visualization, and AI-powered decision-making to transform data into actionable business insights.
                 </p>
-                <span className="text-[10px] font-bold text-teal-600 dark:text-teal-400 mt-auto flex items-center gap-1">Apply Now &rarr;</span>
+                <span className="text-[10px] font-bold text-teal-600 dark:text-teal-400 mt-auto flex items-center gap-1">Explore Data Science &rarr;</span>
               </Card>
             </div>
           </div>
         </section>
 
-        {/* Core Impact Metrics Stats section */}
-        <section className="relative z-10 py-10 md:py-14 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 bg-[#0052cc] text-white">
-          <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-8 text-center">
-            <div className="flex flex-col gap-2">
-              <span className="text-4xl md:text-5xl font-display font-extrabold tracking-tight">100+</span>
-              <span className="text-blue-100 text-[10px] font-bold uppercase tracking-wider">Projects Delivered</span>
-            </div>
-            <div className="flex flex-col gap-2">
-              <span className="text-4xl md:text-5xl font-display font-extrabold tracking-tight">1000+</span>
-              <span className="text-blue-100 text-[10px] font-bold uppercase tracking-wider">Students & Interns</span>
-            </div>
-            <div className="flex flex-col gap-2">
-              <span className="text-4xl md:text-5xl font-display font-extrabold tracking-tight">20+</span>
-              <span className="text-blue-100 text-[10px] font-bold uppercase tracking-wider">Enterprise Clients</span>
-            </div>
-            <div className="flex flex-col gap-2">
-              <span className="text-4xl md:text-5xl font-display font-extrabold tracking-tight">AI</span>
-              <span className="text-blue-100 text-[10px] font-bold uppercase tracking-wider">Solutions & Innovation</span>
-            </div>
-            <div className="flex flex-col gap-2">
-              <span className="text-4xl md:text-5xl font-display font-extrabold tracking-tight">Govt</span>
-              <span className="text-blue-100 text-[10px] font-bold uppercase tracking-wider">Impact Projects</span>
-            </div>
-            <div className="flex flex-col gap-2">
-              <span className="text-4xl md:text-5xl font-display font-extrabold tracking-tight">5+</span>
-              <span className="text-blue-100 text-[10px] font-bold uppercase tracking-wider">Years of Excellence</span>
-            </div>
-          </div>
-        </section>
 
         {/* Testimonials (What Our Clients Say) Section */}
         <section id="testimonials" className="py-14 md:py-24 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 border-b border-slate-200/60 dark:border-navy-900 relative z-10 overflow-hidden" style={{ background: 'linear-gradient(180deg, #fcfbfa 0%, #f7f5f0 100%)' }}>
@@ -2806,66 +3237,75 @@ export default function Home() {
         </section>
 
         {/* Latest Insights & Articles Section */}
-        <section id="insights" className="py-12 md:py-16 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 border-b border-slate-200/60 dark:border-white/5 relative z-10" style={{ background: 'linear-gradient(180deg, #f7f9fc 0%, #edf1f7 100%)' }}>
+        <section id="insights" className="py-14 md:py-24 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 border-b border-slate-200/60 dark:border-white/5 relative z-10" style={{ background: 'linear-gradient(180deg, #fcfbfa 0%, #f7f5f0 100%)' }}>
           <div className="max-w-7xl mx-auto flex flex-col gap-12">
-            <div className="flex justify-between items-end border-b border-slate-200/60 dark:border-white/5 pb-6">
-              <div className="flex flex-col gap-2">
-                <span className="text-xs font-extrabold text-[#0052cc] uppercase tracking-widest bg-[#0052cc]/5 px-3 py-1 rounded-full w-fit">LATEST INSIGHTS & ARTICLES</span>
-                <h2 className="font-display font-extrabold text-3xl text-slate-900 dark:text-white tracking-tight">
-                  Intelligence Reports & Articles
-                </h2>
-              </div>
-              <a href="#contact" className="text-sm font-bold text-[#0052cc] dark:text-blue-400 hover:text-[#0040A3] hover:underline flex items-center gap-1">
-                Read All Insights <ArrowRight className="h-4 w-4" />
+            <div className="text-center max-w-3xl mx-auto flex flex-col gap-4 w-full border-b border-slate-200/60 dark:border-white/5 pb-8">
+              <span className="text-xs font-extrabold text-[#0052cc] uppercase tracking-widest bg-[#0052cc]/5 px-3 py-1 rounded-full w-fit mx-auto">LATEST INSIGHTS & ARTICLES</span>
+              <h2 className="font-display font-extrabold text-3xl md:text-4.5xl text-slate-900 dark:text-white tracking-tight leading-tight">
+                Intelligence Reports & Articles
+              </h2>
+              <a href="#contact" className="text-sm font-bold text-[#0052cc] dark:text-blue-400 hover:text-blue-700 transition-colors flex items-center justify-center gap-1.5 group mt-1">
+                Read All Insights <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </a>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8 w-full">
-              {/* Blog 1 */}
-              <div className="flex flex-col gap-4 p-5 bg-white dark:bg-navy-900 rounded-2xl border border-slate-200/50 dark:border-white/5 hover:shadow-lg hover:border-[#0052cc]/30 dark:hover:border-white/10 transition-all duration-300">
-                <span className="self-start px-2 py-0.5 rounded-full bg-blue-500/10 text-[#0052cc] dark:text-blue-400 text-[10px] font-bold">AI & Technology</span>
-                <span className="text-xs text-slate-400 dark:text-slate-500 font-semibold">May 20, 2025</span>
-                <h3 className="font-bold text-slate-800 dark:text-white text-lg leading-tight">
-                  The Future of AI in Enterprise Software Development
-                </h3>
-                <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
-                  Exploring the shift from general-purpose AI to hyper-specialized enterprise models.
-                </p>
-                <a href="#contact" className="inline-flex items-center gap-1.5 text-sm font-bold text-[#0052cc] dark:text-blue-400 hover:text-[#0040A3] mt-auto">
-                  Read More <ArrowRight className="h-4 w-4" />
-                </a>
-              </div>
-
-              {/* Blog 2 */}
-              <div className="flex flex-col gap-4 p-5 bg-white dark:bg-navy-900 rounded-2xl border border-slate-200/50 dark:border-white/5 hover:shadow-lg hover:border-indigo-500/30 dark:hover:border-white/10 transition-all duration-300">
-                <span className="self-start px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-[10px] font-bold">Cloud Computing</span>
-                <span className="text-xs text-slate-400 dark:text-slate-500 font-semibold">May 18, 2025</span>
-                <h3 className="font-bold text-slate-800 dark:text-white text-lg leading-tight">
-                  Cloud-Native Architecture Best Practices
-                </h3>
-                <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
-                  How to manage distributed architectures without operational overhead.
-                </p>
-                <a href="#contact" className="inline-flex items-center gap-1.5 text-sm font-bold text-[#0052cc] dark:text-blue-400 hover:text-[#0040A3] mt-auto">
-                  Read More <ArrowRight className="h-4 w-4" />
-                </a>
-              </div>
-
-              {/* Blog 3 */}
-              <div className="flex flex-col gap-4 p-5 bg-white dark:bg-navy-900 rounded-2xl border border-slate-200/50 dark:border-white/5 hover:shadow-lg hover:border-purple-500/30 dark:hover:border-white/10 transition-all duration-300">
-                <span className="self-start px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 text-[10px] font-bold">Digital Transformation</span>
-                <span className="text-xs text-slate-400 dark:text-slate-500 font-semibold">May 15, 2025</span>
-                <h3 className="font-bold text-slate-800 dark:text-white text-lg leading-tight">
-                  Digital Transformation in Government Sector
-                </h3>
-                <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
-                  How technology is driving efficiency and transparency in government.
-                </p>
-                <a href="#contact" className="inline-flex items-center gap-1.5 text-sm font-bold text-[#0052cc] dark:text-blue-400 hover:text-[#0040A3] mt-auto">
-                  Read More <ArrowRight className="h-4 w-4" />
-                </a>
-              </div>
-            </div>
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full"
+            >
+              {[
+                {
+                  badge: "AI & Technology",
+                  badgeClass: "bg-blue-50 dark:bg-blue-950/20 text-[#0052cc] dark:text-blue-400",
+                  date: "May 20, 2025",
+                  title: "The Future of AI in Enterprise Software Development",
+                  desc: "Exploring the shift from general-purpose AI to hyper-specialized enterprise models.",
+                },
+                {
+                  badge: "Cloud Computing",
+                  badgeClass: "bg-purple-50 dark:bg-purple-950/20 text-purple-600 dark:text-purple-400",
+                  date: "May 18, 2025",
+                  title: "Cloud-Native Architecture Best Practices",
+                  desc: "How to manage distributed architectures without operational overhead.",
+                },
+                {
+                  badge: "Digital Transformation",
+                  badgeClass: "bg-pink-50 dark:bg-pink-950/20 text-pink-600 dark:text-pink-400",
+                  date: "May 15, 2025",
+                  title: "Digital Transformation in Government Sector",
+                  desc: "How technology is driving efficiency and transparency in government.",
+                }
+              ].map((blog, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  whileHover={{ y: -8, scale: 1.01 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  <Card
+                    variant="default"
+                    className="flex flex-col gap-5 p-6 bg-white dark:bg-navy-900/40 rounded-2xl border border-slate-200/50 dark:border-white/5 hover:shadow-xl hover:border-[#0052cc]/20 dark:hover:border-white/10 transition-all duration-300 group cursor-pointer h-full"
+                  >
+                    <span className={`self-start px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide ${blog.badgeClass}`}>
+                      {blog.badge}
+                    </span>
+                    <span className="text-xs text-slate-400 dark:text-slate-500 font-semibold">{blog.date}</span>
+                    <h3 className="font-display font-bold text-slate-800 dark:text-white text-lg md:text-xl leading-snug group-hover:text-[#0052cc] dark:group-hover:text-blue-400 transition-colors duration-200">
+                      {blog.title}
+                    </h3>
+                    <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                      {blog.desc}
+                    </p>
+                    <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group-hover:text-blue-700 transition-colors mt-auto">
+                      Read More <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
         </section>
 
@@ -3399,26 +3839,33 @@ export default function Home() {
               <div className="p-8 bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-3xl flex flex-col gap-6 backdrop-blur-md">
                 <h3 className="font-bold text-slate-900 dark:text-white text-lg">Contact Information</h3>
                 <div className="flex flex-col gap-5 text-sm text-slate-655 dark:text-slate-400">
-                  <div className="flex items-center gap-4">
-                    <div className="h-10 w-10 rounded-xl bg-blue-50 text-[#0052cc] flex items-center justify-center shrink-0 shadow-sm">
+                  <div className="flex items-start gap-4">
+                    <div className="h-10 w-10 rounded-xl bg-blue-50 text-[#0052cc] flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                       <Phone className="h-5 w-5" />
                     </div>
                     <div className="flex flex-col">
-                      <span className="font-bold text-slate-800 dark:text-slate-200">+91 98765 43210</span>
-                      <span className="text-slate-600 dark:text-slate-400">+91 87654 32109</span>
+                      <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Mobile / WhatsApp</span>
+                      <span className="font-bold text-slate-800 dark:text-slate-200 mt-0.5">+91-8638526521</span>
+                      <span className="font-bold text-slate-850 dark:text-slate-300">+91-6003526521</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="h-10 w-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 shadow-sm">
                       <Mail className="h-5 w-5" />
                     </div>
-                    <span className="font-bold text-slate-800 dark:text-slate-200">hello@algoguido.com</span>
+                    <div className="flex flex-col">
+                      <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Email</span>
+                      <span className="font-bold text-slate-800 dark:text-slate-200 mt-0.5">info@algoguido.com</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <div className="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 shadow-sm">
+                  <div className="flex items-start gap-4">
+                    <div className="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                       <MapPin className="h-5 w-5" />
                     </div>
-                    <span className="font-bold text-slate-800 dark:text-slate-200">Guwahati, Assam, India</span>
+                    <div className="flex flex-col">
+                      <span className="font-bold text-slate-800 dark:text-slate-200">Pub Nizarapur Path, AEC Road,</span>
+                      <span className="text-slate-600 dark:text-slate-400 text-xs mt-0.5">Sundarbari, Jalukbari, Guwahati - 781014, India</span>
+                    </div>
                   </div>
                 </div>
 
@@ -3441,22 +3888,25 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Interactive Google Map embed panel */}
-              <div className="w-full h-[320px] rounded-3xl overflow-hidden border border-slate-200/60 dark:border-white/10 shadow-md relative">
-                <iframe
-                  src="https://maps.google.com/maps?ll=26.147403,91.670235&z=19&t=m&hl=en&gl=IN&mapclient=embed&cid=7164741496454385455&output=embed"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen={true}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Algoguido Technologies Location Map"
-                ></iframe>
-              </div>
+            </div>
+          </div>
+
+          {/* Premium Apple Maps Interactive Location Suite */}
+          <div className="max-w-7xl mx-auto mt-12 lg:mt-16 pt-12 border-t border-slate-200/60 dark:border-white/5 relative z-10 flex flex-col gap-6">
+            <div className="flex flex-col gap-1.5">
+              <span className="text-xs font-extrabold text-[#0052cc] uppercase tracking-widest bg-[#0052cc]/5 px-3 py-1 rounded-full w-fit">Interactive Route Planner</span>
+              <h3 className="font-display font-extrabold text-2xl text-slate-900 dark:text-white tracking-tight">Travel & Location Companion</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm">
+                Explore custom directions, check real-time traffic details, or simulate a CarPlay-guided navigation sequence to our headquarters.
+              </p>
+            </div>
+            
+            <div className="w-full">
+              <AppleMapsView />
             </div>
           </div>
         </section>
+
       </main>
 
       {/* Footer */}
@@ -3471,13 +3921,22 @@ export default function Home() {
 
             {/* Brand Column - spans 2 cols */}
             <div className="lg:col-span-2 flex flex-col gap-6">
-              <div className="flex items-center gap-3">
+              <a
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  window.history.pushState(null, '', '/');
+                  setActiveSection('home');
+                }}
+                className="flex items-center gap-3 hover:opacity-90 transition-opacity w-fit"
+              >
                 <img src="/logo.png" alt="Algoguido Logo" className="h-9 w-9 object-contain brightness-0 invert" />
                 <div className="flex flex-col">
                   <span className="font-display font-extrabold text-base text-white tracking-tight leading-tight">Algoguido</span>
                   <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest leading-none mt-0.5">Technologies Pvt. Ltd.</span>
                 </div>
-              </div>
+              </a>
               <p className="text-xs leading-relaxed text-slate-300/90 max-w-[280px]">
                 Building AI-powered enterprise platforms, secure cloud infrastructure, and intelligent digital solutions for government and private sectors across India.
               </p>
@@ -3501,42 +3960,20 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Solutions */}
-            <div className="flex flex-col gap-4">
-              <h4 className="text-[11px] font-extrabold text-white uppercase tracking-[0.12em]">Solutions</h4>
-              <nav className="flex flex-col gap-2.5">
-                {['ERP Solutions', 'CRM Solutions', 'SaaS Platforms', 'AI Automation', 'Cloud Infrastructure'].map((item) => (
-                  <a key={item} href="#services" className="text-[12px] text-slate-300 hover:text-white hover:translate-x-1 transition-all duration-200 flex items-center gap-1.5 group">
-                    <span className="h-px w-3 bg-slate-700 group-hover:bg-blue-500 group-hover:w-4 transition-all duration-200" />
-                    {item}
-                  </a>
-                ))}
-              </nav>
-            </div>
-
-            {/* Products */}
-            <div className="flex flex-col gap-4">
-              <h4 className="text-[11px] font-extrabold text-white uppercase tracking-[0.12em]">Products</h4>
-              <nav className="flex flex-col gap-2.5">
-                {['eduAI365', 'Apply4Jobs', 'LeadGrowAI', 'TheHirings', 'neHerbalTea'].map((item) => (
-                  <a key={item} href="#products" className="text-[12px] text-slate-300 hover:text-white hover:translate-x-1 transition-all duration-200 flex items-center gap-1.5 group">
-                    <span className="h-px w-3 bg-slate-700 group-hover:bg-blue-500 group-hover:w-4 transition-all duration-200" />
-                    {item}
-                  </a>
-                ))}
-              </nav>
-            </div>
-
             {/* Company */}
             <div className="flex flex-col gap-4">
               <h4 className="text-[11px] font-extrabold text-white uppercase tracking-[0.12em]">Company</h4>
               <nav className="flex flex-col gap-2.5">
                 {[
-                  { label: 'About', href: '#' },
-                  { label: 'Research', href: '#research' },
-                  { label: 'Blog', href: '#insights' },
-                  { label: 'Career', href: '#career' },
-                  { label: 'Contact', href: '#contact' },
+                  { label: 'About', href: '/#about' },
+                  { label: 'Why Algoguido', href: '/#why' },
+                  { label: 'Products', href: '/#products' },
+                  { label: 'Solutions', href: '/#services' },
+                  { label: 'Projects', href: '/#projects' },
+                  { label: 'Research', href: '/#research' },
+                  { label: 'Blog', href: '/#insights' },
+                  { label: 'Career', href: '/#career' },
+                  { label: 'Contact', href: '/#contact' },
                   { label: 'Verify Certificate', href: '#', isVerify: true },
                 ].map(({ label, href, isVerify }) => (
                   <a
@@ -3549,13 +3986,14 @@ export default function Home() {
                         setCertStatus('idle');
                         setSearchCertNo('');
                         setSearchedCert(null);
-                      } else if (href && href.startsWith('#')) {
+                      } else if (href && (href.startsWith('#') || href.startsWith('/#'))) {
                         e.preventDefault();
-                        const id = href.substring(1);
+                        const id = href.split('#')[1];
                         const el = document.getElementById(id);
                         if (el) {
                           el.scrollIntoView({ behavior: 'smooth' });
                           setActiveSection(id);
+                          window.history.pushState(null, '', `/#${id}`);
                         }
                       }
                     }}
@@ -3563,6 +4001,32 @@ export default function Home() {
                   >
                     <span className="h-px w-3 bg-slate-700 group-hover:bg-blue-500 group-hover:w-4 transition-all duration-200" />
                     {label}
+                  </a>
+                ))}
+              </nav>
+            </div>
+
+            {/* Products */}
+            <div className="flex flex-col gap-4">
+              <h4 className="text-[11px] font-extrabold text-white uppercase tracking-[0.12em]">Products</h4>
+              <nav className="flex flex-col gap-2.5">
+                {['eduAI365', 'Apply4Jobs', 'LeadGrowAI', 'TheHirings', 'neHerbalTea'].map((item) => (
+                  <a key={item} href="/#products" className="text-[12px] text-slate-300 hover:text-white hover:translate-x-1 transition-all duration-200 flex items-center gap-1.5 group">
+                    <span className="h-px w-3 bg-slate-700 group-hover:bg-blue-500 group-hover:w-4 transition-all duration-200" />
+                    {item}
+                  </a>
+                ))}
+              </nav>
+            </div>
+
+            {/* Solutions */}
+            <div className="flex flex-col gap-4">
+              <h4 className="text-[11px] font-extrabold text-white uppercase tracking-[0.12em]">Solutions</h4>
+              <nav className="flex flex-col gap-2.5">
+                {['ERP Solutions', 'CRM Solutions', 'SaaS Platforms', 'AI Automation', 'Cloud Infrastructure'].map((item) => (
+                  <a key={item} href="/#services" className="text-[12px] text-slate-300 hover:text-white hover:translate-x-1 transition-all duration-200 flex items-center gap-1.5 group">
+                    <span className="h-px w-3 bg-slate-700 group-hover:bg-blue-500 group-hover:w-4 transition-all duration-200" />
+                    {item}
                   </a>
                 ))}
               </nav>
@@ -3601,7 +4065,7 @@ export default function Home() {
               © {new Date().getFullYear()} Algoguido Technologies Pvt. Ltd. All rights reserved. — Guwahati, Assam, India.
             </p>
             <div className="flex items-center gap-5">
-              <a href="#" className="text-[11px] text-slate-400 hover:text-white transition-colors">Privacy Policy</a>
+              <a href="/privacy-policy" className="text-[11px] text-slate-400 hover:text-white transition-colors">Privacy Policy</a>
               <span className="text-slate-600 text-[10px]">·</span>
               <a href="#" className="text-[11px] text-slate-400 hover:text-white transition-colors">Terms of Service</a>
               <span className="text-slate-600 text-[10px]">·</span>
