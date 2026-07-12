@@ -118,6 +118,10 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
   const [waMsgType, setWaMsgType] = useState<'conversion' | 'payment'>('conversion');
   const [waCustomMessage, setWaCustomMessage] = useState('');
 
+  // View Detail panel states
+  const [selectedLeadDetail, setSelectedLeadDetail] = useState<any>(null);
+  const [selectedAppDetail, setSelectedAppDetail] = useState<any>(null);
+
   interface NavigationItem {
     id: string;
     name: string;
@@ -1360,6 +1364,12 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                                 </td>
                                 <td className="py-3.5 text-right">
                                   <div className="flex items-center justify-end gap-2">
+                                    <button
+                                      onClick={() => setSelectedLeadDetail(l)}
+                                      className="px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-colors text-[10px] font-bold border border-indigo-100"
+                                    >
+                                      View
+                                    </button>
                                     {l.phone && (
                                       <button
                                         onClick={() => handleOpenWhatsAppModal(l)}
@@ -1386,6 +1396,115 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                     </div>
                   )}
                 </Card>
+
+                {/* Lead Detail Panel */}
+                {selectedLeadDetail && (
+                  <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(4px)'}} onClick={() => setSelectedLeadDetail(null)}>
+                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-0" onClick={e => e.stopPropagation()}>
+                      {/* Header */}
+                      <div className="flex items-center justify-between px-7 py-5 border-b border-slate-100">
+                        <div>
+                          <h2 className="text-lg font-bold text-slate-800">Lead Detail</h2>
+                          <p className="text-xs text-slate-400 mt-0.5">ID: {selectedLeadDetail.id}</p>
+                        </div>
+                        <button onClick={() => setSelectedLeadDetail(null)} className="p-2 rounded-xl hover:bg-slate-100 text-slate-500 transition-colors">
+                          <X className="h-5 w-5" />
+                        </button>
+                      </div>
+                      {/* Body */}
+                      <div className="px-7 py-6 flex flex-col gap-6">
+                        {/* Row 1 */}
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Full Name</span>
+                            <span className="text-sm font-semibold text-slate-800">{selectedLeadDetail.name || '—'}</span>
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Email Address</span>
+                            <span className="text-sm text-slate-700">{selectedLeadDetail.email || '—'}</span>
+                          </div>
+                        </div>
+                        {/* Row 2 */}
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Phone / WhatsApp</span>
+                            <span className="text-sm text-slate-700">{selectedLeadDetail.phone || '—'}</span>
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Company / Institution</span>
+                            <span className="text-sm text-slate-700">{selectedLeadDetail.company || 'Individual'}</span>
+                          </div>
+                        </div>
+                        {/* Row 3 */}
+                        <div className="grid grid-cols-3 gap-4">
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pipeline Stage</span>
+                            <span className={`text-xs font-bold px-2.5 py-1 rounded-lg w-fit ${
+                              selectedLeadDetail.stage === 'QUALIFIED' ? 'bg-emerald-100 text-emerald-700' :
+                              selectedLeadDetail.stage === 'CONTACTED' ? 'bg-cyan-100 text-cyan-700' :
+                              selectedLeadDetail.stage === 'NEGOTIATION' ? 'bg-purple-100 text-purple-700' :
+                              'bg-indigo-100 text-indigo-700'
+                            }`}>{selectedLeadDetail.stage || '—'}</span>
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">AI Score</span>
+                            <span className={`text-xs font-bold px-2.5 py-1 rounded-lg w-fit ${
+                              selectedLeadDetail.score >= 85 ? 'bg-emerald-100 text-emerald-700' :
+                              selectedLeadDetail.score >= 70 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-700'
+                            }`}>{selectedLeadDetail.score ?? '—'}/100</span>
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Source</span>
+                            <span className="text-xs text-slate-600 font-semibold">{selectedLeadDetail.source || '—'}</span>
+                          </div>
+                        </div>
+                        {/* Message / Notes */}
+                        <div className="flex flex-col gap-1">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Message / Inquiry</span>
+                          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-sm text-slate-700 leading-relaxed whitespace-pre-wrap">
+                            {selectedLeadDetail.message || selectedLeadDetail.notes?.[0]?.content || '—'}
+                          </div>
+                        </div>
+                        {/* Notes (if exists separately) */}
+                        {selectedLeadDetail.notes && selectedLeadDetail.notes.length > 0 && (
+                          <div className="flex flex-col gap-2">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">CRM Notes ({selectedLeadDetail.notes.length})</span>
+                            {selectedLeadDetail.notes.map((note: any, i: number) => (
+                              <div key={i} className="p-3.5 rounded-xl bg-indigo-50 border border-indigo-100 text-xs text-slate-700 leading-relaxed whitespace-pre-wrap">
+                                {note.content}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        {/* Timestamps */}
+                        <div className="grid grid-cols-2 gap-4 pt-2 border-t border-slate-100">
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Created At</span>
+                            <span className="text-xs text-slate-500">{selectedLeadDetail.createdAt ? new Date(selectedLeadDetail.createdAt).toLocaleString('en-IN') : '—'}</span>
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Last Updated</span>
+                            <span className="text-xs text-slate-500">{selectedLeadDetail.updatedAt ? new Date(selectedLeadDetail.updatedAt).toLocaleString('en-IN') : '—'}</span>
+                          </div>
+                        </div>
+                      </div>
+                      {/* Footer Actions */}
+                      <div className="px-7 py-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                        {selectedLeadDetail.phone && (
+                          <button
+                            onClick={() => { handleOpenWhatsAppModal(selectedLeadDetail); setSelectedLeadDetail(null); }}
+                            className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold transition-colors flex items-center gap-2"
+                          >
+                            <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24z" /></svg>
+                            WhatsApp
+                          </button>
+                        )}
+                        <button onClick={() => setSelectedLeadDetail(null)} className="ml-auto px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
               </div>
             ) : activeTab === 'applications' ? (
               /* Applications Tab */
@@ -1468,6 +1587,12 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                                 </td>
                                 <td className="py-3.5 text-right">
                                   <div className="flex items-center justify-end gap-2">
+                                    <button
+                                      onClick={() => setSelectedAppDetail(a)}
+                                      className="px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-colors text-[10px] font-bold border border-indigo-100"
+                                    >
+                                      View
+                                    </button>
                                     {a.phone && (
                                       <button
                                         onClick={() => handleOpenWhatsAppModal(a)}
@@ -1494,6 +1619,117 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                     </div>
                   )}
                 </Card>
+
+                {/* Application Detail Panel */}
+                {selectedAppDetail && (
+                  <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(4px)'}} onClick={() => setSelectedAppDetail(null)}>
+                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-0" onClick={e => e.stopPropagation()}>
+                      {/* Header */}
+                      <div className="flex items-center justify-between px-7 py-5 border-b border-slate-100">
+                        <div>
+                          <h2 className="text-lg font-bold text-slate-800">Application Detail</h2>
+                          <p className="text-xs text-slate-400 mt-0.5">ID: {selectedAppDetail.id}</p>
+                        </div>
+                        <button onClick={() => setSelectedAppDetail(null)} className="p-2 rounded-xl hover:bg-slate-100 text-slate-500 transition-colors">
+                          <X className="h-5 w-5" />
+                        </button>
+                      </div>
+                      {/* Body */}
+                      <div className="px-7 py-6 flex flex-col gap-6">
+                        {/* Row 1 */}
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Candidate Name</span>
+                            <span className="text-sm font-semibold text-slate-800">{selectedAppDetail.name || '—'}</span>
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Email Address</span>
+                            <span className="text-sm text-slate-700">{selectedAppDetail.email || '—'}</span>
+                          </div>
+                        </div>
+                        {/* Row 2 */}
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Phone / WhatsApp</span>
+                            <span className="text-sm text-slate-700">{selectedAppDetail.phone || '—'}</span>
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">University / College</span>
+                            <span className="text-sm text-slate-700">{selectedAppDetail.company || '—'}</span>
+                          </div>
+                        </div>
+                        {/* Row 3 */}
+                        <div className="grid grid-cols-3 gap-4">
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Program Type</span>
+                            <span className="text-xs font-bold px-2.5 py-1 rounded-lg w-fit bg-indigo-100 text-indigo-700">{selectedAppDetail.program || 'Industry Internship'}</span>
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">AI Score</span>
+                            <span className={`text-xs font-bold px-2.5 py-1 rounded-lg w-fit ${
+                              (selectedAppDetail.score || 85) >= 85 ? 'bg-emerald-100 text-emerald-700' :
+                              (selectedAppDetail.score || 85) >= 70 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-700'
+                            }`}>{selectedAppDetail.score || 85}/100</span>
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pipeline Stage</span>
+                            <span className="text-xs text-slate-600 font-semibold">{selectedAppDetail.stage || 'NEW'}</span>
+                          </div>
+                        </div>
+                        {/* Skills */}
+                        {selectedAppDetail.skills && (
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Core Skillset</span>
+                            <span className="text-sm font-mono text-slate-700">{selectedAppDetail.skills}</span>
+                          </div>
+                        )}
+                        {/* Message / Notes */}
+                        <div className="flex flex-col gap-1">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Application Message / Notes</span>
+                          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-sm text-slate-700 leading-relaxed whitespace-pre-wrap">
+                            {selectedAppDetail.message || selectedAppDetail.notes?.[0]?.content || '—'}
+                          </div>
+                        </div>
+                        {/* All Notes */}
+                        {selectedAppDetail.notes && selectedAppDetail.notes.length > 0 && (
+                          <div className="flex flex-col gap-2">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">CRM Notes ({selectedAppDetail.notes.length})</span>
+                            {selectedAppDetail.notes.map((note: any, i: number) => (
+                              <div key={i} className="p-3.5 rounded-xl bg-purple-50 border border-purple-100 text-xs text-slate-700 leading-relaxed whitespace-pre-wrap">
+                                {note.content}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        {/* Timestamps */}
+                        <div className="grid grid-cols-2 gap-4 pt-2 border-t border-slate-100">
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Applied At</span>
+                            <span className="text-xs text-slate-500">{selectedAppDetail.createdAt ? new Date(selectedAppDetail.createdAt).toLocaleString('en-IN') : '—'}</span>
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Last Updated</span>
+                            <span className="text-xs text-slate-500">{selectedAppDetail.updatedAt ? new Date(selectedAppDetail.updatedAt).toLocaleString('en-IN') : '—'}</span>
+                          </div>
+                        </div>
+                      </div>
+                      {/* Footer Actions */}
+                      <div className="px-7 py-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                        {selectedAppDetail.phone && (
+                          <button
+                            onClick={() => { handleOpenWhatsAppModal(selectedAppDetail); setSelectedAppDetail(null); }}
+                            className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold transition-colors flex items-center gap-2"
+                          >
+                            <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24z" /></svg>
+                            WhatsApp
+                          </button>
+                        )}
+                        <button onClick={() => setSelectedAppDetail(null)} className="ml-auto px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
               </div>
             ) : activeTab === 'products' ? (
               /* Products Tab */
