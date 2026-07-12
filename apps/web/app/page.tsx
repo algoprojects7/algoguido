@@ -511,7 +511,7 @@ export default function Home() {
     requirement: 'ERP Solutions',
     message: '',
   });
-  const [activeFormTab, setActiveFormTab] = useState<'development' | 'education'>('development');
+  const [activeFormTab, setActiveFormTab] = useState<'development' | 'education' | 'research_fdp'>('development');
   const [eduFormData, setEduFormData] = useState({
     name: '',
     email: '',
@@ -523,6 +523,16 @@ export default function Home() {
     program: 'Paid Internship',
     gender: 'Male',
     coverLetter: '',
+  });
+  const [researchFormData, setResearchFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    designation: 'Faculty',
+    organization: '',
+    area: 'Faculty Development Program (FDP)',
+    proposalTitle: '',
+    details: '',
   });
   const [countryCode, setCountryCode] = useState('+91');
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -739,6 +749,54 @@ export default function Home() {
       }
     } catch (error) {
       console.error('Education submission error:', error);
+      setStatus('error');
+    }
+  };
+
+  const handleResearchInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setResearchFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleResearchSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('submitting');
+
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const response = await fetch(`${apiUrl}/leads`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: researchFormData.name,
+          email: researchFormData.email,
+          phone: researchFormData.phone ? `${countryCode} ${researchFormData.phone}` : undefined,
+          company: researchFormData.organization,
+          subject: `Research/FDP Collaboration - ${researchFormData.area}`,
+          message: `Designation/Role: ${researchFormData.designation}\nOrganization: ${researchFormData.organization}\nArea of Interest: ${researchFormData.area}\nProposal Title: ${researchFormData.proposalTitle}\n\nDetails:\n${researchFormData.details}`,
+          source: 'RESEARCH_PORTAL',
+        }),
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        setResearchFormData({
+          name: '',
+          designation: 'Faculty',
+          organization: '',
+          email: '',
+          phone: '',
+          area: 'Faculty Development Program (FDP)',
+          proposalTitle: '',
+          details: '',
+        });
+      } else {
+        setStatus('error');
+      }
+    } catch (error) {
+      console.error('Research submission error:', error);
       setStatus('error');
     }
   };
@@ -3498,7 +3556,7 @@ export default function Home() {
               ) : (
                 <div className="flex flex-col gap-6">
                   {/* Premium Tab Switcher */}
-                  <div className="flex p-1 rounded-xl bg-slate-100 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/80 w-full max-w-sm self-start">
+                  <div className="flex p-1 rounded-xl bg-slate-100 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/80 w-full max-w-md self-start">
                     <button
                       type="button"
                       onClick={() => {
@@ -3525,9 +3583,22 @@ export default function Home() {
                     >
                       🎓 Education
                     </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveFormTab('research_fdp');
+                        setStatus('idle');
+                      }}
+                      className={`flex-1 py-2 rounded-lg text-xs font-extrabold uppercase tracking-wide transition-all duration-300 ${activeFormTab === 'research_fdp'
+                        ? 'bg-gradient-brand text-white shadow-sm'
+                        : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white'
+                        }`}
+                    >
+                      🔬 Research/FDP
+                    </button>
                   </div>
 
-                  {activeFormTab === 'development' ? (
+                  {activeFormTab === 'development' && (
                     /* Development Inquiries Form */
                     <form onSubmit={handleSubmit} className="flex flex-col gap-6 animate-scale-in">
                       <div className="grid sm:grid-cols-2 gap-6">
@@ -3644,7 +3715,9 @@ export default function Home() {
                         Send Message
                       </Button>
                     </form>
-                  ) : (
+                  )}
+
+                  {activeFormTab === 'education' && (
                     /* Academic & Education Programs Form */
                     <form onSubmit={handleEduSubmit} className="flex flex-col gap-6 animate-scale-in">
                       <div className="grid sm:grid-cols-2 gap-6">
@@ -3828,6 +3901,156 @@ export default function Home() {
                         className="w-full font-bold uppercase tracking-wider rounded-xl shadow-md h-12"
                       >
                         Submit Application
+                      </Button>
+                    </form>
+                  )}
+
+                  {activeFormTab === 'research_fdp' && (
+                    /* Research & FDP Collaboration Form */
+                    <form onSubmit={handleResearchSubmit} className="flex flex-col gap-6 animate-scale-in">
+                      <div className="grid sm:grid-cols-2 gap-6">
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-wide uppercase">Full Name *</label>
+                          <Input
+                            type="text"
+                            name="name"
+                            required
+                            value={researchFormData.name}
+                            onChange={handleResearchInputChange}
+                            placeholder="John Doe"
+                            className="rounded-xl border-slate-200 dark:border-white/10 dark:bg-navy-900/40 focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-wide uppercase">Designation / Role *</label>
+                          <Select
+                            name="designation"
+                            required
+                            value={researchFormData.designation}
+                            onChange={handleResearchInputChange}
+                            className="rounded-xl border-slate-200 dark:border-white/10 dark:bg-navy-900/40 focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
+                          >
+                            <option value="Faculty" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">Faculty</option>
+                            <option value="Research Scholar" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">Research Scholar</option>
+                            <option value="Student" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">Student</option>
+                            <option value="Industry Professional" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">Industry Professional</option>
+                            <option value="Other" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">Other</option>
+                          </Select>
+                        </div>
+                      </div>
+
+                      <div className="grid sm:grid-cols-2 gap-6">
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-wide uppercase">Email Address *</label>
+                          <Input
+                            type="email"
+                            name="email"
+                            required
+                            value={researchFormData.email}
+                            onChange={handleResearchInputChange}
+                            placeholder="john@example.com"
+                            className="rounded-xl border-slate-200 dark:border-white/10 dark:bg-navy-900/40 focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-wide uppercase">Phone Number</label>
+                          <div className="flex gap-2">
+                            <div className="w-[110px] shrink-0">
+                              <Select
+                                value={countryCode}
+                                onChange={(e) => setCountryCode(e.target.value)}
+                                className="rounded-xl border-slate-200 dark:border-white/10 dark:bg-navy-900/40 focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
+                              >
+                                <option value="+91" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">🇮🇳 +91</option>
+                                <option value="+1" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">🇺🇸 +1</option>
+                                <option value="+44" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">🇬🇧 +44</option>
+                                <option value="+971" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">🇦🇪 +971</option>
+                                <option value="+65" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">🇸🇬 +65</option>
+                                <option value="+61" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">🇦🇺 +61</option>
+                              </Select>
+                            </div>
+                            <Input
+                              type="tel"
+                              name="phone"
+                              value={researchFormData.phone}
+                              onChange={handleResearchInputChange}
+                              placeholder="XXXXX XXXXX"
+                              className="rounded-xl border-slate-200 dark:border-white/10 dark:bg-navy-900/40 focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="grid sm:grid-cols-2 gap-6">
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-wide uppercase">Organization / Institution *</label>
+                          <Input
+                            type="text"
+                            name="organization"
+                            required
+                            value={researchFormData.organization}
+                            onChange={handleResearchInputChange}
+                            placeholder="e.g. IIT Guwahati"
+                            className="rounded-xl border-slate-200 dark:border-white/10 dark:bg-navy-900/40 focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-wide uppercase">Area of Collaboration *</label>
+                          <Select
+                            name="area"
+                            required
+                            value={researchFormData.area}
+                            onChange={handleResearchInputChange}
+                            className="rounded-xl border-slate-200 dark:border-white/10 dark:bg-navy-900/40 focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
+                          >
+                            <option value="Faculty Development Program (FDP)" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">Faculty Development Program (FDP)</option>
+                            <option value="Research Collaboration" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">Research Collaboration</option>
+                            <option value="AI Research & Innovation" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">AI Research & Innovation</option>
+                            <option value="Other" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">Other Area</option>
+                          </Select>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-2">
+                        <label className="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-wide uppercase">Proposal Title / Subject *</label>
+                        <Input
+                          type="text"
+                          name="proposalTitle"
+                          required
+                          value={researchFormData.proposalTitle}
+                          onChange={handleResearchInputChange}
+                          placeholder="e.g. AI-driven solutions in Healthcare, FDP program dates request, etc."
+                          className="rounded-xl border-slate-200 dark:border-white/10 dark:bg-navy-900/40 focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
+                        />
+                      </div>
+
+                      <div className="flex flex-col gap-2">
+                        <label className="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-wide uppercase">Details / Message *</label>
+                        <Textarea
+                          name="details"
+                          required
+                          rows={5}
+                          value={researchFormData.details}
+                          onChange={handleResearchInputChange}
+                          placeholder="Describe the proposal, research goal, collaboration details or Faculty Development Program query..."
+                          className="rounded-xl border-slate-200 dark:border-white/10 dark:bg-navy-900/40 focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
+                        />
+                      </div>
+
+                      {status === 'error' && (
+                        <div className="p-4 rounded-xl bg-red-50 dark:bg-red-950/20 border border-red-200/50 dark:border-red-900/30 text-red-600 dark:text-red-400 text-xs font-semibold flex items-center gap-2">
+                          <span>❌ Failed to submit request. Please try again.</span>
+                        </div>
+                      )}
+
+                      <Button
+                        type="submit"
+                        variant="primary"
+                        size="lg"
+                        isLoading={status === 'submitting'}
+                        className="w-full font-bold uppercase tracking-wider rounded-xl shadow-md h-12"
+                      >
+                        Submit Collaboration Request
                       </Button>
                     </form>
                   )}
