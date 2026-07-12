@@ -357,6 +357,8 @@ export default function PrivacyPolicyPage() {
             <span className="text-slate-600 text-[10px]">·</span>
             <Link href="/privacy-policy" className="text-[11px] text-white font-medium">Privacy Policy</Link>
             <span className="text-slate-600 text-[10px]">·</span>
+            <Link href="/sitemap" className="text-[11px] text-slate-400 hover:text-white transition-colors">Sitemap</Link>
+            <span className="text-slate-600 text-[10px]">·</span>
             <a href="mailto:info@algoguido.com" className="text-[11px] text-slate-400 hover:text-white transition-colors">Contact</a>
           </div>
         </div>

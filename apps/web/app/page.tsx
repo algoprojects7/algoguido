@@ -4299,7 +4299,7 @@ export default function Home() {
               <span className="text-slate-600 text-[10px]">·</span>
               <a href="/terms-of-service" className="text-[11px] text-slate-400 hover:text-white transition-colors">Terms of Service</a>
               <span className="text-slate-600 text-[10px]">·</span>
-              <a href="#" className="text-[11px] text-slate-400 hover:text-white transition-colors">Sitemap</a>
+              <a href="/sitemap" className="text-[11px] text-slate-400 hover:text-white transition-colors">Sitemap</a>
             </div>
           </div>
         </div>

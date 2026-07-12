@@ -338,6 +338,8 @@ export default function TermsOfServicePage() {
             <span className="text-slate-600 text-[10px]">·</span>
             <Link href="/terms-of-service" className="text-[11px] text-white font-medium">Terms of Service</Link>
             <span className="text-slate-600 text-[10px]">·</span>
+            <Link href="/sitemap" className="text-[11px] text-slate-400 hover:text-white transition-colors">Sitemap</Link>
+            <span className="text-slate-600 text-[10px]">·</span>
             <a href="mailto:info@algoguido.com" className="text-[11px] text-slate-400 hover:text-white transition-colors">Contact</a>
           </div>
         </div>
