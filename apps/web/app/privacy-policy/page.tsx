@@ -1,4 +1,4 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
@@ -350,7 +350,7 @@ export default function PrivacyPolicyPage() {
       <div className="bg-[#0a0f1e] border-t border-white/5 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 flex flex-col md:flex-row justify-between items-center gap-3">
           <p className="text-[11px] text-slate-400">
-            {'\u00A9'} {new Date().getFullYear()} Algoguido Technologies Pvt. Ltd. All rights reserved. {'\u2014'} Guwahati, Assam, India.
+            {'\u00A9'} {new Date().getFullYear()} Algoguido Technologies Pvt. Ltd. All rights reserved.
           </p>
           <div className="flex items-center gap-5">
             <Link href="/" className="text-[11px] text-slate-400 hover:text-white transition-colors">Home</Link>

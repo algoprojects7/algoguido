@@ -4292,7 +4292,7 @@ export default function Home() {
         <div className="border-t border-white/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-[11px] text-slate-400 text-center md:text-left">
-              © {new Date().getFullYear()} Algoguido Technologies Pvt. Ltd. All rights reserved. — Guwahati, Assam, India.
+              © {new Date().getFullYear()} Algoguido Technologies Pvt. Ltd. All rights reserved.
             </p>
             <div className="flex items-center gap-5">
               <a href="/privacy-policy" className="text-[11px] text-slate-400 hover:text-white transition-colors">Privacy Policy</a>
