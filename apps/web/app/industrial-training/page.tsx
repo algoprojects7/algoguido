@@ -53,15 +53,15 @@ export default function IndustrialTrainingPage() {
 
   const getCalculatorResult = () => {
     let result = {
-      program: 'Paid Internship Pathway',
-      stipend: '₹12,000 - ₹20,000 / month',
-      stipendLabel: 'Stipend Range',
+      program: 'Industry Internship Pathway',
+      stipend: '₹8,000 – ₹15,000 (one-time)',
+      stipendLabel: 'Program Fee',
       duration: '3 to 6 Months',
-      recommendation: 'Full-Stack Software Engineering or AI Agents Track'
+      recommendation: 'Full-Stack Engineering or AI Agents Track'
     };
 
     if (calcStatus === 'Recent Graduate' || calcStatus === 'Working Professional') {
-      result.stipend = '₹15,000 - ₹25,000 / month';
+      result.stipend = '₹10,000 – ₹15,000 (one-time)';
     }
 
     if (calcTrack === 'AI & Machine Learning') {
@@ -74,8 +74,8 @@ export default function IndustrialTrainingPage() {
 
     if (calcExperience === 'Beginner (Familiar with syntax)') {
       result.program = 'Professional Training & Project Guidance';
-      result.stipend = 'Stipend eligible post-foundation (Performance basis)';
-      result.stipendLabel = 'Eligible Stipend';
+      result.stipend = '₹5,000 – ₹8,000 (one-time)';
+      result.stipendLabel = 'Program Fee';
       result.duration = '8 to 12 Weeks';
     }
 
@@ -150,14 +150,14 @@ Details/Notes: ${formData.message || 'None'}
   // Program-specific details
   const programDetails = {
     internship: {
-      tag: 'EARN WHILE YOU LEARN',
-      title: 'Paid Professional Internship',
-      description: 'Work alongside senior engineers and research scientists on production codebases, enterprise SaaS modules, and custom client platforms. Gain real-world software delivery experience.',
+      tag: 'INDUSTRY INTERNSHIP PROGRAM',
+      title: 'Industry Internship (Fee-Based)',
+      description: 'A structured, fee-based industry internship where you work on real production codebases, enterprise SaaS modules, and client platforms. Students invest in their career growth — Algoguido provides the professional environment, mentorship, and verifiable certification.',
       features: [
-        'Monthly stipend: ₹10,000 to ₹25,000 based on performance and entry level.',
+        'Program fee: ₹8,000 – ₹15,000 one-time (based on track & duration).',
         'Production contributions: Write code, design databases, deploy services to Google Cloud.',
-        'Mentorship: Daily standups and code reviews with senior engineering guides.',
-        'Placement pathway: Outstanding interns are offered direct transitions to full-time roles.'
+        'Mentorship: Daily virtual standups and pull-request code reviews with senior engineers.',
+        'Placement support: Letter of Recommendation + LinkedIn endorsement from Algoguido.'
       ],
       icon: Coins,
       accent: 'text-emerald-500 bg-emerald-500/10 border-emerald-500/20'
@@ -183,7 +183,7 @@ Details/Notes: ${formData.message || 'None'}
         'Formal approval: Receive custom invitation letter, synopsis, and certificate.',
         'Advanced guidance: Assistance with architecture design, sequence flow, and databases.',
         'Project reviews: Regular reviews ensuring high marks during university evaluation.',
-        'Stipend option: Performance-driven transition into paid internship modules.'
+        'Verifiable certificate issued upon successful completion of the training module.'
       ],
       icon: GraduationCap,
       accent: 'text-amber-500 bg-amber-500/10 border-amber-500/20'
@@ -192,20 +192,24 @@ Details/Notes: ${formData.message || 'None'}
 
   const faqData = [
     {
-      q: "What is the duration of the programs?",
-      a: "Industrial Training and Professional courses typically span 8 to 12 weeks. Paid Internships range between 3 to 6 months depending on requirements and availability."
+      q: "What is the program fee structure?",
+      a: "Industry Internship: ₹8,000 – ₹15,000 (one-time, based on track & duration). Professional Training: ₹5,000 – ₹10,000. Industrial/University Training: ₹3,000 – ₹6,000. All fees are paid to Algoguido before the program begins. No hidden charges."
     },
     {
-      q: "Are the internships remote or in-office?",
-      a: "All our programs are conducted 100% online in remote mode, featuring daily virtual syncs, online code reviews, and remote pair programming sessions."
+      q: "Why is the internship fee-based (students pay Algoguido)?",
+      a: "Algoguido provides access to live production environments, mentorship from senior engineers, dedicated code reviews, real project ownership, and verifiable certificates. This is a professional training investment in your career — not a job placement. You are paying for industry-grade skill development."
     },
     {
-      q: "Is there a selection process for the Paid Internship?",
-      a: "Yes. After submitting the application form, short-listed candidates undergo a basic technical assignment followed by a coding/architecture interview."
+      q: "Are the programs fully online?",
+      a: "Yes. All our programs are conducted 100% online in remote mode, featuring daily virtual syncs, online code reviews, and remote pair programming sessions. No commute required."
     },
     {
-      q: "Will I receive code reviews?",
-      a: "Absolutely. Continuous learning is our core philosophy. Interns participate in daily virtual standups and receive thorough pull request reviews from tech leads."
+      q: "How do I pay the program fee?",
+      a: "After your application is reviewed and you receive the selection confirmation, you can pay online via our secure Razorpay payment link. UPI, debit/credit cards, and net banking are all supported."
+    },
+    {
+      q: "Will I receive code reviews and mentorship?",
+      a: "Absolutely. Every enrolled student receives daily virtual standups, thorough pull request reviews from tech leads, and a dedicated mentor throughout the program duration."
     }
   ];
 
@@ -253,7 +257,7 @@ Details/Notes: ${formData.message || 'None'}
           transition={{ duration: 0.5 }}
           className="flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-extrabold text-blue-400 uppercase tracking-widest"
         >
-          <Sparkles className="h-3 w-3 animate-pulse" /> 100% Online / Remote · Summer & Monsoon 2026 Intake Open
+          <Sparkles className="h-3 w-3 animate-pulse" /> 100% Online · Fee-Based Industry Training · Summer & Monsoon 2026 Open
         </motion.div>
 
         {/* Cinematic Headline */}
@@ -276,7 +280,7 @@ Details/Notes: ${formData.message || 'None'}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-slate-400 text-sm sm:text-base md:text-lg max-w-2xl leading-relaxed mt-2"
         >
-          Skip the standard tutorials. Step into a production monorepo deploying live software in a 100% remote online model. Get paid stipends, professional certificates, and daily virtual code reviews under senior engineering mentors.
+          Skip the standard tutorials. Invest in real industry experience — work on production codebases, earn verifiable certificates, and get daily code reviews from senior engineers. 100% online, fee-based programs starting from ₹3,000.
         </motion.p>
 
         {/* Dual Actions CTA */}
@@ -290,13 +294,15 @@ Details/Notes: ${formData.message || 'None'}
             href="#apply"
             className="h-12 px-8 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2 group"
           >
-            Apply for Paid Internship <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            Apply & Enroll Now <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
           </a>
           <a 
-            href="#calculator"
-            className="h-12 px-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-sm transition-all flex items-center justify-center gap-2"
+            href="https://razorpay.me/@algoguidotechnologiesprivatel"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="h-12 px-8 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-400 font-bold text-sm transition-all flex items-center justify-center gap-2"
           >
-            Check Eligibility & Stipend
+            <Coins className="h-4 w-4" /> Pay Fee Now
           </a>
         </motion.div>
 
@@ -336,10 +342,10 @@ Details/Notes: ${formData.message || 'None'}
               SELECT YOUR PATHWAY
             </span>
             <h2 className="text-2.5xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Flexible Modules Built for Industry Preparedness
+              Fee-Based Industry Programs Built for Real Careers
             </h2>
             <p className="text-slate-400 text-sm leading-relaxed">
-              We provide three structural avenues designed for college candidates, career changers, and working professionals looking to transition.
+              Students invest in their professional growth. Algoguido provides the production environment, senior mentors, and verifiable certification for three structured pathways.
             </p>
           </div>
 
@@ -354,7 +360,7 @@ Details/Notes: ${formData.message || 'None'}
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
-                Paid Internship
+                Industry Internship
               </button>
               <button
                 onClick={() => setSelectedProgram('professional')}
@@ -395,9 +401,14 @@ Details/Notes: ${formData.message || 'None'}
                   {programDetails[selectedProgram].description}
                 </p>
                 <div className="border-t border-white/5 my-2" />
-                <a href="#apply" className="text-xs font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1">
-                  Apply for this track <ChevronRight className="h-3 w-3" />
-                </a>
+                <div className="flex items-center gap-4">
+                  <a href="#apply" className="text-xs font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1">
+                    Apply for this track <ChevronRight className="h-3 w-3" />
+                  </a>
+                  <a href="https://razorpay.me/@algoguidotechnologiesprivatel" target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1">
+                    <Coins className="h-3 w-3" /> Pay Program Fee
+                  </a>
+                </div>
               </div>
 
               {/* Right bullet list */}
@@ -496,13 +507,13 @@ Details/Notes: ${formData.message || 'None'}
           
           <div className="text-center max-w-2xl mx-auto flex flex-col gap-4">
             <span className="text-xs font-extrabold text-blue-400 uppercase tracking-widest bg-blue-500/10 px-3 py-1 rounded-full w-fit mx-auto">
-              ELIGIBILITY CALCULATOR
+              PROGRAM FEE CALCULATOR
             </span>
             <h2 className="text-2.5xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Instantly Check Your Stipend Eligibility
+              Find Your Right Program & Fee
             </h2>
             <p className="text-slate-400 text-sm leading-relaxed">
-              Use our interactive assessment to see what tracks, durations, and stipend levels you match based on your current technical status.
+              Answer three quick questions to see which program pathway fits you best and what the one-time enrollment fee will be.
             </p>
           </div>
 
@@ -564,7 +575,7 @@ Details/Notes: ${formData.message || 'None'}
               
               <div className="flex flex-col gap-4">
                 <div className="flex items-center gap-2 text-xs font-extrabold text-blue-400 uppercase tracking-widest">
-                  <TrendingUp className="h-4 w-4" /> Assessment Result
+                  <TrendingUp className="h-4 w-4" /> Program Match
                 </div>
                 <div className="border-t border-white/10 my-1" />
                 
@@ -574,7 +585,7 @@ Details/Notes: ${formData.message || 'None'}
                 </div>
 
                 <div>
-                  <p className="text-[10px] text-slate-500 uppercase tracking-wider">{calcResult.stipendLabel}</p>
+                  <p className="text-[10px] text-slate-500 uppercase tracking-wider">Program Fee (One-Time)</p>
                   <p className="text-xl font-extrabold text-emerald-400 mt-0.5">{calcResult.stipend}</p>
                 </div>
 
@@ -589,20 +600,30 @@ Details/Notes: ${formData.message || 'None'}
                 </div>
               </div>
 
-              <a 
-                href="#apply"
-                onClick={() => {
-                  setFormData(prev => ({
-                    ...prev,
-                    program: calcResult.program.includes('Internship') ? 'Paid Internship' : 'Professional Certification',
-                    status: calcStatus,
-                    track: calcTrack
-                  }));
-                }}
-                className="w-full h-11 bg-blue-600 hover:bg-blue-500 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all text-white shadow mt-4"
-              >
-                Auto-Fill Application <ArrowRight className="h-4 w-4" />
-              </a>
+              <div className="flex flex-col gap-2 mt-4">
+                <a 
+                  href="#apply"
+                  onClick={() => {
+                    setFormData(prev => ({
+                      ...prev,
+                      program: calcResult.program.includes('Internship') ? 'Industry Internship' : 'Professional Certification',
+                      status: calcStatus,
+                      track: calcTrack
+                    }));
+                  }}
+                  className="w-full h-11 bg-blue-600 hover:bg-blue-500 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all text-white shadow"
+                >
+                  Apply Now <ArrowRight className="h-4 w-4" />
+                </a>
+                <a
+                  href="https://razorpay.me/@algoguidotechnologiesprivatel"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full h-10 bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all text-emerald-400"
+                >
+                  <Coins className="h-3.5 w-3.5" /> Pay Program Fee via Razorpay
+                </a>
+              </div>
 
             </div>
 
@@ -619,9 +640,9 @@ Details/Notes: ${formData.message || 'None'}
             <div className="h-10 w-10 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20">
               <FileCheck className="h-5.5 w-5.5" />
             </div>
-            <h2 className="text-xl md:text-2.5xl font-extrabold text-white tracking-tight">Apply for Intake 2026</h2>
+            <h2 className="text-xl md:text-2.5xl font-extrabold text-white tracking-tight">Enroll for Intake 2026</h2>
             <p className="text-slate-400 text-xs max-w-md leading-relaxed">
-              Complete the quick application form. Technical review invitations are typically dispatched via email/WhatsApp within 48 business hours.
+              Submit your application below. Once reviewed and shortlisted, you will receive payment instructions via email/WhatsApp within 48 hours. Enrollment is confirmed only after fee payment.
             </p>
           </div>
 
@@ -692,9 +713,9 @@ Details/Notes: ${formData.message || 'None'}
                   onChange={handleInputChange}
                   className="h-11 px-4 bg-slate-900 border border-white/5 rounded-xl text-xs text-white focus:outline-none focus:border-blue-500 transition-all"
                 >
-                  <option value="Paid Internship">Paid Internship</option>
-                  <option value="Professional Certification">Professional Training</option>
-                  <option value="Industrial/Summer Project">Industrial Training</option>
+                  <option value="Industry Internship">Industry Internship (Fee-Based)</option>
+                  <option value="Professional Certification">Professional Training & Certification</option>
+                  <option value="Industrial/Summer Project">Industrial / University Training</option>
                 </select>
               </div>
               <div className="flex flex-col gap-1.5">
@@ -741,8 +762,17 @@ Details/Notes: ${formData.message || 'None'}
 
             {/* Submission Alerts */}
             {formStatus === 'success' && (
-              <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold text-center">
-                🎉 Application submitted successfully! Please check your email for confirmation instructions.
+              <div className="p-5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex flex-col items-center gap-3 text-center">
+                <p className="text-emerald-400 text-xs font-bold">🎉 Application submitted! Our team will contact you within 48 hours with enrollment details.</p>
+                <p className="text-slate-400 text-[10px]">To secure your spot, complete the program fee payment via Razorpay:</p>
+                <a
+                  href="https://razorpay.me/@algoguidotechnologiesprivatel"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl flex items-center gap-2 transition-all shadow"
+                >
+                  <Coins className="h-3.5 w-3.5" /> Pay Program Fee via Razorpay
+                </a>
               </div>
             )}
 
@@ -760,7 +790,7 @@ Details/Notes: ${formData.message || 'None'}
             >
               {formStatus === 'submitting' ? (
                 <>
-                  <Loader2 className="h-4.5 w-4.5 animate-spin" /> Processing Application...
+                  <Loader2 className="h-4.5 w-4.5 animate-spin" /> Submitting Application...
                 </>
               ) : (
                 <>
@@ -769,8 +799,22 @@ Details/Notes: ${formData.message || 'None'}
               )}
             </button>
 
+            {formStatus !== 'success' && (
+              <div className="mt-2 p-4 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col items-center gap-2 text-center">
+                <p className="text-[10px] text-slate-500">Already received enrollment confirmation?</p>
+                <a
+                  href="https://razorpay.me/@algoguidotechnologiesprivatel"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5 transition-colors"
+                >
+                  <Coins className="h-3.5 w-3.5" /> Pay Program Fee via Razorpay →
+                </a>
+              </div>
+            )}
+
             <div className="flex justify-center items-center gap-1.5 text-[10px] text-slate-500 mt-2">
-              <Lock className="h-3 w-3" /> Secure SSL connection. We do not sell data.
+              <Lock className="h-3 w-3" /> Secure SSL connection. We do not sell your data.
             </div>
 
           </form>
@@ -818,18 +862,28 @@ Details/Notes: ${formData.message || 'None'}
 
       {/* Minimalist Footer */}
       <footer className="bg-[#0a0f1e] border-t border-white/5 py-8 mt-auto relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-[11px] text-slate-400">
-            {'\u00A9'} {new Date().getFullYear()} Algoguido Technologies Pvt. Ltd. All rights reserved.
-          </p>
-          <div className="flex items-center gap-5">
-            <Link href="/" className="text-[11px] text-slate-400 hover:text-white transition-colors">Home</Link>
-            <span className="text-slate-600 text-[10px]">·</span>
-            <Link href="/privacy-policy" className="text-[11px] text-slate-400 hover:text-white transition-colors">Privacy Policy</Link>
-            <span className="text-slate-600 text-[10px]">·</span>
-            <Link href="/terms-of-service" className="text-[11px] text-slate-400 hover:text-white transition-colors">Terms of Service</Link>
-            <span className="text-slate-600 text-[10px]">·</span>
-            <Link href="/sitemap" className="text-[11px] text-slate-400 hover:text-white transition-colors">Sitemap</Link>
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 flex flex-col items-center gap-5">
+          <a
+            href="https://razorpay.me/@algoguidotechnologiesprivatel"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 py-2.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-2 transition-all"
+          >
+            <Coins className="h-3.5 w-3.5" /> Pay Program Fee via Razorpay
+          </a>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 w-full">
+            <p className="text-[11px] text-slate-400">
+              {'\u00A9'} {new Date().getFullYear()} Algoguido Technologies Pvt. Ltd. All rights reserved.
+            </p>
+            <div className="flex items-center gap-5">
+              <Link href="/" className="text-[11px] text-slate-400 hover:text-white transition-colors">Home</Link>
+              <span className="text-slate-600 text-[10px]">·</span>
+              <Link href="/privacy-policy" className="text-[11px] text-slate-400 hover:text-white transition-colors">Privacy Policy</Link>
+              <span className="text-slate-600 text-[10px]">·</span>
+              <Link href="/terms-of-service" className="text-[11px] text-slate-400 hover:text-white transition-colors">Terms of Service</Link>
+              <span className="text-slate-600 text-[10px]">·</span>
+              <Link href="/sitemap" className="text-[11px] text-slate-400 hover:text-white transition-colors">Sitemap</Link>
+            </div>
           </div>
         </div>
       </footer>
