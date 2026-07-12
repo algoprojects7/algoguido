@@ -1399,10 +1399,10 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
 
                 {/* Lead Detail Panel */}
                 {selectedLeadDetail && (
-                  <div className="fixed inset-0 top-20 z-50 flex items-start justify-center pt-6 px-4 pb-4 overflow-y-auto" style={{background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(4px)'}} onClick={() => setSelectedLeadDetail(null)}>
-                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl p-0" onClick={e => e.stopPropagation()}>
+                  <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(4px)'}} onClick={() => setSelectedLeadDetail(null)}>
+                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden" onClick={e => e.stopPropagation()}>
                       {/* Header */}
-                      <div className="flex items-center justify-between px-7 py-5 border-b border-slate-100">
+                      <div className="flex items-center justify-between px-7 py-5 border-b border-slate-100 shrink-0">
                         <div>
                           <h2 className="text-lg font-bold text-slate-800">Lead Detail</h2>
                           <p className="text-xs text-slate-400 mt-0.5">ID: {selectedLeadDetail.id}</p>
@@ -1412,7 +1412,7 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                         </button>
                       </div>
                       {/* Body */}
-                      <div className="px-7 py-6 flex flex-col gap-6">
+                      <div className="px-7 py-6 flex flex-col gap-6 overflow-y-auto flex-grow">
                         {/* Row 1 */}
                         <div className="grid grid-cols-2 gap-4">
                           <div className="flex flex-col gap-1">
@@ -1489,7 +1489,7 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                         </div>
                       </div>
                       {/* Footer Actions */}
-                      <div className="px-7 py-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                      <div className="px-7 py-4 border-t border-slate-100 flex items-center justify-between gap-3 shrink-0">
                         {selectedLeadDetail.phone && (
                           <button
                             onClick={() => { handleOpenWhatsAppModal(selectedLeadDetail); setSelectedLeadDetail(null); }}
@@ -1622,10 +1622,10 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
 
                 {/* Application Detail Panel */}
                 {selectedAppDetail && (
-                  <div className="fixed inset-0 top-20 z-50 flex items-start justify-center pt-6 px-4 pb-4 overflow-y-auto" style={{background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(4px)'}} onClick={() => setSelectedAppDetail(null)}>
-                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl p-0" onClick={e => e.stopPropagation()}>
+                  <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{background: 'rgba(15,23,42,0.55)', backdropFilter: 'blur(4px)'}} onClick={() => setSelectedAppDetail(null)}>
+                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden" onClick={e => e.stopPropagation()}>
                       {/* Header */}
-                      <div className="flex items-center justify-between px-7 py-5 border-b border-slate-100">
+                      <div className="flex items-center justify-between px-7 py-5 border-b border-slate-100 shrink-0">
                         <div>
                           <h2 className="text-lg font-bold text-slate-800">Application Detail</h2>
                           <p className="text-xs text-slate-400 mt-0.5">ID: {selectedAppDetail.id}</p>
@@ -1635,7 +1635,7 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                         </button>
                       </div>
                       {/* Body */}
-                      <div className="px-7 py-6 flex flex-col gap-6">
+                      <div className="px-7 py-6 flex flex-col gap-6 overflow-y-auto flex-grow">
                         {/* Row 1 */}
                         <div className="grid grid-cols-2 gap-4">
                           <div className="flex flex-col gap-1">
@@ -1714,7 +1714,7 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                         </div>
                       </div>
                       {/* Footer Actions */}
-                      <div className="px-7 py-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                      <div className="px-7 py-4 border-t border-slate-100 flex items-center justify-between gap-3 shrink-0">
                         {selectedAppDetail.phone && (
                           <button
                             onClick={() => { handleOpenWhatsAppModal(selectedAppDetail); setSelectedAppDetail(null); }}
