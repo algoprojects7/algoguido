@@ -81,9 +81,9 @@ export default function SitemapPage() {
       description: 'Bridging academic learning and industrial needs.',
       color: 'from-amber-500 to-orange-600',
       items: [
-        { name: 'Industry Internships', href: '/#research', description: 'Hands-on live project training for student developers.', icon: GraduationCap },
-        { name: 'Professional & Industry Training', href: '/#research', description: 'Certifications in AI, data analytics, and cloud.', icon: Monitor },
-        { name: 'Data Science & Analytics', href: '/#research', description: 'Training on visualization, business intelligence, and modeling.', icon: Database },
+        { name: 'Industry Internships', href: '/industrial-training', description: 'Hands-on live project training for student developers.', icon: GraduationCap },
+        { name: 'Professional & Industry Training', href: '/industrial-training', description: 'Certifications in AI, data analytics, and cloud.', icon: Monitor },
+        { name: 'Data Science & Analytics', href: '/industrial-training', description: 'Training on visualization, business intelligence, and modeling.', icon: Database },
         { name: 'Research Collaboration', href: '/#research', description: 'Joint academic-industry research on Machine Learning.', icon: BookOpen },
         { name: 'Faculty Development Programs', href: '/#research', description: 'Empowering teachers with modern software and tools.', icon: Users },
         { name: 'AI Research & Innovation', href: '/#research', description: 'Generative AI, vector embeddings, and RAG architectures.', icon: Brain }
