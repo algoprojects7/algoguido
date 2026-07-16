@@ -63,7 +63,8 @@ export default function SitemapPage() {
         { name: 'eduAI365 ERP', href: '/#products', description: 'Next-generation educational enterprise management software.', icon: GraduationCap },
         { name: 'Apply4Jobs', href: '/#products', description: 'Advanced AI recruitment, resume analysis, and applicant matching.', icon: Briefcase },
         { name: 'LeadGrowAI', href: '/#products', description: 'AI-driven business growth, CRM, and growth automation.', icon: Cpu },
-        { name: 'TheHirings', href: '/#products', description: 'Seamless automated staffing and talent deployment framework.', icon: Users }
+        { name: 'TheHirings', href: '/#products', description: 'AI-driven developer staffing and talent sourcing.', icon: Users },
+        { name: 'AI Workforce for Business', href: '/#products', description: 'Leads management platform run by 6 collaborating AI agents.', icon: Brain }
       ]
     },
     {
@@ -246,11 +247,11 @@ export default function SitemapPage() {
           </p>
           <div className="flex items-center gap-5">
             <Link href="/" className="text-[11px] text-slate-400 hover:text-white transition-colors">Home</Link>
-            <span className="text-slate-600 text-[10px]">·</span>
+            <span className="text-slate-600 text-[10px]" aria-hidden="true">·</span>
             <Link href="/privacy-policy" className="text-[11px] text-slate-400 hover:text-white transition-colors">Privacy Policy</Link>
-            <span className="text-slate-600 text-[10px]">·</span>
+            <span className="text-slate-600 text-[10px]" aria-hidden="true">·</span>
             <Link href="/terms-of-service" className="text-[11px] text-slate-400 hover:text-white transition-colors">Terms of Service</Link>
-            <span className="text-slate-600 text-[10px]">·</span>
+            <span className="text-slate-600 text-[10px]" aria-hidden="true">·</span>
             <a href="https://razorpay.me/@algoguidotechnologiesprivatel" target="_blank" rel="noopener noreferrer" className="text-[11px] text-slate-400 hover:text-white transition-colors">Pay Online</a>
           </div>
         </div>

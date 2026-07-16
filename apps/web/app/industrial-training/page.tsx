@@ -877,11 +877,11 @@ Details/Notes: ${formData.message || 'None'}
             </p>
             <div className="flex items-center gap-5">
               <Link href="/" className="text-[11px] text-slate-400 hover:text-white transition-colors">Home</Link>
-              <span className="text-slate-600 text-[10px]">·</span>
+              <span className="text-slate-600 text-[10px]" aria-hidden="true">·</span>
               <Link href="/privacy-policy" className="text-[11px] text-slate-400 hover:text-white transition-colors">Privacy Policy</Link>
-              <span className="text-slate-600 text-[10px]">·</span>
+              <span className="text-slate-600 text-[10px]" aria-hidden="true">·</span>
               <Link href="/terms-of-service" className="text-[11px] text-slate-400 hover:text-white transition-colors">Terms of Service</Link>
-              <span className="text-slate-600 text-[10px]">·</span>
+              <span className="text-slate-600 text-[10px]" aria-hidden="true">·</span>
               <Link href="/sitemap" className="text-[11px] text-slate-400 hover:text-white transition-colors">Sitemap</Link>
             </div>
           </div>

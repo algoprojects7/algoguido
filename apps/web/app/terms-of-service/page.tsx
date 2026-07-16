@@ -4,7 +4,30 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'Terms of Service | Algoguido Technologies',
   description:
-    'Terms of Service of Algoguido Technologies Private Limited outlining usage guidelines, user accounts, intellectual property, and billing policies.',
+    'Review the Terms of Service of Algoguido Technologies Private Limited. Outlining platform usage, legal jurisdiction (Guwahati), registration, payments, and billing policies.',
+  alternates: {
+    canonical: '/terms-of-service',
+  },
+  openGraph: {
+    title: 'Terms of Service | Algoguido Technologies',
+    description: 'Terms of Service and legal agreements of Algoguido Technologies Private Limited.',
+    url: 'https://algoguido.com/terms-of-service',
+    type: 'website',
+    images: [
+      {
+        url: '/hero-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Algoguido Technologies Terms of Service',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Terms of Service | Algoguido Technologies',
+    description: 'Terms of Service and legal agreements of Algoguido Technologies Private Limited.',
+    images: ['/hero-image.png'],
+  },
 };
 
 const LAST_UPDATED = 'July 12, 2026';
@@ -24,7 +47,7 @@ const termsData = [
     id: 'description-services',
     title: 'Description of Services',
     paragraphs: [
-      'Algoguido Technologies is an enterprise-grade AI-first technology company. We design, develop, deploy, and maintain custom software products, enterprise SaaS applications (such as LeadGrowAI, eduAI365, Nidaan Polyclinic, and Apply4Jobs), cloud infrastructures, and digital transformation architectures for government, corporate, and private enterprise clients.',
+      'Algoguido Technologies is an enterprise-grade AI-first technology company. We design, develop, deploy, and maintain custom software products, enterprise SaaS applications (such as LeadGrowAI, eduAI365, Nidaan Polyclinic, Apply4Jobs, and AI Workforce for Business), cloud infrastructures, and digital transformation architectures for government, corporate, and private enterprise clients.',
       'We also conduct professional training programs, research projects, and academic internship collaborations. Any new feature, update, or extension of current Services shall automatically be subject to these Terms.',
     ],
     subsections: [],
@@ -160,11 +183,52 @@ const termsData = [
   },
 ];
 
+import Image from 'next/image';
+
 export default function TermsOfServicePage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': 'https://algoguido.com/terms-of-service/#webpage',
+        'url': 'https://algoguido.com/terms-of-service',
+        'name': 'Terms of Service | Algoguido Technologies',
+        'description':
+          'Review the Terms of Service of Algoguido Technologies Private Limited. Outlining platform usage, legal jurisdiction (Guwahati), registration, payments, and billing policies.',
+        'publisher': {
+          '@id': 'https://algoguido.com/#organization',
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': 'https://algoguido.com/terms-of-service/#breadcrumb',
+        'itemListElement': [
+          {
+            '@type': 'ListItem',
+            'position': 1,
+            'name': 'Home',
+            'item': 'https://algoguido.com',
+          },
+          {
+            '@type': 'ListItem',
+            'position': 2,
+            'name': 'Terms of Service',
+            'item': 'https://algoguido.com/terms-of-service',
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Hero Header */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-[#0052cc] via-blue-700 to-blue-900 text-white">
+      <header className="relative overflow-hidden bg-gradient-to-br from-[#0052cc] via-blue-700 to-blue-900 text-white">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(0,200,255,0.15),transparent_60%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(99,102,241,0.12),transparent_60%)]" />
         <div className="absolute top-0 right-0 h-[300px] w-[300px] bg-blue-400/10 rounded-full blur-3xl" />
@@ -172,16 +236,22 @@ export default function TermsOfServicePage() {
         {/* Navbar strip */}
         <div className="relative z-10 border-b border-white/10 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 py-4">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2.5">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo.png" alt="Algoguido Logo" className="h-8 w-8 object-contain brightness-0 invert" />
+            <Link href="/" className="flex items-center gap-2.5" aria-label="Algoguido Home">
+              <Image
+                src="/logo.png"
+                alt="Algoguido Logo"
+                width={32}
+                height={32}
+                className="h-8 w-8 object-contain brightness-0 invert"
+                priority
+              />
               <div className="flex flex-col">
                 <span className="font-extrabold text-sm text-white tracking-tight leading-tight">Algoguido</span>
                 <span className="text-[8px] font-bold text-white/60 uppercase tracking-widest leading-none">Technologies Pvt. Ltd.</span>
               </div>
             </Link>
-            <Link href="/" className="flex items-center gap-1.5 text-xs font-bold text-white/80 hover:text-white transition-colors uppercase tracking-wide">
-              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <Link href="/" className="flex items-center gap-1.5 text-xs font-bold text-white/80 hover:text-white transition-colors uppercase tracking-wide" aria-label="Back to Home">
+              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
               </svg>
               Back to Home
@@ -193,7 +263,7 @@ export default function TermsOfServicePage() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 py-20 md:py-28">
           <div className="max-w-3xl">
             <span className="inline-flex items-center gap-2 text-[11px] font-extrabold text-white/70 uppercase tracking-[0.2em] mb-5 bg-white/10 px-4 py-1.5 rounded-full border border-white/15">
-              <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
               </svg>
               Standard Agreement
@@ -203,16 +273,16 @@ export default function TermsOfServicePage() {
               Understand your rights, usage policies, and the legal guidelines associated with our website, platforms, SaaS products, and enterprise services.
             </p>
             <div className="flex flex-wrap items-center gap-4 mt-6 text-sm text-white/60">
-              <span>Last updated: <strong className="text-white/80">{LAST_UPDATED}</strong></span>
+              <span>Last updated: <time className="font-bold text-white" dateTime="2026-07-12">{LAST_UPDATED}</time></span>
               <span className="text-white/30">·</span>
-              <span>Effective Date: <strong className="text-white/80">January 1, 2024</strong></span>
+              <span>Effective Date: <time className="font-bold text-white" dateTime="2024-01-01">January 1, 2024</time></span>
             </div>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* Main content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 py-16 md:py-24">
+      <main className="max-w-7xl mx-auto px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 py-16 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
 
           {/* Sticky Table of Contents */}
@@ -220,7 +290,7 @@ export default function TermsOfServicePage() {
             <div className="sticky top-8">
               <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200/80">
                 <h2 className="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest mb-4">Table of Contents</h2>
-                <nav className="flex flex-col gap-1">
+                <nav className="flex flex-col gap-1" aria-label="Table of Contents">
                   {termsData.map((section, idx) => (
                     <a key={section.id} href={`#${section.id}`} className="text-xs text-slate-600 hover:text-[#0052cc] hover:pl-2 transition-all duration-200 py-1 border-l-2 border-transparent hover:border-[#0052cc] pl-3 leading-snug">
                       {idx + 1}. {section.title}
@@ -231,8 +301,8 @@ export default function TermsOfServicePage() {
               <div className="mt-6 p-5 rounded-2xl bg-gradient-to-br from-[#0052cc] to-blue-700 text-white">
                 <p className="text-xs font-bold uppercase tracking-wider text-white/70 mb-2">Legal Questions?</p>
                 <p className="text-xs text-white/80 leading-relaxed mb-3">Get in touch with our legal or compliance team for clarity on our policies.</p>
-                <a href="mailto:info@algoguido.com" className="inline-flex items-center gap-1.5 text-xs font-bold bg-white/15 hover:bg-white/25 text-white rounded-lg px-3 py-2 transition-all">
-                  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <a href="mailto:info@algoguido.com" className="inline-flex items-center gap-1.5 text-xs font-bold bg-white/15 hover:bg-white/25 text-white rounded-lg px-3 py-2 transition-all" aria-label="Email legal team">
+                  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                   info@algoguido.com
@@ -242,11 +312,11 @@ export default function TermsOfServicePage() {
           </aside>
 
           {/* Terms Content */}
-          <main className="lg:col-span-3">
+          <article className="lg:col-span-3">
             {/* Agreement Notice Banner */}
             <div className="mb-10 p-6 rounded-2xl bg-amber-50 border border-amber-200/70 flex gap-4">
-              <div className="shrink-0 h-10 w-10 rounded-xl bg-amber-100 flex items-center justify-center">
-                <svg className="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <div className="shrink-0 h-10 w-10 rounded-xl bg-amber-100 flex items-center justify-center" aria-hidden="true">
+                <svg className="h-5 w-5 text-amber-650" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
@@ -261,49 +331,49 @@ export default function TermsOfServicePage() {
               {termsData.map((section, idx) => (
                 <section key={section.id} id={section.id} className="scroll-mt-8">
                   <div className="flex items-start gap-4 mb-5">
-                    <div className="shrink-0 h-8 w-8 rounded-lg bg-[#0052cc]/10 text-[#0052cc] flex items-center justify-center text-xs font-extrabold">{idx + 1}</div>
+                    <div className="shrink-0 h-8 w-8 rounded-lg bg-[#0052cc]/10 text-[#0052cc] flex items-center justify-center text-xs font-extrabold" aria-hidden="true">{idx + 1}</div>
                     <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">{section.title}</h2>
                   </div>
-                  <div className="ml-12 text-slate-600 leading-relaxed text-sm space-y-3">
+                  <div className="ml-12 text-slate-655 leading-relaxed text-sm space-y-3">
                     {section.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
                     {section.subsections.length > 0 && (
                       <div className="space-y-4 mt-2">
                         {section.subsections.map((sub, i) => (
                           <div key={i}>
                             <h3 className="text-sm font-bold text-slate-800 mb-1">{sub.heading}</h3>
-                            <p className="text-slate-600">{sub.text}</p>
+                            <p className="text-slate-655">{sub.text}</p>
                           </div>
                         ))}
                       </div>
                     )}
                     {section.bullets.length > 0 && (
-                      <ul className="list-disc pl-5 space-y-1.5 text-slate-600 mt-2">
+                      <ul className="list-disc pl-5 space-y-1.5 text-slate-655 mt-2">
                         {section.bullets.map((b, i) => <li key={i}>{b}</li>)}
                       </ul>
                     )}
                     {'isContactSection' in section && section.isContactSection && (
-                      <div className="mt-4 p-6 rounded-2xl bg-gradient-to-br from-[#0052cc]/5 to-blue-50 border border-[#0052cc]/10">
+                      <address className="mt-4 p-6 rounded-2xl bg-gradient-to-br from-[#0052cc]/5 to-blue-50 border border-[#0052cc]/10 not-italic">
                         <p className="font-bold text-slate-800 text-base">Algoguido Technologies Private Limited</p>
-                        <p className="text-slate-600 mt-1">Pub Nizarapur Path, AEC Road, Sundarbari</p>
-                        <p className="text-slate-600">Jalukbari, Guwahati - 781014, Assam, India</p>
-                        <p className="text-slate-600 mt-2">
+                        <p className="text-slate-655 mt-1">Pub Nizarapur Path, AEC Road, Sundarbari</p>
+                        <p className="text-slate-655">Jalukbari, Guwahati - 781014, Assam, India</p>
+                        <p className="text-slate-655 mt-2">
                           <span className="font-semibold">Mobile / WhatsApp:</span>{' '}
                           <a href="tel:+918638526521" className="text-[#0052cc] hover:underline">+91-8638526521</a>
                           {', '}
                           <a href="tel:+916003526521" className="text-[#0052cc] hover:underline">+91-6003526521</a>
                         </p>
-                        <p className="text-slate-600 mt-1">
+                        <p className="text-slate-655 mt-1">
                           <span className="font-semibold">Email:</span>{' '}
                           <a href="mailto:info@algoguido.com" className="text-[#0052cc] hover:underline">info@algoguido.com</a>
                         </p>
-                        <p className="text-slate-600 mt-1">
+                        <p className="text-slate-655 mt-1">
                           <span className="font-semibold">Website:</span>{' '}
                           <a href="https://algoguido.com" className="text-[#0052cc] hover:underline" target="_blank" rel="noopener noreferrer">https://algoguido.com</a>
                         </p>
-                      </div>
+                      </address>
                     )}
                   </div>
-                  {idx < termsData.length - 1 && <div className="mt-10 border-t border-slate-100" />}
+                  {idx < termsData.length - 1 && <div className="mt-10 border-t border-slate-100" aria-hidden="true" />}
                 </section>
               ))}
             </div>
@@ -321,31 +391,31 @@ export default function TermsOfServicePage() {
                 <a href="mailto:info@algoguido.com" className="text-xs text-slate-400 hover:text-white transition-colors font-medium">info@algoguido.com</a>
               </div>
             </div>
-          </main>
+          </article>
         </div>
-      </div>
+      </main>
 
       {/* Footer strip */}
-      <div className="bg-[#0a0f1e] border-t border-white/5 py-6">
+      <footer className="bg-[#0a0f1e] border-t border-white/5 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 flex flex-col md:flex-row justify-between items-center gap-3">
           <p className="text-[11px] text-slate-400">
             {'\u00A9'} {new Date().getFullYear()} Algoguido Technologies Pvt. Ltd. All rights reserved.
           </p>
           <div className="flex items-center gap-5">
             <Link href="/" className="text-[11px] text-slate-400 hover:text-white transition-colors">Home</Link>
-            <span className="text-slate-600 text-[10px]">·</span>
+            <span className="text-slate-600 text-[10px]" aria-hidden="true">·</span>
             <Link href="/privacy-policy" className="text-[11px] text-slate-400 hover:text-white transition-colors">Privacy Policy</Link>
-            <span className="text-slate-600 text-[10px]">·</span>
+            <span className="text-slate-600 text-[10px]" aria-hidden="true">·</span>
             <Link href="/terms-of-service" className="text-[11px] text-white font-medium">Terms of Service</Link>
-            <span className="text-slate-600 text-[10px]">·</span>
+            <span className="text-slate-600 text-[10px]" aria-hidden="true">·</span>
             <Link href="/sitemap" className="text-[11px] text-slate-400 hover:text-white transition-colors">Sitemap</Link>
-            <span className="text-slate-600 text-[10px]">·</span>
+            <span className="text-slate-600 text-[10px]" aria-hidden="true">·</span>
             <a href="https://razorpay.me/@algoguidotechnologiesprivatel" target="_blank" rel="noopener noreferrer" className="text-[11px] text-slate-400 hover:text-white transition-colors">Pay Online</a>
-            <span className="text-slate-600 text-[10px]">·</span>
+            <span className="text-slate-600 text-[10px]" aria-hidden="true">·</span>
             <a href="mailto:info@algoguido.com" className="text-[11px] text-slate-400 hover:text-white transition-colors">Contact</a>
           </div>
         </div>
-      </div>
+      </footer>
     </div>
   );
 }

@@ -1,0 +1,35 @@
+# Algoguido Technologies Private Limited
+
+Algoguido Technologies Private Limited is an enterprise-grade, AI-first technology company specializing in artificial intelligence solutions, custom software engineering, cloud architecture, and professional education collaborations.
+
+## Organization Metadata
+- **Entity Name:** Algoguido Technologies Private Limited
+- **Alternative Name:** Algoguido Technologies
+- **Headquarters:** Guwahati, Assam, India
+- **Email:** info@algoguido.com
+- **Website:** https://algoguido.com
+- **Jurisdiction:** Guwahati, Assam, India (Guwahati Court Jurisdiction)
+
+## Enterprise Solutions
+- **ERP Platforms:** Integrated enterprise databases, inventory control, and digital workflows.
+- **CRM & Growth Systems:** Lead pipelines, sales automation, and growth analytics.
+- **AI Automation & Agents:** Custom Large Language Model (LLM) agents, Natural Language Processing (NLP), and RAG integrations.
+- **Cloud & Infrastructure:** Containerized microservices, high availability deployments, and database clusters.
+
+## Proprietary Products
+- **eduAI365 ERP:** AI-powered educational resource planning and management suite.
+- **Apply4Jobs:** Machine learning candidate matching, resume intelligence, and hiring dashboard.
+- **LeadGrowAI:** AI-driven sales funnel acceleration, automated customer relations and insights.
+- **TheHirings (TheHireAMe):** AI-driven developer staffing and talent sourcing.
+- **AI Workforce for Business:** Multi-agent leads management platform powered by 6 collaborating AI agents handling the lifecycle from discovery to deal closed and report analysis.
+
+## Education & Internships
+- **Paid Industry Internships:** Fee-based remote programs (from ₹3,000) for student developers with daily code reviews, production environments, and certificates.
+- **Professional Training:** Specialized certifications in AI, Data Science, and Full-Stack development.
+- **Academic Research:** ML, data modeling, and neural network research collaborations.
+
+## Technology Stack
+- **Languages:** TypeScript, JavaScript, Python, SQL
+- **Frameworks:** React 19, Next.js 15, TailwindCSS
+- **AI/ML:** PyTorch, OpenAI APIs, LangChain, Vector Databases
+- **Database & Cache:** PostgreSQL, Redis

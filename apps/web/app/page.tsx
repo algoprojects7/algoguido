@@ -44,11 +44,13 @@ import {
   Pause,
   Volume2,
   Layers,
-  CircleDot
+  CircleDot,
+  ChevronDown
 } from 'lucide-react';
 import { Button, Card, Badge, Input, Select, Textarea } from '@algoguido/ui';
 import { motion as originalMotion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 
 const motion = originalMotion as any;
 const AppleMapsView = dynamic(() => import('@/components/AppleMapsView'), { ssr: false });
@@ -566,6 +568,31 @@ export default function Home() {
   const [searchedCert, setSearchedCert] = useState<any>(null);
   const [certStatus, setCertStatus] = useState<'idle' | 'searching' | 'found' | 'not_found' | 'error'>('idle');
 
+  const [openHomeFaq, setOpenHomeFaq] = useState<number | null>(null);
+
+  const faqHomeData = [
+    {
+      q: "What does Algoguido Technologies Private Limited specialize in?",
+      a: "We specialize in developing custom AI solutions, machine learning integrations, scalable enterprise SaaS architectures (ERP/CRM), automated data pipelines, business intelligence dashboards, and cloud migrations."
+    },
+    {
+      q: "What proprietary AI products does Algoguido build?",
+      a: "Our core platforms include eduAI365 ERP (for university operational planning), Apply4Jobs (for machine learning resume assessment and candidate matches), LeadGrowAI (for sales CRM acceleration), TheHireMe (for AI-driven developer staffing), and AI Workforce for Business (a multi-agent leads management system powered by 6 collaborating agents)."
+    },
+    {
+      q: "Where is Algoguido Technologies headquartered?",
+      a: "We are headquartered in Guwahati, Assam, India. Our facilities serve enterprise clients in India and internationally, and accommodate our developer internships and academic programs."
+    },
+    {
+      q: "How do I get in touch with Algoguido for enterprise consults?",
+      a: "You can reach our solutions desk by filling out the consultation form below, emailing us directly at info@algoguido.com, or messaging our coordinates on WhatsApp."
+    },
+    {
+      q: "Does Algoguido offer educational programs or internships?",
+      a: "Yes. We collaborate with leading universities to offer online paid developer internships, faculty development programs, and summer/winter training projects focused on AI engineering, cloud development, and data science."
+    }
+  ];
+
   const [activeSection, setActiveSection] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -1064,8 +1091,105 @@ export default function Home() {
     printWindow.document.close();
   };
 
+  const homepageSchema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'SoftwareApplication',
+        '@id': 'https://algoguido.com/#product-eduai365',
+        'name': 'eduAI365 ERP',
+        'applicationCategory': 'EducationalBusinessApplication',
+        'operatingSystem': 'All',
+        'description': 'Next-generation educational resource planning and management software for universities.',
+        'publisher': {
+          '@id': 'https://algoguido.com/#organization'
+        }
+      },
+      {
+        '@type': 'SoftwareApplication',
+        '@id': 'https://algoguido.com/#product-apply4jobs',
+        'name': 'Apply4Jobs',
+        'applicationCategory': 'BusinessApplication',
+        'operatingSystem': 'All',
+        'description': 'AI-powered recruitment engine, resume parser, and applicant matching system.',
+        'publisher': {
+          '@id': 'https://algoguido.com/#organization'
+        }
+      },
+      {
+        '@type': 'SoftwareApplication',
+        '@id': 'https://algoguido.com/#product-leadgrowai',
+        'name': 'LeadGrowAI',
+        'applicationCategory': 'BusinessApplication',
+        'operatingSystem': 'All',
+        'description': 'AI-driven sales acceleration CRM, automated customer relations and analytics.',
+        'publisher': {
+          '@id': 'https://algoguido.com/#organization'
+        }
+      },
+      {
+        '@type': 'SoftwareApplication',
+        '@id': 'https://algoguido.com/#product-thehireme',
+        'name': 'TheHireMe',
+        'applicationCategory': 'BusinessApplication',
+        'operatingSystem': 'All',
+        'description': 'AI-driven developer staffing and talent sourcing.',
+        'publisher': {
+          '@id': 'https://algoguido.com/#organization'
+        }
+      },
+      {
+        '@type': 'SoftwareApplication',
+        '@id': 'https://algoguido.com/#product-aiworkforce',
+        'name': 'AI Workforce for Business',
+        'applicationCategory': 'BusinessApplication',
+        'operatingSystem': 'All',
+        'description': 'Multi-agent leads management platform powered by 6 collaborating AI agents handling the lifecycle from discovery to deal closed and report analysis.',
+        'publisher': {
+          '@id': 'https://algoguido.com/#organization'
+        }
+      },
+      {
+        '@type': 'Service',
+        '@id': 'https://algoguido.com/#service-ai',
+        'name': 'AI Automation & Agents',
+        'serviceType': 'Artificial Intelligence Consulting',
+        'provider': {
+          '@id': 'https://algoguido.com/#organization'
+        },
+        'description': 'Custom Large Language Model (LLM) agents, natural language processing, and automated workflows.'
+      },
+      {
+        '@type': 'Service',
+        '@id': 'https://algoguido.com/#service-cloud',
+        'name': 'Cloud & Infrastructure',
+        'serviceType': 'Cloud Consulting',
+        'provider': {
+          '@id': 'https://algoguido.com/#organization'
+        },
+        'description': 'DevOps, containerized microservices deployments, database clustering, and high availability systems.'
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': 'https://algoguido.com/#faq-homepage',
+        'mainEntity': faqHomeData.map(faq => ({
+          '@type': 'Question',
+          'name': faq.q,
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': faq.a
+          }
+        }))
+      }
+    ]
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-transparent overflow-x-hidden relative">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageSchema) }}
+      />
       <AnimatePresence>
         {isNavigating && (
           <>
@@ -1104,7 +1228,7 @@ export default function Home() {
                     animate={{ scale: [1, 1.15, 1] }}
                     transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
                   >
-                    <img src="/logo.png" alt="Algoguido" className="h-6 w-6 object-contain dark:brightness-100 brightness-90" />
+                    <Image src="/logo.png" alt="Algoguido Logo" width={24} height={24} className="h-6 w-6 object-contain dark:brightness-100 brightness-90" />
                   </motion.div>
                 </div>
               </div>
@@ -1139,7 +1263,7 @@ export default function Home() {
             className="flex items-center gap-3 group"
           >
             <div className="relative">
-              <img src="/logo.png" alt="Algoguido Logo" className="h-10 w-10 object-contain transition-transform duration-500 group-hover:rotate-[360deg]" />
+              <Image src="/logo.png" alt="Algoguido Logo" width={40} height={40} className="h-10 w-10 object-contain transition-transform duration-500 group-hover:rotate-[360deg]" priority />
               <div className="absolute inset-0 bg-brand-500/10 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
             <div className="flex flex-col">
@@ -1280,6 +1404,7 @@ export default function Home() {
                   <a href="/#products" onClick={(e) => handleNavClick('products', 'Products', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">Apply4Jobs</a>
                   <a href="/#products" onClick={(e) => handleNavClick('products', 'Products', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">LeadGrowAI</a>
                   <a href="/#products" onClick={(e) => handleNavClick('products', 'Products', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">TheHirings</a>
+                  <a href="/#products" onClick={(e) => handleNavClick('products', 'Products', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">AI Workforce</a>
                 </div>
               </div>
 
@@ -2521,9 +2646,9 @@ export default function Home() {
                 </div>
                 <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">06. TheHireAMe</span>
                 <div className="relative z-10 flex flex-col gap-2">
-                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors leading-snug">AI Workforce & Talent Marketplace</h3>
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors leading-snug">AI-Driven Staffing & Talent Sourcing</h3>
                   <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                    A smart hiring platform connecting employers with skilled professionals through intelligent matching, workforce management, candidate verification, and AI-assisted recruitment.
+                    An AI-driven developer staffing platform matching and deploying top-tier software engineers and technology specialists to enterprise projects globally.
                   </p>
                 </div>
                 <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
@@ -2563,7 +2688,39 @@ export default function Home() {
                 </a>
               </motion.div>
 
-              {/* Product 8: And Many More... */}
+              {/* Product 8: AI Workforce for Business */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 8,
+                  rotateX: -4,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(0, 82, 204, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="primary">AI Agents</Badge>
+                  <Badge variant="success">Leads</Badge>
+                  <Badge variant="warning">Workforce</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">08. AI Workforce for Business</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-[#0052cc] transition-colors leading-snug">Multi-Agent Leads Management</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    A next-generation platform utilizing 6 collaborating AI agents to manage the entire sales pipeline: from initial lead discovering, outreach, qualification, deal closed, and finally comprehensive report analysis.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  Learn More <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Product 9: And Many More... */}
               <motion.div
                 variants={itemVariants}
                 whileHover={{
@@ -2581,7 +2738,7 @@ export default function Home() {
                   <Badge variant="primary" className="bg-white/15 border-white/25 text-white">AI R&D</Badge>
                   <Badge variant="primary" className="bg-white/15 border-white/25 text-white">Future</Badge>
                 </div>
-                <span className="text-[10px] font-extrabold text-blue-200 uppercase tracking-widest relative z-10">08. And Many More...</span>
+                <span className="text-[10px] font-extrabold text-blue-200 uppercase tracking-widest relative z-10">09. And Many More...</span>
                 <div className="relative z-10 flex flex-col gap-2">
                   <h3 className="font-display font-extrabold text-lg text-white leading-snug">Building the Next Generation of AI Products</h3>
                   <p className="text-blue-100/85 text-xs leading-relaxed">
@@ -2910,6 +3067,37 @@ export default function Home() {
                   <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors leading-snug">AI-Powered Hiring Platforms</h3>
                   <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
                     Developed intelligent recruitment ecosystems featuring applicant tracking, AI-assisted resume screening, candidate assessments, workforce management, and hiring automation.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  View Case Study <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Case 7: Multi-Agent Leads Management */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 6,
+                  rotateX: -3,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(0, 82, 204, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="primary">AI Agents</Badge>
+                  <Badge variant="success">Sales Funnels</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">07. Multi-Agent Leads Management</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors leading-snug">Autonomous Sales Agents Deployment</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    Designed and deployed an autonomous multi-agent system comprising 6 collaborating AI agents to handle the complete lifecycle from lead discovery, automated outreach, qualification, deal closing, and final performance analytics.
                   </p>
                 </div>
                 <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
@@ -3520,6 +3708,51 @@ export default function Home() {
                   Apply Now
                 </a>
               </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section id="faq" className="py-14 md:py-24 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 border-t border-b border-slate-200/60 dark:border-navy-900 relative z-10 overflow-hidden" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #fcfbfa 100%)' }}>
+          <div className="absolute top-[20%] left-[-10%] w-[300px] h-[300px] bg-[#0052cc]/5 rounded-full blur-[80px] pointer-events-none" />
+          <div className="absolute bottom-[20%] right-[-10%] w-[300px] h-[300px] bg-purple-500/3 rounded-full blur-[80px] pointer-events-none" />
+
+          <div className="max-w-4xl mx-auto relative z-10">
+            <div className="text-center flex flex-col items-center gap-3 mb-12 md:mb-16">
+              <span className="text-xs font-extrabold text-[#0052cc] dark:text-blue-400 uppercase tracking-widest bg-[#0052cc]/5 dark:bg-blue-500/10 px-3 py-1 rounded-full w-fit">
+                Frequently Asked Questions
+              </span>
+              <h2 className="font-display font-extrabold text-3xl md:text-4.5xl text-slate-900 dark:text-white tracking-tight leading-tight">
+                Answers to Common Inquiries
+              </h2>
+              <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm max-w-xl leading-relaxed">
+                Learn more about our custom AI systems, software products, and consulting engagements.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              {faqHomeData.map((faq, idx) => (
+                <div
+                  key={idx}
+                  className="rounded-2xl border border-slate-200/60 dark:border-white/5 bg-white/70 dark:bg-navy-900/40 backdrop-blur-md overflow-hidden transition-all duration-300 hover:border-[#0052cc]/30"
+                >
+                  <button
+                    onClick={() => setOpenHomeFaq(openHomeFaq === idx ? null : idx)}
+                    className="w-full px-6 py-5 flex items-center justify-between text-left gap-4"
+                    aria-expanded={openHomeFaq === idx}
+                  >
+                    <span className="text-sm font-bold text-slate-800 dark:text-slate-200 leading-snug">{faq.q}</span>
+                    <ChevronDown className={`h-4 w-4 text-slate-400 dark:text-slate-500 shrink-0 transition-transform duration-300 ${openHomeFaq === idx ? 'rotate-180 text-[#0052cc]' : ''}`} />
+                  </button>
+                  <div
+                    className={`transition-all duration-300 ease-in-out overflow-hidden ${openHomeFaq === idx ? 'max-h-60 opacity-100 border-t border-slate-100 dark:border-white/5' : 'max-h-0 opacity-0'}`}
+                  >
+                    <div className="p-6 text-xs sm:text-sm text-slate-655 dark:text-slate-400 leading-relaxed bg-slate-50/50 dark:bg-navy-950/20">
+                      {faq.a}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -4161,7 +4394,7 @@ export default function Home() {
                 }}
                 className="flex items-center gap-3 hover:opacity-90 transition-opacity w-fit"
               >
-                <img src="/logo.png" alt="Algoguido Logo" className="h-9 w-9 object-contain brightness-0 invert" />
+                <Image src="/logo.png" alt="Algoguido Logo" width={36} height={36} className="h-9 w-9 object-contain brightness-0 invert" />
                 <div className="flex flex-col">
                   <span className="font-display font-extrabold text-base text-white tracking-tight leading-tight">Algoguido</span>
                   <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest leading-none mt-0.5">Technologies Pvt. Ltd.</span>
@@ -4240,7 +4473,7 @@ export default function Home() {
             <div className="flex flex-col gap-4">
               <h4 className="text-[11px] font-extrabold text-white uppercase tracking-[0.12em]">Products</h4>
               <nav className="flex flex-col gap-2.5">
-                {['eduAI365', 'Apply4Jobs', 'LeadGrowAI', 'TheHirings', 'neHerbalTea'].map((item) => (
+                {['eduAI365', 'Apply4Jobs', 'LeadGrowAI', 'TheHirings', 'AI Workforce', 'neHerbalTea'].map((item) => (
                   <a key={item} href="/#products" className="text-[12px] text-slate-300 hover:text-white hover:translate-x-1 transition-all duration-200 flex items-center gap-1.5 group">
                     <span className="h-px w-3 bg-slate-700 group-hover:bg-blue-500 group-hover:w-4 transition-all duration-200" />
                     {item}
@@ -4743,22 +4976,30 @@ export default function Home() {
                     className="absolute inset-0 flex flex-col items-center justify-center text-center px-8"
                   >
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,82,204,0.12),transparent_70%)]" />
-                    <motion.img
-                      src="/logo.png"
-                      alt="Algoguido"
-                      className="h-24 w-24 object-contain mb-6"
+                    <motion.div
+                      className="mb-6"
                       initial={{ scale: 0, rotate: -180 }}
                       animate={{ scale: 1, rotate: 0 }}
                       transition={{ type: 'spring', damping: 15, delay: 0.3 }}
-                    />
-                    <motion.h1
+                    >
+                      <Image
+                        src="/logo.png"
+                        alt="Algoguido Logo"
+                        width={96}
+                        height={96}
+                        className="h-24 w-24 object-contain"
+                      />
+                    </motion.div>
+                    <motion.div
+                      role="heading"
+                      aria-level={2}
                       initial={{ y: 30, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: 0.5 }}
                       className="font-display font-extrabold text-4xl md:text-6xl text-white tracking-tight mb-3"
                     >
                       Algoguido Technologies
-                    </motion.h1>
+                    </motion.div>
                     <motion.p
                       initial={{ y: 20, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
@@ -4989,12 +5230,13 @@ export default function Home() {
                           Premium AI-Powered Product Suite
                         </h3>
                       </div>
-                      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
                         {[
-                          { name: 'eduAI365', desc: 'AI Education Management for Schools, Colleges & Institutions', color: 'from-blue-500/15 to-blue-600/5', accent: 'text-blue-400', tags: ['AI', 'Education', 'SaaS'] },
+                          { name: 'eduAI365', desc: 'AI Education Management for Schools, Colleges & Institutions', color: 'from-blue-500/15 to-blue-600/5', accent: 'text-blue-400', tags: ['AI', 'Education'] },
                           { name: 'Apply4Jobs', desc: 'Intelligent Job Portal & Recruitment Platform with AI screening', color: 'from-amber-500/15 to-amber-600/5', accent: 'text-amber-400', tags: ['HR Tech', 'AI'] },
                           { name: 'LeadGrowAI', desc: 'AI Lead Management & Business Growth with conversational routing', color: 'from-emerald-500/15 to-emerald-600/5', accent: 'text-emerald-400', tags: ['CRM', 'Sales'] },
-                          { name: 'TheHirings', desc: 'Advanced Candidate Assessment Platform with AI vetting', color: 'from-purple-500/15 to-purple-600/5', accent: 'text-purple-400', tags: ['HR Tech', 'Assessment'] }
+                          { name: 'TheHirings', desc: 'AI-driven developer staffing and talent sourcing platform', color: 'from-purple-500/15 to-purple-600/5', accent: 'text-purple-400', tags: ['Staffing', 'AI'] },
+                          { name: 'AI Workforce', desc: 'Leads management platform run by 6 collaborating AI agents', color: 'from-pink-500/15 to-pink-600/5', accent: 'text-pink-400', tags: ['Sales', 'Agents'] }
                         ].map((product, i) => (
                           <motion.div
                             key={product.name}
