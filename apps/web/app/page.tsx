@@ -699,7 +699,7 @@ export default function Home() {
     setStatus('submitting');
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const apiUrl = '/api';
       const response = await fetch(`${apiUrl}/leads`, {
         method: 'POST',
         headers: {
@@ -740,7 +740,7 @@ export default function Home() {
     setStatus('submitting');
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const apiUrl = '/api';
       const response = await fetch(`${apiUrl}/leads`, {
         method: 'POST',
         headers: {
@@ -790,7 +790,7 @@ export default function Home() {
     setStatus('submitting');
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const apiUrl = '/api';
       const response = await fetch(`${apiUrl}/leads`, {
         method: 'POST',
         headers: {
@@ -836,7 +836,7 @@ export default function Home() {
     setSearchedCert(null);
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const apiUrl = '/api';
       const response = await fetch(`${apiUrl}/certificates/${searchCertNo.trim()}`);
       if (response.ok) {
         const data = await response.json();

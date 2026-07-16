@@ -117,7 +117,7 @@ Details/Notes: ${formData.message || 'None'}
         message: messageContent
       };
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+      const apiUrl = '/api';
       const res = await fetch(`${apiUrl}/leads`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
