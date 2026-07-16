@@ -4473,7 +4473,7 @@ export default function Home() {
             <div className="flex flex-col gap-4">
               <h4 className="text-[11px] font-extrabold text-white uppercase tracking-[0.12em]">Products</h4>
               <nav className="flex flex-col gap-2.5">
-                {['eduAI365', 'Apply4Jobs', 'LeadGrowAI', 'TheHirings', 'AI Workforce', 'neHerbalTea'].map((item) => (
+                {['eduAI365', 'Apply4Jobs', 'LeadGrowAI', 'TheHirings', 'Multi-Agent Leads Management', 'neHerbalTea'].map((item) => (
                   <a key={item} href="/#products" className="text-[12px] text-slate-300 hover:text-white hover:translate-x-1 transition-all duration-200 flex items-center gap-1.5 group">
                     <span className="h-px w-3 bg-slate-700 group-hover:bg-blue-500 group-hover:w-4 transition-all duration-200" />
                     {item}
