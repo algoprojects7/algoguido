@@ -142,7 +142,7 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
     { id: 'createadmin', name: 'Create Admin', icon: UserPlus, restricted: true },
     { id: 'billing', name: 'Razorpay Billing', icon: CreditCard },
     { id: 'settings', name: 'Settings', icon: Settings, restricted: true },
-    { id: 'webmail', name: 'Web Mail', icon: Mail, href: 'https://algoguido.com:2096', isExternal: true },
+    { id: 'webmail', name: 'Web Mail', icon: Mail, href: 'https://linux12.hostguy.com:2096', isExternal: true },
   ];
 
   // ADMIN role cannot see restricted nav items at all
@@ -2036,12 +2036,11 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                                     <div className="text-[10px] text-slate-400 font-mono mt-0.5">{u.email}</div>
                                   </td>
                                   <td className="py-3.5">
-                                    <span className={`inline-block text-[9px] font-extrabold tracking-widest uppercase px-1.5 py-0.5 rounded-md ${
-                                      u.role === 'SUPER_ADMIN' ? 'bg-violet-100 text-violet-700' :
-                                      u.role === 'ADMIN' ? 'bg-sky-100 text-sky-700' :
-                                      u.role === 'EDITOR' ? 'bg-amber-100 text-amber-700' :
-                                      'bg-slate-100 text-slate-700'
-                                    }`}>
+                                    <span className={`inline-block text-[9px] font-extrabold tracking-widest uppercase px-1.5 py-0.5 rounded-md ${u.role === 'SUPER_ADMIN' ? 'bg-violet-100 text-violet-700' :
+                                        u.role === 'ADMIN' ? 'bg-sky-100 text-sky-700' :
+                                          u.role === 'EDITOR' ? 'bg-amber-100 text-amber-700' :
+                                            'bg-slate-100 text-slate-700'
+                                      }`}>
                                       {u.role === 'SUPER_ADMIN' ? 'Super Admin' : u.role}
                                     </span>
                                   </td>
@@ -2321,19 +2320,17 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
               <div className="grid grid-cols-3 gap-4">
                 <div className="flex flex-col gap-1">
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pipeline Stage</span>
-                  <span className={`text-xs font-bold px-2.5 py-1 rounded-lg w-fit ${
-                    selectedLeadDetail.stage === 'QUALIFIED' ? 'bg-emerald-100 text-emerald-700' :
-                    selectedLeadDetail.stage === 'CONTACTED' ? 'bg-cyan-100 text-cyan-700' :
-                    selectedLeadDetail.stage === 'NEGOTIATION' ? 'bg-purple-100 text-purple-700' :
-                    'bg-indigo-100 text-indigo-700'
-                  }`}>{selectedLeadDetail.stage || '—'}</span>
+                  <span className={`text-xs font-bold px-2.5 py-1 rounded-lg w-fit ${selectedLeadDetail.stage === 'QUALIFIED' ? 'bg-emerald-100 text-emerald-700' :
+                      selectedLeadDetail.stage === 'CONTACTED' ? 'bg-cyan-100 text-cyan-700' :
+                        selectedLeadDetail.stage === 'NEGOTIATION' ? 'bg-purple-100 text-purple-700' :
+                          'bg-indigo-100 text-indigo-700'
+                    }`}>{selectedLeadDetail.stage || '—'}</span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">AI Score</span>
-                  <span className={`text-xs font-bold px-2.5 py-1 rounded-lg w-fit ${
-                    selectedLeadDetail.score >= 85 ? 'bg-emerald-100 text-emerald-700' :
-                    selectedLeadDetail.score >= 70 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-700'
-                  }`}>{selectedLeadDetail.score ?? '—'}/100</span>
+                  <span className={`text-xs font-bold px-2.5 py-1 rounded-lg w-fit ${selectedLeadDetail.score >= 85 ? 'bg-emerald-100 text-emerald-700' :
+                      selectedLeadDetail.score >= 70 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-700'
+                    }`}>{selectedLeadDetail.score ?? '—'}/100</span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Source</span>
@@ -2433,10 +2430,9 @@ export default function AdminDashboard({ onLogout, userRole = 'ADMIN' }: AdminDa
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">AI Score</span>
-                  <span className={`text-xs font-bold px-2.5 py-1 rounded-lg w-fit ${
-                    (selectedAppDetail.score || 85) >= 85 ? 'bg-emerald-100 text-emerald-700' :
-                    (selectedAppDetail.score || 85) >= 70 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-700'
-                  }`}>{selectedAppDetail.score || 85}/100</span>
+                  <span className={`text-xs font-bold px-2.5 py-1 rounded-lg w-fit ${(selectedAppDetail.score || 85) >= 85 ? 'bg-emerald-100 text-emerald-700' :
+                      (selectedAppDetail.score || 85) >= 70 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-700'
+                    }`}>{selectedAppDetail.score || 85}/100</span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pipeline Stage</span>
