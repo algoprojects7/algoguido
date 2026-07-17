@@ -3463,21 +3463,21 @@ export default function Home() {
             >
               {[
                 {
-                  name: "Dr. Bikash Sarmah",
+                  name: "Mr. Zahir Mazumder",
                   role: "Nidaan Hospital",
                   quote: "Algoguido delivered an exceptional hospital management system that transformed our operations. The AI-powered insights have been game-changing.",
                   initials: "BS",
                   bg: "from-blue-600 to-indigo-500",
                 },
                 {
-                  name: "Syed Abdul Malik",
+                  name: "Mr. Syed M. Hussain,
                   role: "Community Leader",
                   quote: "The community registry platform built by Algoguido is secure, scalable, and user-friendly. Great team with deep technical expertise.",
                   initials: "SM",
                   bg: "from-purple-600 to-pink-500",
                 },
                 {
-                  name: "Rajesh Kumar",
+                  name: "Mr. Nazrul Islam",
                   role: "Enterprise Client",
                   quote: "Outstanding AI solutions and excellent support. Algoguido is our trusted technology partner for digital transformation.",
                   initials: "RK",
