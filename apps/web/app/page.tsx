@@ -536,6 +536,8 @@ export default function Home() {
   });
   const [countryCode, setCountryCode] = useState('+91');
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [subscribeEmail, setSubscribeEmail] = useState('');
+  const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
   // Auto-reset success message after 8 seconds
   useEffect(() => {
@@ -690,6 +692,39 @@ export default function Home() {
   const handleEduInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setEduFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubscribeSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!subscribeEmail) return;
+    setSubscribeStatus('submitting');
+    try {
+      const apiUrl = '/api';
+      const response = await fetch(`${apiUrl}/leads`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: 'Newsletter Subscriber',
+          email: subscribeEmail,
+          subject: 'Newsletter Subscription Request',
+          message: `Newsletter subscription request from website footer. Email: ${subscribeEmail}`,
+          source: 'NEWSLETTER',
+        }),
+      });
+
+      if (response.ok) {
+        setSubscribeStatus('success');
+        setSubscribeEmail('');
+        setTimeout(() => setSubscribeStatus('idle'), 5000);
+      } else {
+        setSubscribeStatus('error');
+      }
+    } catch (error) {
+      console.error('Subscription error:', error);
+      setSubscribeStatus('error');
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -4487,20 +4522,41 @@ export default function Home() {
               <p className="text-[12px] text-slate-300 leading-relaxed">
                 Get the latest AI insights and product updates delivered to your inbox.
               </p>
-              <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-2.5 mt-1">
+              <form onSubmit={handleSubscribeSubmit} className="flex flex-col gap-2.5 mt-1">
                 <input
                   type="email"
                   required
+                  value={subscribeEmail}
+                  onChange={(e) => setSubscribeEmail(e.target.value)}
                   placeholder="you@company.com"
                   className="rounded-lg border border-white/10 bg-white/5 text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500/50 text-xs h-9 px-3 w-full transition-all"
+                  disabled={subscribeStatus === 'submitting'}
                 />
                 <button
                   type="submit"
-                  className="h-9 w-full rounded-lg bg-[#0052cc] hover:bg-blue-600 text-white text-[11px] font-bold uppercase tracking-wider transition-all duration-200"
+                  disabled={subscribeStatus === 'submitting'}
+                  className="h-9 w-full rounded-lg bg-[#0052cc] hover:bg-blue-600 disabled:opacity-50 text-white text-[11px] font-bold uppercase tracking-wider transition-all duration-200 flex items-center justify-center gap-2"
                 >
-                  Subscribe
+                  {subscribeStatus === 'submitting' ? (
+                    <>
+                      <span className="h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                      Subscribing...
+                    </>
+                  ) : (
+                    'Subscribe'
+                  )}
                 </button>
               </form>
+              {subscribeStatus === 'success' && (
+                <p className="text-[11px] text-green-400 mt-1 font-medium animate-fade-in">
+                  ✓ Successfully subscribed!
+                </p>
+              )}
+              {subscribeStatus === 'error' && (
+                <p className="text-[11px] text-red-400 mt-1 font-medium animate-fade-in">
+                  ✗ Error subscribing. Please try again.
+                </p>
+              )}
               <p className="text-[10px] text-slate-500">No spam. Unsubscribe anytime.</p>
             </div>
 
