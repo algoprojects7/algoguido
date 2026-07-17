@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { CertificatesService } from './certificates.service';
 
@@ -25,8 +25,11 @@ export class CertificatesController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'List all certificates (Admin)' })
-  async findAll() {
+  @ApiOperation({ summary: 'List all certificates (Admin) or search by certificate number' })
+  async findAll(@Query('certNo') certNo?: string) {
+    if (certNo) {
+      return this.certificatesService.findByCertNo(certNo);
+    }
     return this.certificatesService.findAll();
   }
 

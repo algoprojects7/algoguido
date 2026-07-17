@@ -870,7 +870,7 @@ export default function Home() {
 
     try {
       const apiUrl = '/api';
-      const response = await fetch(`${apiUrl}/certificates/${searchCertNo.trim()}`);
+      const response = await fetch(`${apiUrl}/certificates?certNo=${encodeURIComponent(searchCertNo.trim())}`);
       if (response.ok) {
         const data = await response.json();
         setSearchedCert(data);
