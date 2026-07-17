@@ -174,7 +174,7 @@ export default function RootLayout({
         ],
         'sameAs': [
           'https://www.linkedin.com/company/algoguido-technologies',
-          'https://twitter.com/algoguido',
+          'https://youtube.com/@algoguidotechnologies',
           'https://www.facebook.com/profile.php?id=61586078301070&sk=about',
         ],
       },

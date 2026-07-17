@@ -29,7 +29,6 @@ import {
   Menu,
   X,
   Facebook,
-  Twitter,
   Linkedin,
   Youtube,
   Rocket,
@@ -4335,13 +4334,10 @@ export default function Home() {
                   <a href="https://www.facebook.com/profile.php?id=61586078301070&sk=about" target="_blank" rel="noopener noreferrer" className="h-9 w-9 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-white/5 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-450 transition-all shadow-sm">
                     <Facebook className="h-4.5 w-4.5" />
                   </a>
-                  <a href="https://twitter.com/algoguido" target="_blank" rel="noopener noreferrer" className="h-9 w-9 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-white/5 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-sky-600 dark:hover:text-sky-450 transition-all shadow-sm">
-                    <Twitter className="h-4.5 w-4.5" />
-                  </a>
                   <a href="https://www.linkedin.com/company/algoguido-technologies" target="_blank" rel="noopener noreferrer" className="h-9 w-9 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-white/5 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-blue-700 dark:hover:text-blue-450 transition-all shadow-sm">
                     <Linkedin className="h-4.5 w-4.5" />
                   </a>
-                  <a href="#" className="h-9 w-9 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-white/5 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-450 transition-all shadow-sm">
+                  <a href="https://youtube.com/@algoguidotechnologies" target="_blank" rel="noopener noreferrer" className="h-9 w-9 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-white/5 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-450 transition-all shadow-sm">
                     <Youtube className="h-4.5 w-4.5" />
                   </a>
                 </div>
@@ -4404,13 +4400,10 @@ export default function Home() {
                 <a href="https://www.facebook.com/profile.php?id=61586078301070&sk=about" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="h-8 w-8 rounded-lg bg-white/5 hover:bg-blue-600/20 text-slate-300 hover:text-blue-400 border border-white/5 hover:border-blue-500/30 flex items-center justify-center transition-all duration-200">
                   <Facebook className="h-3.5 w-3.5" />
                 </a>
-                <a href="https://twitter.com/algoguido" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="h-8 w-8 rounded-lg bg-white/5 hover:bg-sky-500/20 text-slate-300 hover:text-sky-400 border border-white/5 hover:border-sky-500/30 flex items-center justify-center transition-all duration-200">
-                  <Twitter className="h-3.5 w-3.5" />
-                </a>
                 <a href="https://www.linkedin.com/company/algoguido-technologies" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="h-8 w-8 rounded-lg bg-white/5 hover:bg-blue-700/20 text-slate-300 hover:text-blue-500 border border-white/5 hover:border-blue-600/30 flex items-center justify-center transition-all duration-200">
                   <Linkedin className="h-3.5 w-3.5" />
                 </a>
-                <a href="#" aria-label="YouTube" className="h-8 w-8 rounded-lg bg-white/5 hover:bg-red-600/20 text-slate-300 hover:text-red-400 border border-white/5 hover:border-red-500/30 flex items-center justify-center transition-all duration-200">
+                <a href="https://youtube.com/@algoguidotechnologies" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="h-8 w-8 rounded-lg bg-white/5 hover:bg-red-600/20 text-slate-300 hover:text-red-400 border border-white/5 hover:border-red-500/30 flex items-center justify-center transition-all duration-200">
                   <Youtube className="h-3.5 w-3.5" />
                 </a>
               </div>
