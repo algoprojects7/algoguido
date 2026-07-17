@@ -173,9 +173,9 @@ export default function RootLayout({
           'Software Engineering',
         ],
         'sameAs': [
-          'https://www.linkedin.com/company/algoguido',
+          'https://www.linkedin.com/company/algoguido-technologies',
           'https://twitter.com/algoguido',
-          'https://www.facebook.com/algoguido',
+          'https://www.facebook.com/profile.php?id=61586078301070&sk=about',
         ],
       },
       {

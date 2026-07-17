@@ -219,9 +219,10 @@ export const COMPANY_INFO = {
     pincode: '',
   },
   social: {
-    linkedin: 'https://linkedin.com/company/algoguido',
+    linkedin: 'https://www.linkedin.com/company/algoguido-technologies',
     github: 'https://github.com/algoguido',
     twitter: 'https://twitter.com/algoguido',
+    facebook: 'https://www.facebook.com/profile.php?id=61586078301070&sk=about',
   },
   stats: {
     clients: 50,
