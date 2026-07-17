@@ -82,14 +82,14 @@ export default function AppleMapsView() {
   const animationFrameId = useRef<number | null>(null);
 
   // Define route paths coordinates
-  // Drive route (Jalukbari bridge (End) -> AEC Road -> Sundarbari Chowk -> Govt Ayurvedic College -> Left Turn (Opposite Road) -> Pub Nizarapur Path -> Priyadarshini Hostel -> Majankari Tent House -> Left Turn -> Algoguido)
-  const drivePathD = "M 75 40 L 70 160 L 70 260 L 70 280 L 240 280 L 350 280 L 480 280 L 480 180 L 600 180";
+  // Drive route (Jalukbari bridge (End) -> AEC Road -> Sundarbari Chowk -> Govt Ayurvedic College -> Jog Turn -> Priyadarshini -> Majankari -> Algoguido)
+  const drivePathD = "M 75 40 L 70 160 L 70 280 L 150 280 L 150 320 L 220 320 L 350 320 L 480 320 L 480 180 L 600 180";
   
   // Walk route
-  const walkPathD = "M 75 40 L 70 160 L 70 260 L 70 280 L 240 280 L 350 280 L 480 280 L 480 180 L 600 180";
+  const walkPathD = "M 75 40 L 70 160 L 70 280 L 150 280 L 150 320 L 220 320 L 350 320 L 480 320 L 480 180 L 600 180";
 
   // Cycle route
-  const cyclePathD = "M 75 40 L 70 160 L 70 260 L 70 280 L 240 280 L 350 280 L 480 280 L 480 180 L 600 180";
+  const cyclePathD = "M 75 40 L 70 160 L 70 280 L 150 280 L 150 320 L 220 320 L 350 320 L 480 320 L 480 180 L 600 180";
 
   // Select path string based on active route mode
   const getActivePathD = () => {
@@ -101,27 +101,34 @@ export default function AppleMapsView() {
   // Define step directions
   const driveSteps: Step[] = [
     { text: "Start at the end of Jalukbari Bridge, head South on AEC Road", distance: "100m", icon: "straight", triggerProgress: 0 },
-    { text: "Pass through Sundarbari Chowk (Kalpana Restaurant)", distance: "200m", icon: "straight", triggerProgress: 0.15 },
-    { text: "Reaching Govt Ayurvedic College, take left turn that is the opposite road against Govt Ayurvedic College", distance: "150m", icon: "left", triggerProgress: 0.38 },
-    { text: "Come straight towards Pub-Nizarapur Path and pass Priyadarshini Girls Hostel", distance: "220m", icon: "straight", triggerProgress: 0.58 },
-    { text: "Take a left turn when you reach Majankari Tent House", distance: "80m", icon: "left", triggerProgress: 0.78 },
-    { text: "Come straight to arrive at Algoguido Technologies Private Limited", distance: "0m", icon: "arrive", triggerProgress: 0.95 }
+    { text: "Pass through Sundarbari Chowk (Kalpana Restaurant)", distance: "200m", icon: "straight", triggerProgress: 0.12 },
+    { text: "Reaching Govt Ayurvedic College, turn left", distance: "80m", icon: "left", triggerProgress: 0.28 },
+    { text: "Go straight a little bit, then turn right", distance: "50m", icon: "right", triggerProgress: 0.35 },
+    { text: "Go a little bit, then turn left to continue straight", distance: "70m", icon: "left", triggerProgress: 0.45 },
+    { text: "Pass Priyadarshini Girls' Hostel on your way", distance: "150m", icon: "straight", triggerProgress: 0.60 },
+    { text: "Reaching Majankari Tent House, turn left", distance: "130m", icon: "left", triggerProgress: 0.80 },
+    { text: "Go straight to arrive at Algoguido Technologies Private Limited", distance: "0m", icon: "arrive", triggerProgress: 0.95 }
   ];
 
   const walkSteps: Step[] = [
     { text: "Walk South on AEC Road from Jalukbari Bridge End", distance: "100m", icon: "straight", triggerProgress: 0 },
-    { text: "Pass through Sundarbari Chowk (Kalpana Restaurant)", distance: "200m", icon: "straight", triggerProgress: 0.15 },
-    { text: "Turn left at the opposite road against Govt Ayurvedic College", distance: "150m", icon: "left", triggerProgress: 0.38 },
-    { text: "Walk down Pub-Nizarapur Path past Priyadarshini Girls Hostel", distance: "220m", icon: "straight", triggerProgress: 0.58 },
-    { text: "Turn left at Majankari Tent House and walk to Algoguido", distance: "0m", icon: "arrive", triggerProgress: 0.95 }
+    { text: "Pass through Sundarbari Chowk (Kalpana Restaurant)", distance: "200m", icon: "straight", triggerProgress: 0.12 },
+    { text: "Turn left opposite Govt Ayurvedic College", distance: "80m", icon: "left", triggerProgress: 0.28 },
+    { text: "Walk straight, then turn right", distance: "50m", icon: "right", triggerProgress: 0.35 },
+    { text: "Walk a little bit, then turn left", distance: "70m", icon: "left", triggerProgress: 0.45 },
+    { text: "Walk straight past Priyadarshini Girls' Hostel", distance: "150m", icon: "straight", triggerProgress: 0.60 },
+    { text: "At Majankari Tent House, turn left", distance: "130m", icon: "left", triggerProgress: 0.80 },
+    { text: "Walk straight to arrive at Algoguido", distance: "0m", icon: "arrive", triggerProgress: 0.95 }
   ];
 
   const cycleSteps: Step[] = [
     { text: "Ride South from Jalukbari Bridge End on AEC Road", distance: "100m", icon: "straight", triggerProgress: 0 },
-    { text: "Pass through Sundarbari Chowk (Kalpana Restaurant)", distance: "200m", icon: "straight", triggerProgress: 0.15 },
-    { text: "At Govt Ayurvedic College, turn left onto the opposite road", distance: "150m", icon: "left", triggerProgress: 0.38 },
-    { text: "Ride straight on Pub-Nizarapur Path past Priyadarshini Girls Hostel", distance: "220m", icon: "straight", triggerProgress: 0.58 },
-    { text: "Turn left at Majankari Tent House", distance: "80m", icon: "left", triggerProgress: 0.78 },
+    { text: "Pass through Sundarbari Chowk (Kalpana Restaurant)", distance: "200m", icon: "straight", triggerProgress: 0.12 },
+    { text: "At Govt Ayurvedic College, turn left", distance: "80m", icon: "left", triggerProgress: 0.28 },
+    { text: "Ride straight a little bit, then turn right", distance: "50m", icon: "right", triggerProgress: 0.35 },
+    { text: "Ride a little bit, then turn left", distance: "70m", icon: "left", triggerProgress: 0.45 },
+    { text: "Ride straight past Priyadarshini Girls' Hostel", distance: "150m", icon: "straight", triggerProgress: 0.60 },
+    { text: "At Majankari Tent House, turn left", distance: "130m", icon: "left", triggerProgress: 0.80 },
     { text: "Arrive at Algoguido Technologies Private Limited", distance: "0m", icon: "arrive", triggerProgress: 0.95 }
   ];
 
@@ -184,7 +191,7 @@ export default function AppleMapsView() {
       name: 'Priyadarshini Girls Hostel',
       type: 'Student Residence',
       x: 350,
-      y: 280,
+      y: 320,
       description: 'A prominent local student hostel located on Pub-Nizarapur Path.'
     },
     {
@@ -192,7 +199,7 @@ export default function AppleMapsView() {
       name: 'Majankari Tent House',
       type: 'Local Business / Chowk',
       x: 480,
-      y: 280,
+      y: 320,
       description: 'Well-known local event supply service provider, marking the key turn towards our office.'
     },
     {
@@ -1139,7 +1146,7 @@ export default function AppleMapsView() {
                   <span className="text-[10.5px] font-bold text-slate-200 line-clamp-1 italic">
                     {!isMuted ? (
                       getCurrentStepIndex() === 0 ? "Narrator: Head toward Nizarapur Path route." :
-                      getCurrentStepIndex() === 4 ? "Narrator: You have arrived at your destination." :
+                      getCurrentStepIndex() === 7 ? "Narrator: You have arrived at your destination." :
                       `Narrator: ${getActiveSteps()[getCurrentStepIndex()].text}`
                     ) : "Audio Guidance Muted"}
                   </span>
