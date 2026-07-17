@@ -576,7 +576,7 @@ export default function Home() {
     },
     {
       q: "What proprietary AI products does Algoguido build?",
-      a: "Our core platforms include eduAI365 ERP (for university operational planning), Apply4Jobs (for machine learning resume assessment and candidate matches), LeadGrowAI (for sales CRM acceleration), TheHireMe (for AI-driven developer staffing), and AI Workforce for Business (a multi-agent leads management system powered by 6 collaborating agents)."
+      a: "Our core platforms include eduAI365 ERP (for high school/private educational institutions operational planning), Apply4Jobs (for machine learning resume assessment and candidate matches), LeadGrowAI (for sales CRM acceleration), TheHireMe (for AI-driven developer staffing), and AI Workforce for Business (a multi-agent leads management system powered by 6 collaborating agents)."
     },
     {
       q: "Where is Algoguido Technologies headquartered?",
@@ -2209,10 +2209,10 @@ export default function Home() {
                     From strategy and development to deployment and ongoing support, we deliver secure, reliable, and scalable technology that grows with your business.
                   </p>
                 </div>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
         {/* Why Algoguido Section */}
         <section id="why" className="py-14 md:py-24 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 border-t border-b border-slate-200/60 dark:border-navy-900 relative z-10 overflow-hidden" style={{ background: 'linear-gradient(180deg, #fcfbfa 0%, #f7f5f0 100%)' }}>
@@ -2776,59 +2776,59 @@ export default function Home() {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full"
             >
               {[
-                { 
-                  title: "Enterprise ERP", 
+                {
+                  title: "Enterprise ERP",
                   desc: "Integrate finance, HR, procurement, inventory, operations, and reporting into a unified enterprise platform that enhances efficiency, collaboration, and operational visibility.",
-                  icon: LayoutDashboard, 
+                  icon: LayoutDashboard,
                   bg: "bg-blue-500/10 text-cyan-600",
                   hoverBorder: "hover:border-blue-500/30 dark:hover:border-blue-500/20"
                 },
-                { 
-                  title: "Intelligent CRM", 
+                {
+                  title: "Intelligent CRM",
                   desc: "Transform customer engagement with AI-powered CRM solutions featuring lead management, sales automation, customer support, marketing workflows, and business insights.",
-                  icon: Users, 
+                  icon: Users,
                   bg: "bg-orange-500/10 text-orange-600",
                   hoverBorder: "hover:border-orange-500/30 dark:hover:border-orange-500/20"
                 },
-                { 
-                  title: "Enterprise SaaS Platforms", 
+                {
+                  title: "Enterprise SaaS Platforms",
                   desc: "Build scalable, multi-tenant SaaS applications with cloud-native architecture, secure user management, subscription billing, and enterprise-grade performance.",
-                  icon: Monitor, 
+                  icon: Monitor,
                   bg: "bg-purple-500/10 text-purple-600",
                   hoverBorder: "hover:border-purple-500/30 dark:hover:border-purple-500/20"
                 },
-                { 
-                  title: "AI & Intelligent Automation", 
+                {
+                  title: "AI & Intelligent Automation",
                   desc: "Harness Artificial Intelligence, Machine Learning, Large Language Models (LLMs), and intelligent automation to optimize workflows, enhance decision-making, and improve productivity.",
-                  icon: Cpu, 
+                  icon: Cpu,
                   bg: "bg-indigo-500/10 text-indigo-600",
                   hoverBorder: "hover:border-indigo-500/30 dark:hover:border-indigo-500/20"
                 },
-                { 
-                  title: "Business Intelligence & Analytics", 
+                {
+                  title: "Business Intelligence & Analytics",
                   desc: "Convert enterprise data into actionable insights through interactive dashboards, real-time reporting, KPI monitoring, predictive analytics, and AI-powered business intelligence.",
-                  icon: TrendingUp, 
+                  icon: TrendingUp,
                   bg: "bg-pink-500/10 text-pink-600",
                   hoverBorder: "hover:border-pink-500/30 dark:hover:border-pink-500/20"
                 },
-                { 
-                  title: "Custom Software Development", 
+                {
+                  title: "Custom Software Development",
                   desc: "Design and develop secure, scalable, and high-performance web, mobile, and enterprise applications tailored to your unique business requirements and digital transformation goals.",
-                  icon: Code, 
+                  icon: Code,
                   bg: "bg-amber-500/10 text-amber-600",
                   hoverBorder: "hover:border-amber-500/30 dark:hover:border-amber-500/20"
                 },
-                { 
-                  title: "Cloud & Digital Platforms", 
+                {
+                  title: "Cloud & Digital Platforms",
                   desc: "Develop cloud-native applications, enterprise portals, digital ecosystems, and modern platforms that deliver high availability, seamless scalability, and exceptional user experiences.",
-                  icon: Globe, 
+                  icon: Globe,
                   bg: "bg-emerald-500/10 text-emerald-600",
                   hoverBorder: "hover:border-emerald-500/30 dark:hover:border-emerald-500/20"
                 },
-                { 
-                  title: "API Integration & System Connectivity", 
+                {
+                  title: "API Integration & System Connectivity",
                   desc: "Integrate enterprise applications with payment gateways, ERP systems, CRM platforms, cloud services, authentication providers, communication APIs, and third-party business applications through secure, reliable, and scalable integrations.",
-                  icon: FolderSync, 
+                  icon: FolderSync,
                   bg: "bg-teal-500/10 text-teal-600",
                   hoverBorder: "hover:border-teal-500/30 dark:hover:border-teal-500/20"
                 },
@@ -4359,7 +4359,7 @@ export default function Home() {
                 Explore custom directions, check real-time traffic details, or simulate a CarPlay-guided navigation sequence to our headquarters.
               </p>
             </div>
-            
+
             <div className="w-full">
               <AppleMapsView />
             </div>
