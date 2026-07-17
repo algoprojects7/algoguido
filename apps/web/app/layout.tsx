@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { AIProcessingLoader } from '@algoguido/ui';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -209,6 +210,7 @@ export default function RootLayout({
       </head>
       <body className="bg-white text-slate-900 font-sans antialiased min-h-screen flex flex-col bg-mesh">
         {children}
+        <AIProcessingLoader />
       </body>
     </html>
   );
