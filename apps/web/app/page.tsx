@@ -3470,7 +3470,7 @@ export default function Home() {
                   bg: "from-blue-600 to-indigo-500",
                 },
                 {
-                  name: "Mr. Syed M. Hussain,
+                  name: "Mr. Syed M. Hussain",
                   role: "Community Leader",
                   quote: "The community registry platform built by Algoguido is secure, scalable, and user-friendly. Great team with deep technical expertise.",
                   initials: "SM",
