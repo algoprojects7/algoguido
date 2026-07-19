@@ -1,10 +1,20 @@
 import type { Metadata } from 'next';
 
+const getMetadataBase = () => {
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return new URL(`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`);
+  }
+  if (process.env.VERCEL_URL) {
+    return new URL(`https://${process.env.VERCEL_URL}`);
+  }
+  return new URL('https://algoguido.com');
+};
+
 export const metadata: Metadata = {
   title: 'Why Data Analytics is a Basic Need | Algoguido Technologies',
   description:
     'In the age of AI, data literacy is no longer optional — it is the foundational skill every professional, institution, and nation must embrace.',
-  metadataBase: new URL('https://algoguido.com'),
+  metadataBase: getMetadataBase(),
   alternates: {
     canonical: 'https://algoguido.com/blog/data-analytics-basic-need',
   },

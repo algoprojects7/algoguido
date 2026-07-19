@@ -2,6 +2,16 @@ import type { Metadata } from 'next';
 import { AIProcessingLoader } from '@algoguido/ui';
 import './globals.css';
 
+const getMetadataBase = () => {
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return new URL(`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`);
+  }
+  if (process.env.VERCEL_URL) {
+    return new URL(`https://${process.env.VERCEL_URL}`);
+  }
+  return new URL('https://algoguido.com');
+};
+
 export const metadata: Metadata = {
   title: 'Algoguido Technologies | AI Solutions, Enterprise Software, Data Analytics & Research',
   description:
@@ -45,7 +55,7 @@ export const metadata: Metadata = {
     'Assam',
     'India',
   ],
-  metadataBase: new URL('https://algoguido.com'),
+  metadataBase: getMetadataBase(),
   alternates: {
     canonical: '/',
   },

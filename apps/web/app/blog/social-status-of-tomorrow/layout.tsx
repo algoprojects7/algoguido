@@ -1,10 +1,20 @@
 import type { Metadata } from 'next';
 
+const getMetadataBase = () => {
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return new URL(`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`);
+  }
+  if (process.env.VERCEL_URL) {
+    return new URL(`https://${process.env.VERCEL_URL}`);
+  }
+  return new URL('https://algoguido.com');
+};
+
 export const metadata: Metadata = {
   title: 'The Social Status of Tomorrow | Algoguido Technologies',
   description:
     'Explore how AI, robotics, and evolving social norms are redefining love, family, and human connection in the coming decades.',
-  metadataBase: new URL('https://algoguido.com'),
+  metadataBase: getMetadataBase(),
   alternates: {
     canonical: 'https://algoguido.com/blog/social-status-of-tomorrow',
   },

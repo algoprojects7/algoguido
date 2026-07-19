@@ -1,10 +1,20 @@
 import type { Metadata } from 'next';
 
+const getMetadataBase = () => {
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return new URL(`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`);
+  }
+  if (process.env.VERCEL_URL) {
+    return new URL(`https://${process.env.VERCEL_URL}`);
+  }
+  return new URL('https://algoguido.com');
+};
+
 export const metadata: Metadata = {
   title: 'Low Cost Lead Generation with Automation | Algoguido Technologies',
   description:
     'Discover how to build a high-quality lead generation pipeline at minimal cost using n8n automation, Razorpay webhooks, and human-in-the-loop workflows.',
-  metadataBase: new URL('https://algoguido.com'),
+  metadataBase: getMetadataBase(),
   alternates: {
     canonical: 'https://algoguido.com/blog/low-cost-lead-generation',
   },
