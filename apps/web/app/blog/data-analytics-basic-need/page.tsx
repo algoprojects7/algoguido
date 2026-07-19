@@ -290,7 +290,7 @@ export default function DataAnalyticsBlogPage() {
               className="text-xs font-bold gap-2"
               onClick={() => {
                 const cleanUrl = window.location.href.split('?')[0];
-                const shareUrl = `${cleanUrl}?v=1`;
+                const shareUrl = `${cleanUrl}?v=2`;
                 const shareData = {
                   title: 'Why Data Analytics is a Basic Need \u2014 Algoguido',
                   text: 'Discover why data literacy is the essential skill of the modern era.',

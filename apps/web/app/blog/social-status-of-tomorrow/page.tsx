@@ -383,7 +383,7 @@ export default function BlogPostPage() {
               className="text-xs font-bold gap-2"
               onClick={() => {
                 const cleanUrl = window.location.href.split('?')[0];
-                const shareUrl = `${cleanUrl}?v=1`;
+                const shareUrl = `${cleanUrl}?v=2`;
                 const shareData = {
                   title: 'The Social Status of Tomorrow — Algoguido',
                   text: 'A thought-provoking read on humanity, AI, and our social future.',
