@@ -43,12 +43,14 @@ import {
   Volume2,
   Layers,
   CircleDot,
-  ChevronDown
+  ChevronDown,
+  ExternalLink
 } from 'lucide-react';
 import { Button, Card, Badge, Input, Select, Textarea } from '@algoguido/ui';
 import { motion as originalMotion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const motion = originalMotion as any;
 const AppleMapsView = dynamic(() => import('@/components/AppleMapsView'), { ssr: false });
@@ -656,7 +658,7 @@ export default function Home() {
       }
 
       // Track active section on scroll
-      const sections = ['home', 'about', 'products', 'services', 'projects', 'research', 'insights', 'career', 'contact'];
+      const sections = ['home', 'about', 'products', 'services', 'projects', 'research', 'blog', 'career', 'contact'];
       const scrollPosition = scrollY + 200; // Offset for header height
 
       for (const section of sections) {
@@ -1365,9 +1367,9 @@ export default function Home() {
               Research
             </a>
             <a
-              href="/#insights"
-              onClick={(e) => handleNavClick('insights', 'Blog', e)}
-              className={`px-3.5 py-2 text-xs font-bold tracking-wide uppercase transition-all duration-200 rounded-full ${activeSection === 'insights' ? 'text-[#0052cc] bg-[#0052cc]/5' : 'text-slate-700 dark:text-slate-200 hover:text-[#0052cc] hover:bg-slate-100/50 dark:hover:bg-white/5'}`}
+              href="/#blog"
+              onClick={(e) => handleNavClick('blog', 'Blog', e)}
+              className={`px-3.5 py-2 text-xs font-bold tracking-wide uppercase transition-all duration-200 rounded-full ${activeSection === 'blog' ? 'text-[#0052cc] bg-[#0052cc]/5' : 'text-slate-700 dark:text-slate-200 hover:text-[#0052cc] hover:bg-slate-100/50 dark:hover:bg-white/5'}`}
             >
               Blog
             </a>
@@ -1466,9 +1468,9 @@ export default function Home() {
                 Research & Education
               </a>
               <a
-                href="/#insights"
-                onClick={(e) => handleNavClick('insights', 'Blog', e)}
-                className={`text-sm font-bold py-2 border-b border-slate-100 dark:border-white/5 ${activeSection === 'insights' ? 'text-[#0052cc]' : 'text-slate-700 dark:text-slate-200'}`}
+                href="/#blog"
+                onClick={(e) => handleNavClick('blog', 'Blog', e)}
+                className={`text-sm font-bold py-2 border-b border-slate-100 dark:border-white/5 ${activeSection === 'blog' ? 'text-[#0052cc]' : 'text-slate-700 dark:text-slate-200'}`}
               >
                 Blog
               </a>
@@ -3523,7 +3525,7 @@ export default function Home() {
         </section>
 
         {/* Latest Insights & Articles Section */}
-        <section id="insights" className="py-14 md:py-24 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 border-b border-slate-200/60 dark:border-white/5 relative z-10" style={{ background: 'linear-gradient(180deg, #fcfbfa 0%, #f7f5f0 100%)' }}>
+        <section id="blog" className="py-14 md:py-24 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 border-b border-slate-200/60 dark:border-white/5 relative z-10" style={{ background: 'linear-gradient(180deg, #fcfbfa 0%, #f7f5f0 100%)' }}>
           <div className="max-w-7xl mx-auto flex flex-col gap-12">
             <div className="text-center max-w-3xl mx-auto flex flex-col gap-4 w-full border-b border-slate-200/60 dark:border-white/5 pb-8">
               <span className="text-xs font-extrabold text-[#0052cc] uppercase tracking-widest bg-[#0052cc]/5 px-3 py-1 rounded-full w-fit mx-auto">LATEST INSIGHTS & ARTICLES</span>
@@ -3540,37 +3542,43 @@ export default function Home() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full"
             >
               {[
+                {
+                  badge: "AI & Humanity",
+                  badgeClass: "bg-amber-50 dark:bg-amber-950/20 text-amber-600 dark:text-amber-400",
+                  date: "July 19, 2026",
+                  title: "The Social Status of Tomorrow",
+                  desc: "Three major societal transformations driven by AI, family evolution, and responsibility.",
+                  href: "/blog/social-status-of-tomorrow",
+                },
                 {
                   badge: "AI & Technology",
                   badgeClass: "bg-blue-50 dark:bg-blue-950/20 text-[#0052cc] dark:text-blue-400",
                   date: "May 20, 2025",
-                  title: "The Future of AI in Enterprise Software Development",
+                  title: "The Future of AI in Enterprise Development",
                   desc: "Exploring the shift from general-purpose AI to hyper-specialized enterprise models.",
+                  href: "/blog/future-of-ai-in-enterprise",
                 },
                 {
-                  badge: "Cloud Computing",
+                  badge: "Automation",
                   badgeClass: "bg-purple-50 dark:bg-purple-950/20 text-purple-600 dark:text-purple-400",
                   date: "May 18, 2025",
-                  title: "Cloud-Native Architecture Best Practices",
-                  desc: "How to manage distributed architectures without operational overhead.",
+                  title: "Low-Cost Lead Generation System Design",
+                  desc: "A practical architecture for controlled automation blending n8n, validation, and webhooks.",
+                  href: "/blog/low-cost-lead-generation",
                 },
                 {
-                  badge: "Digital Transformation",
+                  badge: "Data & Research",
                   badgeClass: "bg-pink-50 dark:bg-pink-950/20 text-pink-600 dark:text-pink-400",
-                  date: "May 15, 2025",
-                  title: "Digital Transformation in Government Sector",
-                  desc: "How technology is driving efficiency and transparency in government.",
+                  date: "January 1, 2025",
+                  title: "Data Analytics: A Basic Human Skill",
+                  desc: "Why analytics is transitioning from a competitive edge into a basic necessity.",
+                  href: "/blog/data-analytics-basic-need",
                 }
-              ].map((blog, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  whileHover={{ y: -8, scale: 1.01 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                >
+              ].map((blog, index) => {
+                const CardContent = (
                   <Card
                     variant="default"
                     className="flex flex-col gap-5 p-6 bg-white dark:bg-navy-900/40 rounded-2xl border border-slate-200/50 dark:border-white/5 hover:shadow-xl hover:border-[#0052cc]/20 dark:hover:border-white/10 transition-all duration-300 group cursor-pointer h-full"
@@ -3579,19 +3587,46 @@ export default function Home() {
                       {blog.badge}
                     </span>
                     <span className="text-xs text-slate-400 dark:text-slate-500 font-semibold">{blog.date}</span>
-                    <h3 className="font-display font-bold text-slate-800 dark:text-white text-lg md:text-xl leading-snug group-hover:text-[#0052cc] dark:group-hover:text-blue-400 transition-colors duration-200">
+                    <h3 className="font-display font-bold text-slate-800 dark:text-white text-lg leading-snug group-hover:text-[#0052cc] dark:group-hover:text-blue-400 transition-colors duration-200 line-clamp-2">
                       {blog.title}
                     </h3>
-                    <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                    <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed line-clamp-3">
                       {blog.desc}
                     </p>
                     <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group-hover:text-blue-700 transition-colors mt-auto">
                       Read More <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                     </div>
                   </Card>
-                </motion.div>
-              ))}
+                );
+
+                return (
+                  <motion.div
+                    key={index}
+                    variants={itemVariants}
+                    whileHover={{ y: -8, scale: 1.01 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    className="h-full"
+                  >
+                    {blog.href ? (
+                      <Link href={blog.href} className="block h-full">
+                        {CardContent}
+                      </Link>
+                    ) : (
+                      CardContent
+                    )}
+                  </motion.div>
+                );
+              })}
             </motion.div>
+
+            {/* Guest Author CTA Banner - text only */}
+            <div className="mt-10 p-5 rounded-2xl border border-slate-200/50 dark:border-white/5 bg-white/30 dark:bg-slate-900/10 max-w-5xl mx-auto w-full">
+              <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium text-center md:text-left">
+                <span className="font-bold text-slate-700 dark:text-slate-300">Publish Your Insights on Algoguido — </span>
+                Have a unique perspective on Enterprise AI, automation, or software architecture? We welcome articles, research summaries, and design notes from tech professionals. Send your drafts in Word, PDF, or image format to{' '}
+                <a href="mailto:info@algoguido.com" className="text-[#0052cc] dark:text-blue-400 font-semibold hover:underline">info@algoguido.com</a>.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -3955,6 +3990,7 @@ export default function Home() {
                           <option value="Enterprise Solutions" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">Enterprise Solutions</option>
                           <option value="Government Projects" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">Government Projects</option>
                           <option value="Cloud Services" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">Cloud Services</option>
+                          <option value="Others" className="bg-white dark:bg-navy-950 text-slate-800 dark:text-white">Others</option>
                         </Select>
                       </div>
 
@@ -4455,7 +4491,7 @@ export default function Home() {
                   { label: 'Solutions', href: '/#services' },
                   { label: 'Projects', href: '/#projects' },
                   { label: 'Research', href: '/#research' },
-                  { label: 'Blog', href: '/#insights' },
+                  { label: 'Blog', href: '/#blog' },
                   { label: 'Career', href: '/#career' },
                   { label: 'Contact', href: '/#contact' },
                   { label: 'Verify Certificate', href: '#', isVerify: true },

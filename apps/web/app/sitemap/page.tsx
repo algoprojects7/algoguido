@@ -51,7 +51,7 @@ export default function SitemapPage() {
         { name: 'About Algoguido', href: '/#about', description: 'Our history, foundational values, and technical expertise.', icon: HelpCircle },
         { name: 'Why Algoguido', href: '/#why', description: 'Our unique value proposition and industry-aligned model.', icon: Cpu },
         { name: 'Success Stories & Projects', href: '/#projects', description: 'A showcase of our successfully delivered projects.', icon: Briefcase },
-        { name: 'Blog & Insights', href: '/#insights', description: 'Latest research publications, tech articles, and updates.', icon: BookOpen },
+        { name: 'Blog & Insights', href: '/#blog', description: 'Latest research publications, tech articles, and updates.', icon: BookOpen },
         { name: 'Interactive Location Maps', href: '/#contact', description: 'CarPlay simulation guiding to Guwahati headquarters.', icon: Hash }
       ]
     },
