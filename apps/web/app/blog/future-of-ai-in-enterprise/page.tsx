@@ -275,15 +275,17 @@ export default function AIEnterpriseBlogPage() {
               variant="outline"
               className="text-xs font-bold gap-2"
               onClick={() => {
+                const cleanUrl = window.location.href.split('?')[0];
+                const shareUrl = `${cleanUrl}?v=1`;
                 const shareData = {
                   title: 'The Future of AI in Enterprise \u2014 Algoguido',
                   text: 'Explore how Enterprise AI is reshaping business operations worldwide.',
-                  url: window.location.href,
+                  url: shareUrl,
                 };
                 if (navigator.share) {
                   navigator.share(shareData);
                 } else {
-                  navigator.clipboard.writeText(window.location.href).then(() => {
+                  navigator.clipboard.writeText(shareUrl).then(() => {
                     alert('Link copied to clipboard!');
                   });
                 }
