@@ -16,8 +16,8 @@ export const metadata: Metadata = {
     siteName: 'Algoguido Technologies',
     images: [
       {
-        url: 'https://algoguido.com/blog/future_humanity_banner.png',
-        secureUrl: 'https://algoguido.com/blog/future_humanity_banner.png',
+        url: 'https://algoguido.com/blog/humans_and_robots.png',
+        secureUrl: 'https://algoguido.com/blog/humans_and_robots.png',
         width: 1200,
         height: 630,
         alt: 'The Social Status of Tomorrow — Algoguido Technologies',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     title: 'The Social Status of Tomorrow | Algoguido Technologies',
     description:
       'Explore how AI, robotics, and evolving social norms are redefining love, family, and human connection in the coming decades.',
-    images: ['https://algoguido.com/blog/future_humanity_banner.png'],
+    images: ['https://algoguido.com/blog/humans_and_robots.png'],
     site: '@algoguido',
   },
 };
