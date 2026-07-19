@@ -14,7 +14,6 @@ import {
   Share2,
   Bookmark,
   ThumbsUp,
-  MessageSquare,
   Calendar,
   Clock,
   ExternalLink
@@ -375,10 +374,6 @@ export default function BlogPostPage() {
                   {likeCount} Likes
                 </span>
               </button>
-              <div className="flex items-center gap-2 text-sm font-semibold text-slate-655 dark:text-slate-400">
-                <MessageSquare className="h-5 w-5 text-slate-500" />
-                <span>12 Comments</span>
-              </div>
             </div>
 
             <Button
