@@ -159,7 +159,7 @@ export default function BlogPostPage() {
                     </h2>
                   </div>
                   <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
-                    In the coming decades, advanced AI and robotics will not just assist humans — they will connect, understand, and become life partners.
+                    In the coming decades, advanced AI and robotics will not just assist humans - they will connect, understand, and become life partners.
                   </p>
                   <ul className="flex flex-col gap-3">
                     {[
