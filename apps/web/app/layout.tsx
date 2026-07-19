@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { AIProcessingLoader } from '@algoguido/ui';
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
 const getMetadataBase = () => {
@@ -221,6 +222,7 @@ export default function RootLayout({
       <body className="bg-white text-slate-900 font-sans antialiased min-h-screen flex flex-col bg-mesh">
         {children}
         <AIProcessingLoader />
+        <Analytics />
       </body>
     </html>
   );

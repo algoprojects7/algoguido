@@ -12,24 +12,25 @@
   },
   "dependencies": {
     "@algoguido/config": "workspace:*",
-    "@algoguido/types": "workspace:*",
-    "@algoguido/utils": "workspace:*",
     "@algoguido/shared": "workspace:*",
+    "@algoguido/types": "workspace:*",
     "@algoguido/ui": "workspace:*",
+    "@algoguido/utils": "workspace:*",
+    "@vercel/analytics": "^2.0.1",
+    "framer-motion": "^11.11.0",
+    "lucide-react": "^0.395.0",
     "next": "^15.1.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "framer-motion": "^11.11.0",
-    "lucide-react": "^0.395.0"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "typescript": "^5.5.0",
+    "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3",
-    "autoprefixer": "^10.4.19"
+    "typescript": "^5.5.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
