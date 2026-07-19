@@ -16,8 +16,8 @@ export const metadata: Metadata = {
     siteName: 'Algoguido Technologies',
     images: [
       {
-        url: 'https://algoguido.com/blog/humans_and_robots.png',
-        secureUrl: 'https://algoguido.com/blog/humans_and_robots.png',
+        url: '/logo.png',
+        secureUrl: '/logo.png',
         width: 1200,
         height: 630,
         alt: 'The Future of AI in Enterprise — Algoguido Technologies',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     title: 'The Future of AI in Enterprise | Algoguido Technologies',
     description:
       'How multi-agent AI, RAG pipelines, and agentic workflows are reshaping enterprise operations globally — and what it means for your business.',
-    images: ['https://algoguido.com/blog/humans_and_robots.png'],
+    images: ['/logo.png'],
     site: '@algoguido',
   },
 };

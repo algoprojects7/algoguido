@@ -16,8 +16,8 @@ export const metadata: Metadata = {
     siteName: 'Algoguido Technologies',
     images: [
       {
-        url: 'https://algoguido.com/blog/humans_and_robots.png',
-        secureUrl: 'https://algoguido.com/blog/humans_and_robots.png',
+        url: '/logo.png',
+        secureUrl: '/logo.png',
         width: 1200,
         height: 630,
         alt: 'Low Cost Lead Generation — Algoguido Technologies',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     title: 'Low Cost Lead Generation with Automation | Algoguido Technologies',
     description:
       'Discover how to build a high-quality lead generation pipeline at minimal cost using n8n automation, Razorpay webhooks, and human-in-the-loop workflows.',
-    images: ['https://algoguido.com/blog/humans_and_robots.png'],
+    images: ['/logo.png'],
     site: '@algoguido',
   },
 };

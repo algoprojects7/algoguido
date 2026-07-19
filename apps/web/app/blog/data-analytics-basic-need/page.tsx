@@ -77,14 +77,17 @@ export default function DataAnalyticsBlogPage() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => {
+                const cleanUrl = window.location.href.split('?')[0];
+                const shareUrl = `${cleanUrl}?v=3`;
                 if (navigator.share) {
                   navigator.share({
                     title: 'Data Analytics Is Becoming a Basic Human Skill',
-                    url: window.location.href
+                    url: shareUrl
                   });
                 } else {
-                  navigator.clipboard.writeText(window.location.href);
-                  alert('Link copied to clipboard!');
+                  navigator.clipboard.writeText(shareUrl).then(() => {
+                    alert('Link copied to clipboard!');
+                  });
                 }
               }}
               className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
@@ -290,7 +293,7 @@ export default function DataAnalyticsBlogPage() {
               className="text-xs font-bold gap-2"
               onClick={() => {
                 const cleanUrl = window.location.href.split('?')[0];
-                const shareUrl = `${cleanUrl}?v=2`;
+                const shareUrl = `${cleanUrl}?v=3`;
                 const shareData = {
                   title: 'Why Data Analytics is a Basic Need \u2014 Algoguido',
                   text: 'Discover why data literacy is the essential skill of the modern era.',
