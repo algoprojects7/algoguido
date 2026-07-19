@@ -1,0 +1,39 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'The Social Status of Tomorrow | Algoguido Technologies',
+  description:
+    'Explore how AI, robotics, and evolving social norms are redefining love, family, and human connection in the coming decades.',
+  metadataBase: new URL('https://algoguido.com'),
+  alternates: {
+    canonical: '/blog/social-status-of-tomorrow',
+  },
+  openGraph: {
+    title: 'The Social Status of Tomorrow | Algoguido Technologies',
+    description:
+      'Explore how AI, robotics, and evolving social norms are redefining love, family, and human connection in the coming decades.',
+    url: 'https://algoguido.com/blog/social-status-of-tomorrow',
+    siteName: 'Algoguido Technologies',
+    images: [
+      {
+        url: '/blog/future_humanity_banner.png',
+        width: 1200,
+        height: 630,
+        alt: 'The Social Status of Tomorrow — Algoguido',
+      },
+    ],
+    type: 'article',
+    locale: 'en_IN',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'The Social Status of Tomorrow | Algoguido Technologies',
+    description:
+      'Explore how AI, robotics, and evolving social norms are redefining love, family, and human connection in the coming decades.',
+    images: ['https://algoguido.com/blog/future_humanity_banner.png'],
+  },
+};
+
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
+}
