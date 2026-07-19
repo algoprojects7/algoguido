@@ -43,8 +43,7 @@ import {
   Volume2,
   Layers,
   CircleDot,
-  ChevronDown,
-  ExternalLink
+  ChevronDown
 } from 'lucide-react';
 import { Button, Card, Badge, Input, Select, Textarea } from '@algoguido/ui';
 import { motion as originalMotion, AnimatePresence } from 'framer-motion';
