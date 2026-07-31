@@ -307,3 +307,377 @@
   animation-play-state: paused;
   transform: perspective(1500px) rotateY(360deg) rotateX(0deg) scale(1.05) translateY(-4px);
 }
+
+/* ─── MOBILE-FIRST PREMIUM UTILITIES ─────────────────────────────────────────── */
+
+/* Safe Area Insets (iPhone notch / Dynamic Island) */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --bottom-nav-height: 64px;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+/* Minimum 44×44px touch targets (Apple HIG) */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Safe-area aware padding bottom for mobile scrollable content */
+.safe-pb {
+  padding-bottom: calc(var(--bottom-nav-height) + var(--safe-bottom) + 16px);
+}
+
+/* ─── MOBILE BOTTOM NAVIGATION ────────────────────────────────────────────────── */
+
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  height: var(--bottom-nav-height);
+  padding-bottom: var(--safe-bottom);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.04), 0 -8px 32px rgba(0, 0, 0, 0.05);
+}
+
+.dark .mobile-bottom-nav {
+  background: rgba(10, 22, 40, 0.88);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 -1px 0 0 rgba(255, 255, 255, 0.04), 0 -8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.mobile-bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  flex: 1;
+  height: 100%;
+  min-height: 44px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+.mobile-bottom-nav-item:active {
+  transform: scale(0.88);
+}
+
+.mobile-bottom-nav-item span {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* ─── SWIPEABLE CARD CONTAINER ────────────────────────────────────────────────── */
+
+.swipe-scroll {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-padding-left: 16px;
+  gap: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 12px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.swipe-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.swipe-card {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  width: 82vw;
+  max-width: 340px;
+}
+
+@media (min-width: 640px) {
+  .swipe-card {
+    width: 360px;
+  }
+}
+
+/* Swipe hint fade-right edge gradient */
+.swipe-fade-right {
+  position: relative;
+}
+
+.swipe-fade-right::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 48px;
+  background: linear-gradient(to right, transparent, rgba(247, 249, 252, 0.9));
+  pointer-events: none;
+  border-radius: 0 1rem 1rem 0;
+}
+
+.dark .swipe-fade-right::after {
+  background: linear-gradient(to right, transparent, rgba(15, 29, 53, 0.9));
+}
+
+/* Pagination Dots */
+.swipe-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.swipe-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(0, 82, 204, 0.2);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.swipe-dot.active {
+  width: 20px;
+  border-radius: 3px;
+  background: #0052cc;
+}
+
+/* ─── SKELETON LOADERS ────────────────────────────────────────────────────────── */
+
+@keyframes skeleton-wave {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(226, 232, 240, 0.6) 25%,
+    rgba(241, 245, 249, 0.9) 50%,
+    rgba(226, 232, 240, 0.6) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-wave 1.8s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+.dark .skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(30, 41, 59, 0.6) 25%,
+    rgba(51, 65, 85, 0.9) 50%,
+    rgba(30, 41, 59, 0.6) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-wave 1.8s ease-in-out infinite;
+}
+
+.skeleton-card {
+  border-radius: 1rem;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ─── MOBILE HERO VISUAL ──────────────────────────────────────────────────────── */
+
+@keyframes mobile-float-a {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+@keyframes mobile-float-b {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(-1.5deg); }
+}
+
+@keyframes mobile-float-c {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+@keyframes mobile-float-d {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(-1deg); }
+}
+
+.mobile-card-float-a { animation: mobile-float-a 5s ease-in-out infinite; }
+.mobile-card-float-b { animation: mobile-float-b 6s ease-in-out 0.5s infinite; }
+.mobile-card-float-c { animation: mobile-float-c 5.5s ease-in-out 1s infinite; }
+.mobile-card-float-d { animation: mobile-float-d 6.5s ease-in-out 1.5s infinite; }
+
+/* AI core pulse ring */
+@keyframes ai-ring-pulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.35); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+.ai-ring {
+  animation: ai-ring-pulse 2.5s ease-out infinite;
+}
+
+.ai-ring-delayed {
+  animation: ai-ring-pulse 2.5s ease-out 1.2s infinite;
+}
+
+/* ─── ANIMATED HAMBURGER ICON ─────────────────────────────────────────────────── */
+
+.hamburger-bar {
+  display: block;
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
+  transform-origin: center;
+}
+
+.hamburger-open .hamburger-bar:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.hamburger-open .hamburger-bar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburger-open .hamburger-bar:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* ─── PREMIUM MOBILE TYPOGRAPHY ───────────────────────────────────────────────── */
+
+@media (max-width: 380px) {
+  .hero-title-mobile {
+    font-size: 1.75rem !important;
+    line-height: 1.15 !important;
+  }
+}
+
+/* ─── MOBILE INPUT ENHANCEMENTS ───────────────────────────────────────────────── */
+
+.mobile-input {
+  min-height: 48px;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 16px; /* Prevents iOS zoom on focus */
+  -webkit-appearance: none;
+  appearance: none;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.mobile-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.15);
+}
+
+/* ─── CONTACT ACTION BUTTONS ──────────────────────────────────────────────────── */
+
+.contact-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 14px;
+  min-height: 52px;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.contact-action-btn:active {
+  transform: scale(0.96);
+}
+
+/* ─── SCROLL PROGRESS PILL ────────────────────────────────────────────────────── */
+
+.scroll-progress-ring {
+  position: fixed;
+  bottom: calc(var(--bottom-nav-height) + var(--safe-bottom) + 16px);
+  right: 16px;
+  z-index: 55;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* ─── MOBILE MENU BACKDROP ────────────────────────────────────────────────────── */
+
+.mobile-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 45;
+}
+
+/* ─── MOBILE GLASSMORPHISM (lighter blur for performance) ─────────────────────── */
+
+@media (max-width: 1024px) {
+  .glass-light {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .glass-dark {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+/* ─── SWIPE HINT ANIMATION ────────────────────────────────────────────────────── */
+
+@keyframes swipe-hint {
+  0%, 100% { transform: translateX(0); opacity: 1; }
+  50% { transform: translateX(8px); opacity: 0.6; }
+}
+
+.swipe-hint-icon {
+  animation: swipe-hint 1.5s ease-in-out 1s 3;
+}
+
+/* ─── FOCUS RING (WCAG AA) ────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid #0052cc;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── REDUCE MOTION (ACCESSIBILITY) ──────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

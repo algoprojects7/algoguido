@@ -26,7 +26,6 @@ import {
   TrendingUp,
   BookOpen,
   GraduationCap,
-  Menu,
   X,
   Facebook,
   Linkedin,
@@ -43,13 +42,16 @@ import {
   Volume2,
   Layers,
   CircleDot,
-  ChevronDown
+  ChevronDown,
+  MessageSquare
 } from 'lucide-react';
 import { Button, Card, Badge, Input, Select, Textarea } from '@algoguido/ui';
 import { motion as originalMotion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
+import { MobileBottomNav } from '@/components/MobileBottomNav';
+import { MobileHeroVisual } from '@/components/MobileHeroVisual';
 
 const motion = originalMotion as any;
 const AppleMapsView = dynamic(() => import('@/components/AppleMapsView'), { ssr: false });
@@ -71,6 +73,9 @@ function DynamicBackground() {
   }, []);
 
   useEffect(() => {
+    // Mobile Performance Optimization: Disable particle canvas animation completely on < 1024px
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -368,7 +373,7 @@ function DynamicBackground() {
   }, [isDark]);
 
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden select-none">
+    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden select-none hidden lg:block">
       <canvas ref={canvasRef} className="w-full h-full block" />
       <div
         className="absolute inset-0 opacity-[0.015] dark:opacity-[0.025] pointer-events-none mix-blend-overlay"
@@ -1219,7 +1224,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-transparent overflow-x-hidden relative">
+    <div className="flex flex-col min-h-screen bg-transparent overflow-x-hidden relative xl:pb-0 safe-pb">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageSchema) }}
@@ -1395,103 +1400,158 @@ export default function Home() {
               Request Demo
             </a>
 
-            {/* Mobile Toggle Button */}
+            {/* Mobile Toggle Button — hamburger morphing to X */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="xl:hidden p-2 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 transition-all"
+              className={`xl:hidden p-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 transition-all touch-target ${mobileMenuOpen ? 'hamburger-open' : ''}`}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu-panel"
+              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
             >
-              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              <div className="flex flex-col gap-[5px]">
+                <span className="hamburger-bar" />
+                <span className="hamburger-bar" />
+                <span className="hamburger-bar" />
+              </div>
             </button>
           </div>
 
-          {/* Mobile Menu Panel */}
-          {mobileMenuOpen && (
-            <div className="absolute top-full left-0 right-0 bg-white dark:bg-navy-950 border-b border-slate-200/50 dark:border-white/5 p-6 flex flex-col gap-4 xl:hidden animate-scale-in max-h-[85vh] overflow-y-auto z-40">
-              <a
-                href="#"
-                onClick={(e) => handleNavClick('home', 'Home', e)}
-                className={`text-sm font-bold py-2 border-b border-slate-100 dark:border-white/5 ${activeSection === 'home' ? 'text-[#0052cc]' : 'text-slate-700 dark:text-slate-200'}`}
-              >
-                Home
-              </a>
+          {/* Mobile Menu — animated spring slide-down with backdrop */}
+          <AnimatePresence>
+            {mobileMenuOpen && (
+              <>
+                {/* Backdrop */}
+                <motion.div
+                  key="mobile-menu-backdrop"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="mobile-menu-backdrop xl:hidden"
+                  onClick={() => setMobileMenuOpen(false)}
+                />
 
-              <a
-                href="/#about"
-                onClick={(e) => handleNavClick('about', 'About', e)}
-                className={`text-sm font-bold py-2 border-b border-slate-100 dark:border-white/5 ${activeSection === 'about' ? 'text-[#0052cc]' : 'text-slate-700 dark:text-slate-200'}`}
-              >
-                About
-              </a>
-
-              <a
-                href="/#why"
-                onClick={(e) => handleNavClick('why', 'Why Algoguido', e)}
-                className={`text-sm font-bold py-2 border-b border-slate-100 dark:border-white/5 ${activeSection === 'why' ? 'text-[#0052cc]' : 'text-slate-700 dark:text-slate-200'}`}
-              >
-                Why Algoguido
-              </a>
-
-              <div className="flex flex-col gap-2 py-2 border-b border-slate-100 dark:border-white/5">
-                <span className={`text-[10px] font-bold uppercase tracking-widest ${activeSection === 'products' ? 'text-[#0052cc]' : 'text-slate-400'}`}>Products</span>
-                <div className="grid grid-cols-2 gap-2 pl-2">
-                  <a href="/#products" onClick={(e) => handleNavClick('products', 'Products', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">eduAI365</a>
-                  <a href="/#products" onClick={(e) => handleNavClick('products', 'Products', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">Apply4Jobs</a>
-                  <a href="/#products" onClick={(e) => handleNavClick('products', 'Products', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">LeadGrowAI</a>
-                  <a href="/#products" onClick={(e) => handleNavClick('products', 'Products', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">TheHirings</a>
-                  <a href="/#products" onClick={(e) => handleNavClick('products', 'Products', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">AI Workforce</a>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-2 py-2 border-b border-slate-100 dark:border-white/5">
-                <span className={`text-[10px] font-bold uppercase tracking-widest ${activeSection === 'services' || activeSection === 'tech' ? 'text-[#0052cc]' : 'text-slate-400'}`}>Solutions</span>
-                <div className="grid grid-cols-2 gap-2 pl-2">
-                  <a href="/#services" onClick={(e) => handleNavClick('services', 'Solutions', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">ERP Platforms</a>
-                  <a href="/#services" onClick={(e) => handleNavClick('services', 'Solutions', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">CRM & Growth</a>
-                  <a href="/#services" onClick={(e) => handleNavClick('services', 'Solutions', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">AI Automation</a>
-                  <a href="/#tech" onClick={(e) => handleNavClick('services', 'Solutions', e)} className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-[#0052cc]">Cloud & Infra</a>
-                </div>
-              </div>
-
-              <a
-                href="/#projects"
-                onClick={(e) => handleNavClick('projects', 'Projects', e)}
-                className={`text-sm font-bold py-2 border-b border-slate-100 dark:border-white/5 ${activeSection === 'projects' ? 'text-[#0052cc]' : 'text-slate-700 dark:text-slate-200'}`}
-              >
-                Projects
-              </a>
-              <a
-                href="/#research"
-                onClick={(e) => handleNavClick('research', 'Research', e)}
-                className={`text-sm font-bold py-2 border-b border-slate-100 dark:border-white/5 ${activeSection === 'research' ? 'text-[#0052cc]' : 'text-slate-700 dark:text-slate-200'}`}
-              >
-                Research & Education
-              </a>
-              <a
-                href="/#blog"
-                onClick={(e) => handleNavClick('blog', 'Blog', e)}
-                className={`text-sm font-bold py-2 border-b border-slate-100 dark:border-white/5 ${activeSection === 'blog' ? 'text-[#0052cc]' : 'text-slate-700 dark:text-slate-200'}`}
-              >
-                Blog
-              </a>
-              <a
-                href="/#contact"
-                onClick={(e) => handleNavClick('contact', 'Contact', e)}
-                className={`text-sm font-bold py-2 border-b border-slate-100 dark:border-white/5 ${activeSection === 'contact' ? 'text-[#0052cc]' : 'text-slate-700 dark:text-slate-200'}`}
-              >
-                Contact
-              </a>
-
-              <div className="flex gap-4 mt-2">
-                <a
-                  href="#contact"
-                  onClick={(e) => handleNavClick('contact', 'Contact', e)}
-                  className="flex-grow inline-flex items-center justify-center rounded-xl bg-gradient-brand text-white shadow-md font-bold text-xs tracking-wider uppercase h-11 px-6 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+                {/* Menu Panel */}
+                <motion.div
+                  id="mobile-menu-panel"
+                  key="mobile-menu-panel"
+                  initial={{ opacity: 0, y: -12, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -8, scale: 0.98 }}
+                  transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                  className="absolute top-full left-0 right-0 bg-white/95 dark:bg-navy-950/95 backdrop-blur-xl border-b border-slate-200/50 dark:border-white/5 shadow-2xl xl:hidden z-40 overflow-hidden"
+                  role="navigation"
+                  aria-label="Mobile navigation"
                 >
-                  Request Demo
-                </a>
-              </div>
-            </div>
-          )}
+                  <div className="p-5 flex flex-col gap-1 max-h-[80vh] overflow-y-auto">
+                    {/* Top handle */}
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Navigation</span>
+                      <button
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-all touch-target"
+                        aria-label="Close menu"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+
+                    {/* Main links */}
+                    {[
+                      { id: 'home', label: 'Home', href: '#' },
+                      { id: 'about', label: 'About', href: '/#about' },
+                      { id: 'why', label: 'Why Algoguido', href: '/#why' },
+                      { id: 'projects', label: 'Projects', href: '/#projects' },
+                      { id: 'research', label: 'Research & Education', href: '/#research' },
+                      { id: 'blog', label: 'Blog', href: '/#blog' },
+                      { id: 'contact', label: 'Contact', href: '/#contact' },
+                    ].map((item, i) => (
+                      <motion.a
+                        key={item.id}
+                        href={item.href}
+                        initial={{ opacity: 0, x: -12 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.04, type: 'spring', stiffness: 400, damping: 28 }}
+                        onClick={(e: React.MouseEvent<HTMLAnchorElement>) => handleNavClick(item.id, item.label, e)}
+                        className={`flex items-center justify-between py-3 px-3 rounded-xl text-sm font-bold transition-all touch-target ${
+                          activeSection === item.id
+                            ? 'text-[#0052cc] bg-[#0052cc]/5'
+                            : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100/80 dark:hover:bg-white/5'
+                        }`}
+                      >
+                        {item.label}
+                        {activeSection === item.id && <div className="w-1.5 h-1.5 rounded-full bg-[#0052cc]" />}
+                      </motion.a>
+                    ))}
+
+                    {/* Products sub-section */}
+                    <div className="mt-1 pt-3 border-t border-slate-100 dark:border-white/5">
+                      <span className={`text-[10px] font-black uppercase tracking-widest px-3 ${activeSection === 'products' ? 'text-[#0052cc]' : 'text-slate-400'}`}>Products</span>
+                      <div className="grid grid-cols-2 gap-1.5 mt-2 px-1">
+                        {['eduAI365', 'Apply4Jobs', 'LeadGrowAI', 'TheHirings', 'AI Workforce'].map((p) => (
+                          <a
+                            key={p}
+                            href="/#products"
+                            onClick={(e) => handleNavClick('products', 'Products', e)}
+                            className="text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-[#0052cc] py-1.5 px-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
+                          >
+                            {p}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Solutions sub-section */}
+                    <div className="mt-1 pt-3 border-t border-slate-100 dark:border-white/5">
+                      <span className={`text-[10px] font-black uppercase tracking-widest px-3 ${activeSection === 'services' || activeSection === 'tech' ? 'text-[#0052cc]' : 'text-slate-400'}`}>Solutions</span>
+                      <div className="grid grid-cols-2 gap-1.5 mt-2 px-1">
+                        {['ERP Platforms', 'CRM & Growth', 'AI Automation', 'Cloud & Infra'].map((s) => (
+                          <a
+                            key={s}
+                            href="/#services"
+                            onClick={(e) => handleNavClick('services', 'Solutions', e)}
+                            className="text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-[#0052cc] py-1.5 px-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
+                          >
+                            {s}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* CTA Buttons */}
+                    <div className="flex gap-3 mt-4 pt-3 border-t border-slate-100 dark:border-white/5">
+                      <motion.a
+                        href="/#contact"
+                        onClick={(e: React.MouseEvent<HTMLAnchorElement>) => handleNavClick('contact', 'Contact', e)}
+                        whileTap={{ scale: 0.96 }}
+                        className="flex-1 inline-flex items-center justify-center rounded-2xl bg-gradient-brand text-white shadow-md font-bold text-xs tracking-wider uppercase h-12 px-4 active:scale-[0.96] transition-transform"
+                      >
+                        Request Demo
+                      </motion.a>
+                      <motion.a
+                        href="tel:+91XXXXXXXXXX"
+                        whileTap={{ scale: 0.96 }}
+                        className="flex items-center justify-center rounded-2xl bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-white h-12 w-12 flex-shrink-0 transition-all"
+                        aria-label="Call us"
+                      >
+                        <Phone className="h-4 w-4" />
+                      </motion.a>
+                      <motion.a
+                        href="https://wa.me/91XXXXXXXXXX?text=Hi%2C%20I%27d%20like%20to%20learn%20more%20about%20Algoguido%20Technologies"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileTap={{ scale: 0.96 }}
+                        className="flex items-center justify-center rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 h-12 w-12 flex-shrink-0 transition-all"
+                        aria-label="Chat on WhatsApp"
+                      >
+                        <MessageSquare className="h-4 w-4" />
+                      </motion.a>
+                    </div>
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
         </div>
       </header>
 
@@ -1682,7 +1742,7 @@ export default function Home() {
               </motion.div>
             </motion.div>
 
-            {/* Hero Right Visuals (Apple-inspired 3D AI Ecosystem Map) */}
+            {/* Hero Right Visuals (Apple-inspired 3D AI Ecosystem Map) — Desktop only */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -1928,12 +1988,15 @@ export default function Home() {
             </motion.div>
           </div>
 
+          {/* Mobile Hero Visual — visible only on < lg screens */}
+          <MobileHeroVisual />
+
           {/* Trust Metrics Bar */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, type: 'spring', stiffness: 80 }}
-            className="w-full max-w-7xl mx-auto mt-16 md:mt-24 pt-8 border-t border-slate-200/60 dark:border-white/5 relative z-10"
+            className="w-full max-w-7xl mx-auto mt-10 md:mt-24 pt-8 border-t border-slate-200/60 dark:border-white/5 relative z-10"
           >
             <div className="grid grid-cols-2 md:grid-cols-5 gap-6 text-center">
               {[
@@ -2490,12 +2553,14 @@ export default function Home() {
               </a>
             </div>
 
+            {/* Mobile: horizontal swipe scroll — Desktop: grid */}
+            {/* Desktop grid (hidden on mobile) */}
             <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
-              className="grid md:grid-cols-2 xl:grid-cols-4 gap-6 w-full"
+              className="hidden md:grid md:grid-cols-2 xl:grid-cols-4 gap-6 w-full"
               style={{ perspective: 1200 }}
             >
               {/* Product 1: Nidaan Polyclinic */}
@@ -2784,8 +2849,56 @@ export default function Home() {
                 </a>
               </motion.div>
             </motion.div>
+
+            {/* Mobile Swipeable Cards (visible on mobile only) */}
+            <div className="md:hidden -mx-4 sm:-mx-8">
+              <div className="swipe-scroll swipe-fade-right" id="products-swipe-scroll">
+                {[
+                  { id: 'nidaan', badge: 'Healthcare', badgeCls: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400', num: '01', name: 'Nidaan Polyclinic', desc: 'AI-Powered Healthcare Management — patient records, appointments, billing, pharmacy & telemedicine.', tags: ['Healthcare', 'EMR', 'AI'], accent: 'text-emerald-600' },
+                  { id: 'leadgrow', badge: 'CRM', badgeCls: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400', num: '02', name: 'LeadGrowAI', desc: 'AI-Powered Lead Generation & CRM — intelligent B2B marketplace and automated business growth.', tags: ['CRM', 'Sales', 'AI'], accent: 'text-emerald-600' },
+                  { id: 'apply4jobs', badge: 'HR Tech', badgeCls: 'bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400', num: '03', name: 'Apply4Jobs', desc: 'Intelligent Recruitment & Job Portal — AI-powered resume screening & applicant tracking system.', tags: ['HR Tech', 'Recruitment', 'AI'], accent: 'text-amber-600' },
+                  { id: 'eduai365', badge: 'Education', badgeCls: 'bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400', num: '04', name: 'EduAI365', desc: 'AI-Powered Education ERP — admissions, academics, exams, finance & AI-enabled learning support.', tags: ['Education', 'ERP', 'AI'], accent: 'text-blue-600' },
+                  { id: 'scholarship', badge: 'Government', badgeCls: 'bg-slate-50 text-slate-700 dark:bg-slate-800/30 dark:text-slate-300', num: '05', name: 'Scholarship Portal', desc: 'Secure scholarship management — eligibility verification, workflow automation & beneficiary tracking.', tags: ['Education', 'Gov', 'Portal'], accent: 'text-slate-600' },
+                  { id: 'thehireme', badge: 'HR Tech', badgeCls: 'bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400', num: '06', name: 'TheHireAMe', desc: 'AI-Driven Staffing & Talent Sourcing — matching top-tier engineers to enterprise projects globally.', tags: ['HR Tech', 'Workforce', 'AI'], accent: 'text-amber-600' },
+                  { id: 'neherbal', badge: 'Agriculture', badgeCls: 'bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-400', num: '07', name: 'NEHerbalTea', desc: 'Smart Herbal Tea Marketplace — AI-enabled platform for Northeast India\'s herbal products.', tags: ['Agriculture', 'E-Commerce', 'AI'], accent: 'text-green-600' },
+                  { id: 'aiworkforce', badge: 'AI Agents', badgeCls: 'bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400', num: '08', name: 'AI Workforce', desc: 'Multi-Agent Leads Management — 6 collaborating AI agents handle the full sales pipeline lifecycle.', tags: ['AI Agents', 'Leads', 'Workforce'], accent: 'text-blue-600' },
+                ].map((prod, idx) => (
+                  <motion.div
+                    key={prod.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.05, type: 'spring', stiffness: 200, damping: 20 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="swipe-card bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-5 flex flex-col gap-3.5 shadow-sm"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className={`text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider ${prod.badgeCls}`}>{prod.badge}</span>
+                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{prod.num}</span>
+                    </div>
+                    <div>
+                      <h3 className={`font-display font-extrabold text-base text-slate-900 dark:text-white leading-tight`}>{prod.name}</h3>
+                      <p className="text-slate-500 dark:text-slate-400 text-xs leading-relaxed mt-1.5">{prod.desc}</p>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 mt-auto">
+                      {prod.tags.map(t => (
+                        <span key={t} className="text-[9px] font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-md uppercase tracking-wide">{t}</span>
+                      ))}
+                    </div>
+                    <a href="#contact" className={`inline-flex items-center gap-1 text-xs font-bold ${prod.accent} dark:text-blue-400`}>
+                      Learn More <ArrowRight className="h-3.5 w-3.5" />
+                    </a>
+                  </motion.div>
+                ))}
+              </div>
+              <div className="flex items-center justify-center gap-1.5 mt-1 text-[10px] font-bold text-slate-400 dark:text-slate-500">
+                <span className="swipe-hint-icon">→</span>
+                <span>Swipe to explore all products</span>
+              </div>
+            </div>
           </div>
         </section>
+
 
         {/* Enterprise Solutions Section */}
         <section id="services" className="py-14 md:py-24 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-36 border-t border-b border-slate-200/60 dark:border-navy-900 relative z-10 overflow-hidden" style={{ background: 'linear-gradient(180deg, #fcfbfa 0%, #f7f5f0 100%)' }}>
@@ -4371,32 +4484,53 @@ export default function Home() {
                 <h3 className="font-bold text-slate-900 dark:text-white text-lg">Contact Information</h3>
                 <div className="flex flex-col gap-5 text-sm text-slate-655 dark:text-slate-400">
                   <div className="flex items-start gap-4">
-                    <div className="h-10 w-10 rounded-xl bg-blue-50 text-[#0052cc] flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                    <div className="h-10 w-10 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-[#0052cc] dark:text-blue-400 flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                       <Phone className="h-5 w-5" />
                     </div>
                     <div className="flex flex-col">
                       <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Mobile / WhatsApp</span>
-                      <span className="font-bold text-slate-800 dark:text-slate-200 mt-0.5">+91-8638526521</span>
-                      <span className="font-bold text-slate-850 dark:text-slate-300">+91-6003526521</span>
+                      <div className="flex flex-col gap-1 mt-0.5">
+                        <a href="tel:+918638526521" className="font-bold text-slate-800 dark:text-slate-200 hover:text-[#0052cc] dark:hover:text-blue-400 transition-colors flex items-center gap-1.5">
+                          +91-8638526521
+                        </a>
+                        <a href="tel:+916003526521" className="font-bold text-slate-850 dark:text-slate-300 hover:text-[#0052cc] dark:hover:text-blue-400 transition-colors flex items-center gap-1.5">
+                          +91-6003526521
+                        </a>
+                        <a
+                          href="https://wa.me/918638526521?text=Hi%2C%20I%27d%20like%20to%20learn%20more%20about%20Algoguido%20Technologies"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 hover:underline mt-0.5"
+                        >
+                          <MessageSquare className="h-3 w-3" /> Chat on WhatsApp
+                        </a>
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
-                    <div className="h-10 w-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 shadow-sm">
+                    <div className="h-10 w-10 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0 shadow-sm">
                       <Mail className="h-5 w-5" />
                     </div>
                     <div className="flex flex-col">
                       <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Email</span>
-                      <span className="font-bold text-slate-800 dark:text-slate-200 mt-0.5">info@algoguido.com</span>
+                      <a href="mailto:info@algoguido.com" className="font-bold text-slate-800 dark:text-slate-200 hover:text-purple-600 dark:hover:text-purple-400 transition-colors mt-0.5">
+                        info@algoguido.com
+                      </a>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                    <div className="h-10 w-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                       <MapPin className="h-5 w-5" />
                     </div>
-                    <div className="flex flex-col">
-                      <span className="font-bold text-slate-800 dark:text-slate-200">Pub Nizarapur Path, AEC Road,</span>
-                      <span className="text-slate-600 dark:text-slate-400 text-xs mt-0.5">Sundarbari, Jalukbari, Guwahati - 781014, India</span>
-                    </div>
+                    <a
+                      href="https://maps.google.com/?q=Sundarbari,Jalukbari,Guwahati-781014"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex flex-col group/map"
+                    >
+                      <span className="font-bold text-slate-800 dark:text-slate-200 group-hover/map:text-emerald-600 transition-colors">Pub Nizarapur Path, AEC Road,</span>
+                      <span className="text-slate-600 dark:text-slate-400 text-xs mt-0.5 group-hover/map:text-emerald-600 transition-colors">Sundarbari, Jalukbari, Guwahati - 781014, India ↗</span>
+                    </a>
                   </div>
                 </div>
 
@@ -4618,7 +4752,7 @@ export default function Home() {
       </footer>
 
       {/* Apple Premium Page Scroll-up Icon with circular scroll progress ring */}
-      <div className={`fixed bottom-6 right-6 z-50 pointer-events-auto ${showScrollTop ? 'block' : 'hidden'}`}>
+      <div className={`fixed bottom-20 xl:bottom-6 right-6 z-50 pointer-events-auto ${showScrollTop ? 'block' : 'hidden'}`}>
         <motion.button
           onClick={scrollToTop}
           initial={{ opacity: 0, scale: 0.8 }}
@@ -5646,6 +5780,13 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Sticky Mobile Bottom Navigation — visible only on < xl screens */}
+      <MobileBottomNav
+        activeSection={activeSection}
+        onNavClick={handleNavClick}
+        onMenuOpen={() => setMobileMenuOpen(true)}
+      />
     </div>
   );
 }
