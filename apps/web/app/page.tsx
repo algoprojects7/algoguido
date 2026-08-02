@@ -1480,7 +1480,6 @@ export default function Home() {
                         }`}
                       >
                         {item.label}
-                        {activeSection === item.id && <div className="w-1.5 h-1.5 rounded-full bg-[#0052cc]" />}
                       </motion.a>
                     ))}
 

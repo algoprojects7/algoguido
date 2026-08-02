@@ -79,16 +79,6 @@ export function MobileBottomNav({ activeSection, onNavClick, onMenuOpen }: Mobil
                   }`}
                   strokeWidth={active ? 2.5 : 1.75}
                 />
-                {/* Active dot indicator */}
-                {active && (
-                  <motion.div
-                    layoutId="bottom-nav-dot"
-                    className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#0052cc] dark:bg-blue-400"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: 'spring', stiffness: 600, damping: 30 }}
-                  />
-                )}
               </motion.div>
 
               {/* Label */}
