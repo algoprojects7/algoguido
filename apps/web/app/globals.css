@@ -634,7 +634,7 @@ html {
   background: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  z-index: 45;
+  z-index: 40;
 }
 
 /* ─── MOBILE GLASSMORPHISM (lighter blur for performance) ─────────────────────── */

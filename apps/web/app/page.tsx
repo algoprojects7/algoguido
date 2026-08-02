@@ -1403,7 +1403,7 @@ export default function Home() {
             {/* Mobile Toggle Button — hamburger morphing to X */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`xl:hidden p-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 transition-all touch-target ${mobileMenuOpen ? 'hamburger-open' : ''}`}
+              className={`xl:hidden p-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5 transition-all touch-target relative z-50 ${mobileMenuOpen ? 'hamburger-open' : ''}`}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu-panel"
               aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
@@ -1439,7 +1439,7 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -8, scale: 0.98 }}
                   transition={{ type: 'spring', stiffness: 420, damping: 32 }}
-                  className="absolute top-full left-0 right-0 bg-white/95 dark:bg-navy-950/95 backdrop-blur-xl border-b border-slate-200/50 dark:border-white/5 shadow-2xl xl:hidden z-40 overflow-hidden"
+                  className="absolute top-full left-0 right-0 bg-white/95 dark:bg-navy-950/95 backdrop-blur-xl border-b border-slate-200/50 dark:border-white/5 shadow-2xl xl:hidden z-50 overflow-hidden"
                   role="navigation"
                   aria-label="Mobile navigation"
                 >
