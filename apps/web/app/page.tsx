@@ -3151,7 +3151,7 @@ export default function Home() {
                 Engineering Digital Transformation Across Industries
               </h2>
               <p className="text-slate-655 dark:text-slate-400 text-sm leading-relaxed max-w-2xl">
-                From intelligent healthcare systems and education platforms to enterprise software, AI-powered automation, and digital registries, Algoguido delivers innovative technology solutions that empower organizations to modernize operations, improve efficiency, and achieve sustainable growth through intelligent, scalable, and secure digital ecosystems.
+                From intelligent healthcare systems and education platforms to real-time gaming engines, family marketplaces, pan-India franchise tax portals, AI-powered automation, and digital registries, Algoguido delivers innovative technology solutions that empower organizations to modernize operations, improve efficiency, and achieve sustainable growth through intelligent, scalable, and secure digital ecosystems.
               </p>
               <a href="#contact" className="text-sm font-bold text-[#0052cc] hover:text-blue-600 hover:underline flex items-center gap-1 group/btn transition-colors mt-1">
                 Explore Our Project Portfolio <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
@@ -3183,13 +3183,14 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
                 <div className="flex flex-wrap gap-2 relative z-10">
                   <Badge variant="success">Healthcare</Badge>
-                  <Badge variant="primary">Digital Health</Badge>
+                  <Badge variant="primary">EMR Platform</Badge>
+                  <Badge variant="neutral">Telemedicine</Badge>
                 </div>
-                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">01. Nidaan Polyclinic</span>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">01. Nidaan Healthcare System</span>
                 <div className="relative z-10 flex flex-col gap-2">
-                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors leading-snug">AI-Enabled Healthcare Management</h3>
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors leading-snug">AI-Enabled Healthcare Management & EMR Deployment</h3>
                   <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                    Designed and deployed a comprehensive healthcare management platform supporting patient records, appointments, diagnostics, pharmacy, billing, and administrative operations to streamline clinical workflows.
+                    Designed and deployed a comprehensive polyclinic and hospital management platform supporting electronic medical records, patient scheduling, billing, pharmacy, telemedicine, and AI-assisted clinical workflows.
                   </p>
                 </div>
                 <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
@@ -3197,7 +3198,7 @@ export default function Home() {
                 </a>
               </motion.div>
 
-              {/* Case 2: Syed Community Registry */}
+              {/* Case 2: LeadGrowAI */}
               <motion.div
                 variants={itemVariants}
                 whileHover={{
@@ -3205,7 +3206,7 @@ export default function Home() {
                   rotateY: 6,
                   rotateX: -3,
                   scale: 1.03,
-                  boxShadow: "0 25px 50px rgba(217, 119, 6, 0.12)"
+                  boxShadow: "0 25px 50px rgba(16, 185, 129, 0.12)"
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
@@ -3213,14 +3214,15 @@ export default function Home() {
               >
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
                 <div className="flex flex-wrap gap-2 relative z-10">
-                  <Badge variant="warning">Community</Badge>
-                  <Badge variant="neutral">Digital Registry</Badge>
+                  <Badge variant="success">CRM</Badge>
+                  <Badge variant="primary">Sales Intelligence</Badge>
+                  <Badge variant="neutral">B2B Growth</Badge>
                 </div>
-                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">02. Syed Community Registry</span>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">02. LeadGrowAI Sales CRM</span>
                 <div className="relative z-10 flex flex-col gap-2">
-                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors leading-snug">Community Registration & Digital Records</h3>
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors leading-snug">AI-Powered Lead Generation & CRM Acceleration</h3>
                   <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                    Developed a secure digital registry platform for community data management, member registration, document verification, and administrative reporting with a scalable cloud architecture.
+                    Engineered an intelligent B2B marketplace and CRM platform integrating automated lead discovery, predictive prospect qualification, dynamic sales pipelines, and business growth analytics.
                   </p>
                 </div>
                 <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
@@ -3228,100 +3230,7 @@ export default function Home() {
                 </a>
               </motion.div>
 
-              {/* Case 3: Enterprise AI Solutions */}
-              <motion.div
-                variants={itemVariants}
-                whileHover={{
-                  y: -12,
-                  rotateY: 6,
-                  rotateX: -3,
-                  scale: 1.03,
-                  boxShadow: "0 25px 50px rgba(0, 82, 204, 0.12)"
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
-                style={{ transformStyle: 'preserve-3d' }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
-                <div className="flex flex-wrap gap-2 relative z-10">
-                  <Badge variant="primary">Artificial Intelligence</Badge>
-                  <Badge variant="danger">Analytics</Badge>
-                </div>
-                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">03. Enterprise AI Solutions</span>
-                <div className="relative z-10 flex flex-col gap-2">
-                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors leading-snug">AI & Business Intelligence Platforms</h3>
-                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                    Building intelligent AI solutions that integrate machine learning, predictive analytics, automation, and conversational AI to enhance operational efficiency and support data-driven decision-making.
-                  </p>
-                </div>
-                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
-                  View Case Study <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
-                </a>
-              </motion.div>
-
-              {/* Case 4: Enterprise Automation */}
-              <motion.div
-                variants={itemVariants}
-                whileHover={{
-                  y: -12,
-                  rotateY: 6,
-                  rotateX: -3,
-                  scale: 1.03,
-                  boxShadow: "0 25px 50px rgba(0, 82, 204, 0.12)"
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
-                style={{ transformStyle: 'preserve-3d' }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
-                <div className="flex flex-wrap gap-2 relative z-10">
-                  <Badge variant="primary">Enterprise</Badge>
-                  <Badge variant="neutral">Workflow Automation</Badge>
-                </div>
-                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">04. Enterprise Automation</span>
-                <div className="relative z-10 flex flex-col gap-2">
-                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors leading-snug">Intelligent Business Process Automation</h3>
-                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                    Delivered custom enterprise software and workflow automation solutions that digitize operations, improve collaboration, optimize business processes, and increase organizational productivity.
-                  </p>
-                </div>
-                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
-                  View Case Study <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
-                </a>
-              </motion.div>
-
-              {/* Case 5: Education Digital Transformation */}
-              <motion.div
-                variants={itemVariants}
-                whileHover={{
-                  y: -12,
-                  rotateY: 6,
-                  rotateX: -3,
-                  scale: 1.03,
-                  boxShadow: "0 25px 50px rgba(0, 82, 204, 0.12)"
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
-                style={{ transformStyle: 'preserve-3d' }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
-                <div className="flex flex-wrap gap-2 relative z-10">
-                  <Badge variant="primary">Education</Badge>
-                  <Badge variant="success">ERP</Badge>
-                </div>
-                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">05. Education Digital Transformation</span>
-                <div className="relative z-10 flex flex-col gap-2">
-                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors leading-snug">Smart Campus & Learning Platforms</h3>
-                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                    Implemented AI-enabled education management systems for academic administration, student lifecycle management, examinations, attendance, and institutional analytics.
-                  </p>
-                </div>
-                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
-                  View Case Study <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
-                </a>
-              </motion.div>
-
-              {/* Case 6: Recruitment & Workforce Technology */}
+              {/* Case 3: Apply4Jobs */}
               <motion.div
                 variants={itemVariants}
                 whileHover={{
@@ -3338,13 +3247,14 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
                 <div className="flex flex-wrap gap-2 relative z-10">
                   <Badge variant="warning">HR Tech</Badge>
-                  <Badge variant="warning">Recruitment</Badge>
+                  <Badge variant="warning">AI Screening</Badge>
+                  <Badge variant="neutral">ATS Engine</Badge>
                 </div>
-                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">06. Recruitment & Workforce Technology</span>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">03. Apply4Jobs Recruitment Portal</span>
                 <div className="relative z-10 flex flex-col gap-2">
-                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors leading-snug">AI-Powered Hiring Platforms</h3>
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors leading-snug">Intelligent Recruitment & Resume Screening Portal</h3>
                   <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                    Developed intelligent recruitment ecosystems featuring applicant tracking, AI-assisted resume screening, candidate assessments, workforce management, and hiring automation.
+                    Developed a modern recruitment ecosystem featuring machine learning resume screening, semantic candidate scoring, automated applicant tracking, and streamlined interview management.
                   </p>
                 </div>
                 <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
@@ -3352,7 +3262,135 @@ export default function Home() {
                 </a>
               </motion.div>
 
-              {/* Case 7: Multi-Agent Leads Management */}
+              {/* Case 4: EduAI365 */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 6,
+                  rotateX: -3,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(0, 82, 204, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="primary">Education</Badge>
+                  <Badge variant="success">Enterprise ERP</Badge>
+                  <Badge variant="neutral">AI Learning</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">04. EduAI365 ERP System</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors leading-snug">AI-Powered Education Resource Planning</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    Implemented a complete digital campus management suite for educational institutions, handling admissions, academics, examinations, financial management, and AI-enabled learning analytics.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  View Case Study <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Case 5: Scholarship & Governance */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 6,
+                  rotateX: -3,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(100, 116, 139, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="primary">Education</Badge>
+                  <Badge variant="neutral">Government</Badge>
+                  <Badge variant="neutral">Digital Registry</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">05. Scholarship & Government Portal</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-slate-650 transition-colors leading-snug">Secure Scholarship Management & Beneficiary Verification</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    Deployed high-security digital portals for government and community scholarship administration, beneficiary eligibility verification, document authentication, and automated workflow tracking.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  View Case Study <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Case 6: TheHireAMe */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 6,
+                  rotateX: -3,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(217, 119, 6, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="warning">HR Tech</Badge>
+                  <Badge variant="warning">Workforce</Badge>
+                  <Badge variant="primary">Talent Sourcing</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">06. TheHireAMe Staffing Platform</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors leading-snug">AI-Driven Developer Staffing & Talent Sourcing</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    Architected an AI-driven global staffing platform matching and deploying top-tier software engineers and technology specialists to enterprise projects with automated skill validation.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  View Case Study <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Case 7: NEHerbalTea */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 6,
+                  rotateX: -3,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(239, 68, 68, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="success">Agriculture</Badge>
+                  <Badge variant="danger">E-Commerce</Badge>
+                  <Badge variant="primary">Supply Chain</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">07. NEHerbalTea Marketplace</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-red-500 transition-colors leading-snug">Smart Herbal Marketplace & Regional Supply Chain</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    Built an AI-enabled digital commerce platform for Northeast India's herbal products, optimizing inventory management, direct-to-consumer engagement, traceability, and regional supply chains.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  View Case Study <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Case 8: AI Workforce for Business */}
               <motion.div
                 variants={itemVariants}
                 whileHover={{
@@ -3369,13 +3407,110 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
                 <div className="flex flex-wrap gap-2 relative z-10">
                   <Badge variant="primary">AI Agents</Badge>
-                  <Badge variant="success">Sales Funnels</Badge>
+                  <Badge variant="success">Multi-Agent</Badge>
+                  <Badge variant="neutral">Pipeline Lifecycle</Badge>
                 </div>
-                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">07. Multi-Agent Leads Management</span>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">08. AI Workforce Multi-Agent Suite</span>
                 <div className="relative z-10 flex flex-col gap-2">
-                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors leading-snug">Autonomous Sales Agents Deployment</h3>
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors leading-snug">Autonomous Multi-Agent Sales Lifecycle Management</h3>
                   <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                    Designed and deployed an autonomous multi-agent system comprising 6 collaborating AI agents to handle the complete lifecycle from lead discovery, automated outreach, qualification, deal closing, and final performance analytics.
+                    Designed and deployed an autonomous multi-agent system comprising 6 collaborating AI agents handling the full sales lifecycle—from lead discovery and outreach to deal closing and executive reporting.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  View Case Study <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Case 9: Lucky-12 Gaming Platform */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 6,
+                  rotateX: -3,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(168, 85, 247, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="primary" className="bg-purple-50 text-purple-700 dark:bg-purple-950/30 dark:text-purple-400 border-purple-200">Gaming</Badge>
+                  <Badge variant="neutral">Real-Time Engine</Badge>
+                  <Badge variant="primary">Mobile App</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">09. Lucky-12 Gaming Platform</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-purple-600 transition-colors leading-snug">High-Concurrency Digital Gaming & Reward Architecture</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    Architected a scalable digital gaming platform featuring real-time state synchronization, low-latency multiplayer mechanics, secure digital wallet integration, and dynamic user reward algorithms.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  View Case Study <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Case 10: Grocer Household Marketplace */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 6,
+                  rotateX: -3,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(16, 185, 129, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="success">E-Commerce</Badge>
+                  <Badge variant="neutral">Budget Analytics</Badge>
+                  <Badge variant="success">Family Savings</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">10. Grocer Household Marketplace</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors leading-snug">Household Budget Optimization & Marketplace Suite</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    Deployed a localized family e-commerce marketplace integrating monthly grocery budget optimization, automated recurring orders, household expense tracking, and last-mile fulfillment logistics.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  View Case Study <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Case 11: UniTax Partner Portal */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 6,
+                  rotateX: -3,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(0, 82, 204, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="primary">FinTech</Badge>
+                  <Badge variant="warning">Franchise Portal</Badge>
+                  <Badge variant="neutral">Tax & Legal</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">11. UniTax Franchise Ecosystem</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-[#0052cc] transition-colors leading-snug">Pan-India Franchise-Driven Tax Consultancy Platform</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    Transformed tax consultancy into a pan-India franchise-driven ecosystem, deploying multi-tenant partner management portals, automated tax compliance workflows, and enterprise document vault infrastructure mirroring high-growth financial sector models.
                   </p>
                 </div>
                 <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
