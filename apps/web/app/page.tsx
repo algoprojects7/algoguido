@@ -583,7 +583,7 @@ export default function Home() {
     },
     {
       q: "What proprietary AI products does Algoguido build?",
-      a: "Our core platforms include eduAI365 ERP (for high school/private educational institutions operational planning), Apply4Jobs (for machine learning resume assessment and candidate matches), LeadGrowAI (for sales CRM acceleration), TheHireMe (for AI-driven developer staffing), and AI Workforce for Business (a multi-agent leads management system powered by 6 collaborating agents)."
+      a: "Our core platforms include eduAI365 ERP (for educational institutions), Apply4Jobs (for machine learning resume assessment), LeadGrowAI (for sales CRM acceleration), TheHireMe (for AI-driven developer staffing), AI Workforce for Business (multi-agent leads management system), Lucky-12 (gaming app), Grocer (family marketplace with budget saving), and UniTax (partner portal tax consultancy franchise platform)."
     },
     {
       q: "Where is Algoguido Technologies headquartered?",
@@ -1184,6 +1184,39 @@ export default function Home() {
         'applicationCategory': 'BusinessApplication',
         'operatingSystem': 'All',
         'description': 'Multi-agent leads management platform powered by 6 collaborating AI agents handling the lifecycle from discovery to deal closed and report analysis.',
+        'publisher': {
+          '@id': 'https://algoguido.com/#organization'
+        }
+      },
+      {
+        '@type': 'SoftwareApplication',
+        '@id': 'https://algoguido.com/#product-lucky12',
+        'name': 'Lucky-12',
+        'applicationCategory': 'GameApplication',
+        'operatingSystem': 'All',
+        'description': 'Gaming App — interactive digital entertainment and rewards application.',
+        'publisher': {
+          '@id': 'https://algoguido.com/#organization'
+        }
+      },
+      {
+        '@type': 'SoftwareApplication',
+        '@id': 'https://algoguido.com/#product-grocer',
+        'name': 'Grocer',
+        'applicationCategory': 'ShoppingApplication',
+        'operatingSystem': 'All',
+        'description': 'Family Marketplace with Monthly Budget Saving — smart grocery ordering and household budget optimization.',
+        'publisher': {
+          '@id': 'https://algoguido.com/#organization'
+        }
+      },
+      {
+        '@type': 'SoftwareApplication',
+        '@id': 'https://algoguido.com/#product-unitax',
+        'name': 'UniTax',
+        'applicationCategory': 'FinanceApplication',
+        'operatingSystem': 'All',
+        'description': 'Partner Portal Tax Consultancy — pan-India franchise-driven ecosystem for tax services and financial advisory.',
         'publisher': {
           '@id': 'https://algoguido.com/#organization'
         }
@@ -2818,7 +2851,103 @@ export default function Home() {
                 </a>
               </motion.div>
 
-              {/* Product 9: And Many More... */}
+              {/* Product 9: Lucky-12 */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 8,
+                  rotateX: -4,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(168, 85, 247, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="primary" className="bg-purple-50 text-purple-700 dark:bg-purple-950/30 dark:text-purple-400 border-purple-200">Gaming</Badge>
+                  <Badge variant="neutral">Mobile App</Badge>
+                  <Badge variant="primary">Entertainment</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">09. Lucky-12</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-purple-600 transition-colors leading-snug">Gaming App</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    An engaging gaming application and digital interactive platform offering dynamic reward structures, real-time mechanics, and a seamless entertainment experience.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  Learn More <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Product 10: Grocer */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 8,
+                  rotateX: -4,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(16, 185, 129, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="success">E-Commerce</Badge>
+                  <Badge variant="success">Marketplace</Badge>
+                  <Badge variant="neutral">Savings</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">10. Grocer</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors leading-snug">Family Marketplace with Monthly Budget Saving</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    A smart family grocery and household marketplace designed for monthly budget optimization, recurring orders, savings tracking, and efficient local fulfillment.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  Learn More <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Product 11: UniTax */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 8,
+                  rotateX: -4,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(0, 82, 204, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="primary">FinTech</Badge>
+                  <Badge variant="warning">Franchise</Badge>
+                  <Badge variant="neutral">Tax & Legal</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">11. UniTax</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-[#0052cc] transition-colors leading-snug">Partner Portal Tax Consultancy</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    Transforming tax consultancy into a pan-India franchise-driven ecosystem is a strategic move that mirrors high-growth models in the financial services sector with streamlined partner management and compliance automation.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  Learn More <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Product 12: And Many More... */}
               <motion.div
                 variants={itemVariants}
                 whileHover={{
@@ -2836,7 +2965,7 @@ export default function Home() {
                   <Badge variant="primary" className="bg-white/15 border-white/25 text-white">AI R&D</Badge>
                   <Badge variant="primary" className="bg-white/15 border-white/25 text-white">Future</Badge>
                 </div>
-                <span className="text-[10px] font-extrabold text-blue-200 uppercase tracking-widest relative z-10">09. And Many More...</span>
+                <span className="text-[10px] font-extrabold text-blue-200 uppercase tracking-widest relative z-10">12. And Many More...</span>
                 <div className="relative z-10 flex flex-col gap-2">
                   <h3 className="font-display font-extrabold text-lg text-white leading-snug">Building the Next Generation of AI Products</h3>
                   <p className="text-blue-100/85 text-xs leading-relaxed">
@@ -2861,6 +2990,9 @@ export default function Home() {
                   { id: 'thehireme', badge: 'HR Tech', badgeCls: 'bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400', num: '06', name: 'TheHireAMe', desc: 'AI-Driven Staffing & Talent Sourcing — matching top-tier engineers to enterprise projects globally.', tags: ['HR Tech', 'Workforce', 'AI'], accent: 'text-amber-600' },
                   { id: 'neherbal', badge: 'Agriculture', badgeCls: 'bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-400', num: '07', name: 'NEHerbalTea', desc: 'Smart Herbal Tea Marketplace — AI-enabled platform for Northeast India\'s herbal products.', tags: ['Agriculture', 'E-Commerce', 'AI'], accent: 'text-green-600' },
                   { id: 'aiworkforce', badge: 'AI Agents', badgeCls: 'bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400', num: '08', name: 'AI Workforce', desc: 'Multi-Agent Leads Management — 6 collaborating AI agents handle the full sales pipeline lifecycle.', tags: ['AI Agents', 'Leads', 'Workforce'], accent: 'text-blue-600' },
+                  { id: 'lucky12', badge: 'Gaming', badgeCls: 'bg-purple-50 text-purple-700 dark:bg-purple-950/30 dark:text-purple-400', num: '09', name: 'Lucky-12', desc: 'Gaming App — interactive digital entertainment & dynamic rewards platform.', tags: ['Gaming', 'Mobile', 'App'], accent: 'text-purple-600' },
+                  { id: 'grocer', badge: 'E-Commerce', badgeCls: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400', num: '10', name: 'Grocer', desc: 'Family Marketplace with Monthly Budget Saving — smart grocery & expense optimization.', tags: ['Marketplace', 'Budget', 'Savings'], accent: 'text-emerald-600' },
+                  { id: 'unitax', badge: 'FinTech', badgeCls: 'bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400', num: '11', name: 'UniTax', desc: 'Partner Portal Tax Consultancy — pan-India franchise-driven ecosystem mirroring high-growth models.', tags: ['FinTech', 'Franchise', 'Tax'], accent: 'text-blue-600' },
                 ].map((prod, idx) => (
                   <motion.div
                     key={prod.id}
@@ -4662,7 +4794,7 @@ export default function Home() {
             <div className="flex flex-col gap-4">
               <h4 className="text-[11px] font-extrabold text-white uppercase tracking-[0.12em]">Products</h4>
               <nav className="flex flex-col gap-2.5">
-                {['eduAI365', 'Apply4Jobs', 'LeadGrowAI', 'TheHirings', 'Multi-Agent Leads Management', 'neHerbalTea'].map((item) => (
+                {['eduAI365', 'Apply4Jobs', 'LeadGrowAI', 'TheHirings', 'Multi-Agent Leads Management', 'Lucky-12', 'Grocer', 'UniTax', 'neHerbalTea'].map((item) => (
                   <a key={item} href="/#products" className="text-[12px] text-slate-300 hover:text-white hover:translate-x-1 transition-all duration-200 flex items-center gap-1.5 group">
                     <span className="h-px w-3 bg-slate-700 group-hover:bg-blue-500 group-hover:w-4 transition-all duration-200" />
                     {item}

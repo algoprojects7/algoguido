@@ -28,6 +28,9 @@ This document serves as an architectural, domain, and entity briefing for AI cod
 *   **LeadGrowAI:** Automated CRM growth suite for lead scoring, pipeline intelligence, and marketing workflows.
 *   **TheHirings / TheHireAMe:** AI-driven developer staffing and talent sourcing.
 *   **AI Workforce for Business:** Multi-agent leads management platform powered by 6 collaborating AI agents handling the lifecycle from discovery to deal closed and report analysis.
+*   **Lucky-12:** Interactive gaming application and digital entertainment platform.
+*   **Grocer:** Family marketplace with monthly budget saving and household expense optimization.
+*   **UniTax:** Partner portal tax consultancy transformed into a pan-India franchise-driven ecosystem.
 
 ---
 

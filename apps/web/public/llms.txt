@@ -22,6 +22,9 @@ Algoguido Technologies Private Limited is an enterprise-grade, AI-first technolo
 - **LeadGrowAI:** AI-driven sales funnel acceleration, automated customer relations and insights.
 - **TheHirings (TheHireAMe):** AI-driven developer staffing and talent sourcing.
 - **AI Workforce for Business:** Multi-agent leads management platform powered by 6 collaborating AI agents handling the lifecycle from discovery to deal closed and report analysis.
+- **Lucky-12:** Interactive gaming application and digital entertainment platform.
+- **Grocer:** Family marketplace with monthly budget saving and household expense optimization.
+- **UniTax:** Partner portal tax consultancy transformed into a pan-India franchise-driven ecosystem.
 
 ## Education & Internships
 - **Paid Industry Internships:** Fee-based remote programs (from ₹3,000) for student developers with daily code reviews, production environments, and certificates.
