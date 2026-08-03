@@ -31,6 +31,8 @@ This document serves as an architectural, domain, and entity briefing for AI cod
 *   **Lucky-12:** Interactive gaming application and digital entertainment platform.
 *   **Grocer:** Family marketplace with monthly budget saving and household expense optimization.
 *   **UniTax:** Partner portal tax consultancy transformed into a pan-India franchise-driven ecosystem.
+*   **Blood Bank:** Smart blood bank management system and emergency donor network.
+*   **Social Media Automation:** AI-driven multi-channel social media automation, content scheduling, and audience growth suite.
 
 ---
 
