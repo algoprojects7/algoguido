@@ -3064,7 +3064,7 @@ export default function Home() {
 
             {/* Mobile Swipeable Cards (visible on mobile only) */}
             <div className="md:hidden -mx-4 sm:-mx-8">
-              <div className="swipe-scroll swipe-fade-right" id="products-swipe-scroll">
+              <div className="swipe-scroll" id="products-swipe-scroll">
                 {[
                   { id: 'nidaan', badge: 'Healthcare', badgeCls: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400', num: '01', name: 'Nidaan Polyclinic', desc: 'AI-Powered Healthcare Management — patient records, appointments, billing, pharmacy & telemedicine.', tags: ['Healthcare', 'EMR', 'AI'], accent: 'text-emerald-600' },
                   { id: 'leadgrow', badge: 'CRM', badgeCls: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400', num: '02', name: 'LeadGrowAI', desc: 'AI-Powered Lead Generation & CRM — intelligent B2B marketplace and automated business growth.', tags: ['CRM', 'Sales', 'AI'], accent: 'text-emerald-600' },

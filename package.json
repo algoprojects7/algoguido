@@ -7,15 +7,6 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "prisma",
-      "@prisma/client",
-      "@prisma/engines",
-      "@nestjs/core",
-      "sharp"
-    ]
-  },
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",

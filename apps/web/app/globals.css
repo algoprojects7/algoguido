@@ -421,26 +421,6 @@ html {
   }
 }
 
-/* Swipe hint fade-right edge gradient */
-.swipe-fade-right {
-  position: relative;
-}
-
-.swipe-fade-right::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 48px;
-  background: linear-gradient(to right, transparent, rgba(247, 249, 252, 0.9));
-  pointer-events: none;
-  border-radius: 0 1rem 1rem 0;
-}
-
-.dark .swipe-fade-right::after {
-  background: linear-gradient(to right, transparent, rgba(15, 29, 53, 0.9));
-}
 
 /* Pagination Dots */
 .swipe-dots {
