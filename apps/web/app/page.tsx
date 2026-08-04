@@ -1516,8 +1516,10 @@ export default function Home() {
                       { id: 'home', label: 'Home', href: '#' },
                       { id: 'about', label: 'About', href: '/#about' },
                       { id: 'why', label: 'Why Algoguido', href: '/#why' },
+                      { id: 'products', label: 'Products', href: '/#products' },
+                      { id: 'services', label: 'Solutions', href: '/#services' },
                       { id: 'projects', label: 'Projects', href: '/#projects' },
-                      { id: 'research', label: 'Research & Education', href: '/#research' },
+                      { id: 'research', label: 'Research & Internship', href: '/#research' },
                       { id: 'blog', label: 'Blog', href: '/#blog' },
                       { id: 'contact', label: 'Contact', href: '/#contact' },
                     ].map((item, i) => (
@@ -1537,40 +1539,6 @@ export default function Home() {
                         {item.label}
                       </motion.a>
                     ))}
-
-                    {/* Products sub-section */}
-                    <div className="mt-1 pt-3 border-t border-slate-100 dark:border-white/5">
-                      <span className={`text-[10px] font-black uppercase tracking-widest px-3 ${activeSection === 'products' ? 'text-[#0052cc]' : 'text-slate-400'}`}>Products</span>
-                      <div className="grid grid-cols-2 gap-1.5 mt-2 px-1">
-                        {['eduAI365', 'Apply4Jobs', 'LeadGrowAI', 'TheHirings', 'AI Workforce'].map((p) => (
-                          <a
-                            key={p}
-                            href="/#products"
-                            onClick={(e) => handleNavClick('products', 'Products', e)}
-                            className="text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-[#0052cc] py-1.5 px-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
-                          >
-                            {p}
-                          </a>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Solutions sub-section */}
-                    <div className="mt-1 pt-3 border-t border-slate-100 dark:border-white/5">
-                      <span className={`text-[10px] font-black uppercase tracking-widest px-3 ${activeSection === 'services' || activeSection === 'tech' ? 'text-[#0052cc]' : 'text-slate-400'}`}>Solutions</span>
-                      <div className="grid grid-cols-2 gap-1.5 mt-2 px-1">
-                        {['ERP Platforms', 'CRM & Growth', 'AI Automation', 'Cloud & Infra'].map((s) => (
-                          <a
-                            key={s}
-                            href="/#services"
-                            onClick={(e) => handleNavClick('services', 'Solutions', e)}
-                            className="text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-[#0052cc] py-1.5 px-2 rounded-lg hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
-                          >
-                            {s}
-                          </a>
-                        ))}
-                      </div>
-                    </div>
 
                     {/* CTA Buttons */}
                     <div className="flex gap-3 mt-4 pt-3 border-t border-slate-100 dark:border-white/5">
