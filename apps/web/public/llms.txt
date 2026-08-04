@@ -27,6 +27,7 @@ Algoguido Technologies Private Limited is an enterprise-grade, AI-first technolo
 - **UniTax:** Partner portal tax consultancy transformed into a pan-India franchise-driven ecosystem.
 - **Blood Bank:** Smart blood bank management system and emergency donor network.
 - **Social Media Automation:** AI-driven multi-channel social media automation, content scheduling, and audience growth suite.
+- **IPL Predictor:** 100% Free-to-Play Social Cricket Game with virtual Prediction Coins (PC) for entertainment only (zero cash value, no real money deposits or gambling).
 
 ## Education & Internships
 - **Paid Industry Internships:** Fee-based remote programs (from ₹3,000) for student developers with daily code reviews, production environments, and certificates.

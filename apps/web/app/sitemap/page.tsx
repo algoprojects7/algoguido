@@ -64,7 +64,8 @@ export default function SitemapPage() {
         { name: 'Apply4Jobs', href: '/#products', description: 'Advanced AI recruitment, resume analysis, and applicant matching.', icon: Briefcase },
         { name: 'LeadGrowAI', href: '/#products', description: 'AI-driven business growth, CRM, and growth automation.', icon: Cpu },
         { name: 'TheHirings', href: '/#products', description: 'AI-driven developer staffing and talent sourcing.', icon: Users },
-        { name: 'AI Workforce for Business', href: '/#products', description: 'Leads management platform run by 6 collaborating AI agents.', icon: Brain }
+        { name: 'AI Workforce for Business', href: '/#products', description: 'Leads management platform run by 6 collaborating AI agents.', icon: Brain },
+        { name: 'IPL Predictor', href: '/#products', description: '100% Free-to-Play Social Cricket Game with virtual Prediction Coins.', icon: Coins }
       ]
     },
     {

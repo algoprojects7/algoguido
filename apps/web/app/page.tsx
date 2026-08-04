@@ -583,7 +583,7 @@ export default function Home() {
     },
     {
       q: "What proprietary AI products does Algoguido build?",
-      a: "Our core platforms include eduAI365 ERP (for educational institutions), Apply4Jobs (for machine learning resume assessment), LeadGrowAI (for sales CRM acceleration), TheHireMe (for AI-driven developer staffing), AI Workforce for Business (multi-agent leads management system), Lucky-12 (gaming app), Grocer (family marketplace with budget saving), UniTax (partner portal tax consultancy franchise platform), Blood Bank (smart blood bank network), and Social Media Automation (AI-driven social media growth suite)."
+      a: "Our core platforms include eduAI365 ERP (for educational institutions), Apply4Jobs (for machine learning resume assessment), LeadGrowAI (for sales CRM acceleration), TheHireMe (for AI-driven developer staffing), AI Workforce for Business (multi-agent leads management system), Lucky-12 (gaming app), IPL Predictor (100% free-to-play social cricket game), Grocer (family marketplace with budget saving), UniTax (partner portal tax consultancy franchise platform), Blood Bank (smart blood bank network), and Social Media Automation (AI-driven social media growth suite)."
     },
     {
       q: "Where is Algoguido Technologies headquartered?",
@@ -3033,7 +3033,39 @@ export default function Home() {
                 </a>
               </motion.div>
 
-              {/* Product 14: And Many More... */}
+              {/* Product 14: IPL Predictor */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 8,
+                  rotateX: -4,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(16, 185, 129, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="success">Gaming</Badge>
+                  <Badge variant="primary">100% Free-to-Play</Badge>
+                  <Badge variant="neutral">Social Cricket</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">14. IPL Predictor</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors leading-snug">100% Free-to-Play Social Cricket Game</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    Prediction Coins (PC) are virtual points for entertainment only and have zero cash value. No real money deposits or gambling.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  Learn More <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Product 15: And Many More... */}
               <motion.div
                 variants={itemVariants}
                 whileHover={{
@@ -3051,7 +3083,7 @@ export default function Home() {
                   <Badge variant="primary" className="bg-white/15 border-white/25 text-white">AI R&D</Badge>
                   <Badge variant="primary" className="bg-white/15 border-white/25 text-white">Future</Badge>
                 </div>
-                <span className="text-[10px] font-extrabold text-blue-200 uppercase tracking-widest relative z-10">14. And Many More...</span>
+                <span className="text-[10px] font-extrabold text-blue-200 uppercase tracking-widest relative z-10">15. And Many More...</span>
                 <div className="relative z-10 flex flex-col gap-2">
                   <h3 className="font-display font-extrabold text-lg text-white leading-snug">Building the Next Generation of AI Products</h3>
                   <p className="text-blue-100/85 text-xs leading-relaxed">
@@ -3081,6 +3113,7 @@ export default function Home() {
                   { id: 'unitax', badge: 'FinTech', badgeCls: 'bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400', num: '11', name: 'UniTax', desc: 'Partner Portal Tax Consultancy — pan-India franchise-driven ecosystem mirroring high-growth models.', tags: ['FinTech', 'Franchise', 'Tax'], accent: 'text-blue-600' },
                   { id: 'bloodbank', badge: 'Healthcare', badgeCls: 'bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-400', num: '12', name: 'Blood Bank', desc: 'Smart Blood Bank & Emergency Donor Network — real-time inventory tracking & donor matching.', tags: ['Healthcare', 'Blood Bank', 'Emergency'], accent: 'text-red-600' },
                   { id: 'socialauto', badge: 'Marketing', badgeCls: 'bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400', num: '13', name: 'Social Media Automation', desc: 'AI Social Media Suite — multi-channel post scheduling & automated campaign growth.', tags: ['Marketing', 'AI Content', 'Automation'], accent: 'text-blue-600' },
+                  { id: 'iplpredictor', badge: 'Gaming', badgeCls: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400', num: '14', name: 'IPL Predictor', desc: '100% Free-to-Play Social Cricket Game — Prediction Coins (PC) are virtual points for entertainment only (zero cash value, no real money deposits or gambling).', tags: ['Gaming', 'Free-to-Play', 'Cricket'], accent: 'text-emerald-600' },
                 ].map((prod, idx) => (
                   <motion.div
                     key={prod.id}
@@ -3663,6 +3696,38 @@ export default function Home() {
                   <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors leading-snug">Enterprise Social Media Automation & Audience Analytics</h3>
                   <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
                     Deployed an AI-driven multi-channel social media automation ecosystem featuring automated multi-platform post distribution, sentiment analysis, AI-generated campaign copy, and real-time audience engagement tracking.
+                  </p>
+                </div>
+                <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
+                  View Case Study <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
+                </a>
+              </motion.div>
+
+              {/* Case 14: IPL Predictor */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{
+                  y: -12,
+                  rotateY: 6,
+                  rotateX: -3,
+                  scale: 1.03,
+                  boxShadow: "0 25px 50px rgba(16, 185, 129, 0.12)"
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative bg-gradient-to-b from-white to-slate-50 dark:from-navy-900 dark:to-navy-950 border border-slate-200/50 dark:border-white/10 rounded-2xl p-7 flex flex-col gap-6 cursor-pointer overflow-hidden transition-all duration-300 group select-none min-h-[300px]"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out z-0" />
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  <Badge variant="success">Gaming</Badge>
+                  <Badge variant="primary">Social Cricket</Badge>
+                  <Badge variant="neutral">Virtual Points</Badge>
+                </div>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">14. IPL Predictor Platform</span>
+                <div className="relative z-10 flex flex-col gap-2">
+                  <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors leading-snug">100% Free-to-Play Social Cricket Game</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
+                    Architected a 100% Free-to-Play social cricket prediction platform for IPL fans, featuring virtual Prediction Coins (PC) strictly for entertainment with zero cash value, compliance safeguards against real money gambling, and high-concurrency match prediction leaderboards.
                   </p>
                 </div>
                 <a href="#contact" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0052cc] dark:text-blue-400 group/link mt-auto relative z-10">
@@ -5081,7 +5146,7 @@ export default function Home() {
             <div className="flex flex-col gap-4">
               <h4 className="text-[11px] font-extrabold text-white uppercase tracking-[0.12em]">Products</h4>
               <nav className="flex flex-col gap-2.5">
-                {['eduAI365', 'Apply4Jobs', 'LeadGrowAI', 'TheHirings', 'Multi-Agent Leads Management', 'Lucky-12', 'Grocer', 'UniTax', 'Blood Bank', 'Social Media Automation', 'neHerbalTea'].map((item) => (
+                {['eduAI365', 'Apply4Jobs', 'LeadGrowAI', 'TheHirings', 'Multi-Agent Leads Management', 'Lucky-12', 'IPL Predictor', 'Grocer', 'UniTax', 'Blood Bank', 'Social Media Automation', 'neHerbalTea'].map((item) => (
                   <a key={item} href="/#products" className="text-[12px] text-slate-300 hover:text-white hover:translate-x-1 transition-all duration-200 flex items-center gap-1.5 group">
                     <span className="h-px w-3 bg-slate-700 group-hover:bg-blue-500 group-hover:w-4 transition-all duration-200" />
                     {item}

@@ -33,6 +33,7 @@ This document serves as an architectural, domain, and entity briefing for AI cod
 *   **UniTax:** Partner portal tax consultancy transformed into a pan-India franchise-driven ecosystem.
 *   **Blood Bank:** Smart blood bank management system and emergency donor network.
 *   **Social Media Automation:** AI-driven multi-channel social media automation, content scheduling, and audience growth suite.
+*   **IPL Predictor:** 100% Free-to-Play Social Cricket Game using virtual Prediction Coins (PC) with zero cash value and no real money deposits or gambling.
 
 ---
 
