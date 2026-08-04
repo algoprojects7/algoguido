@@ -47,14 +47,12 @@ import {
 } from 'lucide-react';
 import { Button, Card, Badge, Input, Select, Textarea } from '@algoguido/ui';
 import { motion as originalMotion, AnimatePresence } from 'framer-motion';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
 import { MobileHeroVisual } from '@/components/MobileHeroVisual';
 
 const motion = originalMotion as any;
-const AppleMapsView = dynamic(() => import('@/components/AppleMapsView'), { ssr: false });
 
 function DynamicBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -5001,20 +4999,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Premium Apple Maps Interactive Location Suite */}
-          <div className="max-w-7xl mx-auto mt-12 lg:mt-16 pt-12 border-t border-slate-200/60 dark:border-white/5 relative z-10 flex flex-col gap-6">
-            <div className="flex flex-col gap-1.5">
-              <span className="text-xs font-extrabold text-[#0052cc] uppercase tracking-widest bg-[#0052cc]/5 px-3 py-1 rounded-full w-fit">Interactive Route Planner</span>
-              <h3 className="font-display font-extrabold text-2xl text-slate-900 dark:text-white tracking-tight">Travel & Location Companion</h3>
-              <p className="text-slate-600 dark:text-slate-400 text-sm">
-                Explore custom directions, check real-time traffic details, or simulate a CarPlay-guided navigation sequence to our headquarters.
-              </p>
-            </div>
 
-            <div className="w-full">
-              <AppleMapsView />
-            </div>
-          </div>
         </section>
 
       </main>

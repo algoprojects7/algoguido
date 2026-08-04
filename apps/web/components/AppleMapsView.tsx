@@ -81,15 +81,15 @@ export default function AppleMapsView() {
   const routePathRef = useRef<SVGPathElement>(null);
   const animationFrameId = useRef<number | null>(null);
 
-  // Define route paths coordinates
-  // Drive route (Jalukbari bridge (End) -> AEC Road -> Sundarbari Chowk -> Govt Ayurvedic College -> Jog Turn -> Priyadarshini -> Majankari -> Algoguido)
-  const drivePathD = "M 75 40 L 70 160 L 70 280 L 150 280 L 150 320 L 220 320 L 350 320 L 480 320 L 480 180 L 600 180";
+  // Define route paths coordinates matching the exact Google Maps snapshot:
+  // Jalukbari Bridge / AEC Road -> past Govt Ayurvedic College -> Nizarapur Main Rd -> Pub Nizarapur Path -> Algoguido HQ
+  const drivePathD = "M 75 40 L 70 120 C 70 180, 80 260, 90 340 L 100 440 C 180 475, 340 470, 480 460 L 640 440";
   
   // Walk route
-  const walkPathD = "M 75 40 L 70 160 L 70 280 L 150 280 L 150 320 L 220 320 L 350 320 L 480 320 L 480 180 L 600 180";
+  const walkPathD = "M 75 40 L 70 120 C 70 180, 80 260, 90 340 L 100 440 C 180 475, 340 470, 480 460 L 640 440";
 
   // Cycle route
-  const cyclePathD = "M 75 40 L 70 160 L 70 280 L 150 280 L 150 320 L 220 320 L 350 320 L 480 320 L 480 180 L 600 180";
+  const cyclePathD = "M 75 40 L 70 120 C 70 180, 80 260, 90 340 L 100 440 C 180 475, 340 470, 480 460 L 640 440";
 
   // Select path string based on active route mode
   const getActivePathD = () => {
@@ -100,35 +100,29 @@ export default function AppleMapsView() {
 
   // Define step directions
   const driveSteps: Step[] = [
-    { text: "Start at the end of Jalukbari Bridge, head South on AEC Road", distance: "100m", icon: "straight", triggerProgress: 0 },
-    { text: "Pass through Sundarbari Chowk (Kalpana Restaurant)", distance: "200m", icon: "straight", triggerProgress: 0.12 },
-    { text: "Reaching Govt Ayurvedic College, turn left", distance: "80m", icon: "left", triggerProgress: 0.28 },
-    { text: "Go straight a little bit, then turn right", distance: "50m", icon: "right", triggerProgress: 0.35 },
-    { text: "Go a little bit, then turn left to continue straight", distance: "70m", icon: "left", triggerProgress: 0.45 },
-    { text: "Pass Priyadarshini Girls' Hostel on your way", distance: "150m", icon: "straight", triggerProgress: 0.60 },
-    { text: "Reaching Majankari Tent House, turn left", distance: "130m", icon: "left", triggerProgress: 0.80 },
-    { text: "Go straight to arrive at Algoguido Technologies Private Limited", distance: "0m", icon: "arrive", triggerProgress: 0.95 }
+    { text: "Start at Jalukbari Bridge End, head East on AEC Road", distance: "100m", icon: "straight", triggerProgress: 0 },
+    { text: "Pass Govt Ayurvedic College & Hospital (on AEC Rd)", distance: "150m", icon: "straight", triggerProgress: 0.15 },
+    { text: "Turn onto Nizarapur Main Rd heading south along canal", distance: "200m", icon: "right", triggerProgress: 0.35 },
+    { text: "Continue onto Pub Nizarapur Path heading east", distance: "250m", icon: "left", triggerProgress: 0.60 },
+    { text: "Follow Pub Nizarapur Path past Majankari Tent House", distance: "180m", icon: "straight", triggerProgress: 0.80 },
+    { text: "Arrive at Algoguido Technologies Private Limited", distance: "0m", icon: "arrive", triggerProgress: 0.95 }
   ];
 
   const walkSteps: Step[] = [
-    { text: "Walk South on AEC Road from Jalukbari Bridge End", distance: "100m", icon: "straight", triggerProgress: 0 },
-    { text: "Pass through Sundarbari Chowk (Kalpana Restaurant)", distance: "200m", icon: "straight", triggerProgress: 0.12 },
-    { text: "Turn left opposite Govt Ayurvedic College", distance: "80m", icon: "left", triggerProgress: 0.28 },
-    { text: "Walk straight, then turn right", distance: "50m", icon: "right", triggerProgress: 0.35 },
-    { text: "Walk a little bit, then turn left", distance: "70m", icon: "left", triggerProgress: 0.45 },
-    { text: "Walk straight past Priyadarshini Girls' Hostel", distance: "150m", icon: "straight", triggerProgress: 0.60 },
-    { text: "At Majankari Tent House, turn left", distance: "130m", icon: "left", triggerProgress: 0.80 },
-    { text: "Walk straight to arrive at Algoguido", distance: "0m", icon: "arrive", triggerProgress: 0.95 }
+    { text: "Walk from Jalukbari Bridge End on AEC Road", distance: "100m", icon: "straight", triggerProgress: 0 },
+    { text: "Walk past Govt Ayurvedic College & Hospital", distance: "150m", icon: "straight", triggerProgress: 0.15 },
+    { text: "Walk down Nizarapur Main Rd along the canal", distance: "200m", icon: "right", triggerProgress: 0.35 },
+    { text: "Turn left onto Pub Nizarapur Path", distance: "250m", icon: "left", triggerProgress: 0.60 },
+    { text: "Walk east along Pub Nizarapur Path", distance: "180m", icon: "straight", triggerProgress: 0.80 },
+    { text: "Arrive at Algoguido Technologies Private Limited", distance: "0m", icon: "arrive", triggerProgress: 0.95 }
   ];
 
   const cycleSteps: Step[] = [
-    { text: "Ride South from Jalukbari Bridge End on AEC Road", distance: "100m", icon: "straight", triggerProgress: 0 },
-    { text: "Pass through Sundarbari Chowk (Kalpana Restaurant)", distance: "200m", icon: "straight", triggerProgress: 0.12 },
-    { text: "At Govt Ayurvedic College, turn left", distance: "80m", icon: "left", triggerProgress: 0.28 },
-    { text: "Ride straight a little bit, then turn right", distance: "50m", icon: "right", triggerProgress: 0.35 },
-    { text: "Ride a little bit, then turn left", distance: "70m", icon: "left", triggerProgress: 0.45 },
-    { text: "Ride straight past Priyadarshini Girls' Hostel", distance: "150m", icon: "straight", triggerProgress: 0.60 },
-    { text: "At Majankari Tent House, turn left", distance: "130m", icon: "left", triggerProgress: 0.80 },
+    { text: "Ride from Jalukbari Bridge End on AEC Road", distance: "100m", icon: "straight", triggerProgress: 0 },
+    { text: "Ride past Govt Ayurvedic College & Hospital", distance: "150m", icon: "straight", triggerProgress: 0.15 },
+    { text: "Ride down Nizarapur Main Rd along canal", distance: "200m", icon: "right", triggerProgress: 0.35 },
+    { text: "Turn onto Pub Nizarapur Path", distance: "250m", icon: "left", triggerProgress: 0.60 },
+    { text: "Ride east along Pub Nizarapur Path", distance: "180m", icon: "straight", triggerProgress: 0.80 },
     { text: "Arrive at Algoguido Technologies Private Limited", distance: "0m", icon: "arrive", triggerProgress: 0.95 }
   ];
 
@@ -156,59 +150,35 @@ export default function AppleMapsView() {
       id: 'algoguido',
       name: 'Algoguido Technologies Private Limited',
       type: 'AI-Driven Enterprise Technology Company',
-      x: 600,
-      y: 180,
+      x: 640,
+      y: 440,
       description: 'Corporate Headquarters. Custom AI platforms, enterprise software, and secure cloud operations.',
       rating: 4.8,
       reviews: 128
     },
     {
-      id: 'jalukbari_bridge',
-      name: 'Jalukbari Bridge (End)',
-      type: 'Transit Node / Bridge',
-      x: 75,
-      y: 40,
-      description: 'The end point of the Jalukbari Bridge, a primary entry highway junction connecting Guwahati.'
-    },
-    {
-      id: 'sundarbari_chowk',
-      name: 'Sundarbari Chowk (Kalpana Restaurant)',
-      type: 'Local Chowk / Food Landmark',
-      x: 70,
-      y: 160,
-      description: 'Busy local chowk intersection, famous for Kalpana Restaurant serving traditional Assamese cuisine.'
-    },
-    {
       id: 'govt_ayurvedic_college',
       name: 'Govt Ayurvedic College & Hospital',
-      type: 'Educational Institution',
-      x: 70,
+      type: 'Educational Hospital',
+      x: 220,
+      y: 75,
+      description: 'Premier government Ayurvedic research institute and hospital facility on AEC Road.'
+    },
+    {
+      id: 'nizarapur_main_rd',
+      name: 'Nizarapur Main Rd',
+      type: 'Canal Road',
+      x: 220,
       y: 260,
-      description: 'Premier government Ayurvedic research institute and healthcare facility on AEC Road.'
+      description: 'Road running along the south bank of the Nizarapur water canal.'
     },
     {
-      id: 'priyadarshini_hostel',
-      name: 'Priyadarshini Girls Hostel',
-      type: 'Student Residence',
-      x: 350,
-      y: 320,
-      description: 'A prominent local student hostel located on Pub-Nizarapur Path.'
-    },
-    {
-      id: 'majankari_tent_house',
-      name: 'Majankari Tent House',
-      type: 'Local Business / Chowk',
-      x: 480,
-      y: 320,
-      description: 'Well-known local event supply service provider, marking the key turn towards our office.'
-    },
-    {
-      id: 'sundarbari_park',
-      name: 'Sundarbari Park & Lake',
-      type: 'Recreational Park',
-      x: 320,
-      y: 330,
-      description: 'Lush neighborhood park featuring walking trails, dense canopy, and a tranquil central pond.'
+      id: 'pub_nizarapur_path',
+      name: 'Pub Nizarapur Path',
+      type: 'Primary Access Road',
+      x: 400,
+      y: 460,
+      description: 'Main arterial path connecting to Algoguido Technologies Private Limited.'
     }
   ];
 
@@ -718,14 +688,14 @@ export default function AppleMapsView() {
             <g filter="url(#roadShadow)">
               {/* Sundarbari Path Loop */}
               <path
-                d="M 60 480 C 100 500, 180 520, 240 515 C 310 510, 360 490, 380 480 C 400 440, 410 380, 420 350 C 450 280, 500 245, 600 245"
+                d="M 60 540 C 100 555, 180 565, 240 560 C 310 555, 360 545, 380 535 C 400 500, 410 440, 420 400 C 450 330, 500 295, 600 295"
                 fill="none"
                 stroke={mapStyle === 'standard' ? '#e4e2dd' : '#2d333b'}
                 strokeWidth="18"
                 className="dark:stroke-[#25282c]"
               />
 
-              {/* Nizarapur Path */}
+              {/* Nizarapur Path (upper, original) */}
               <path
                 d="M 75 285 C 130 265, 180 255, 240 245 C 310 235, 380 225, 450 215 C 490 225, 520 230, 540 235 L 750 285"
                 fill="none"
@@ -734,9 +704,27 @@ export default function AppleMapsView() {
                 className="dark:stroke-[#25282c]"
               />
 
+              {/* Pub-Nizarapur Path (horizontal road at bottom where route turns east) */}
+              <path
+                d="M 70 480 L 200 480 L 350 480 L 500 480 L 600 480"
+                fill="none"
+                stroke={mapStyle === 'standard' ? '#e4e2dd' : '#2d333b'}
+                strokeWidth="18"
+                className="dark:stroke-[#25282c]"
+              />
+
+              {/* Vertical connector road: Majankari north to Algoguido area */}
+              <path
+                d="M 480 480 L 480 320 L 480 180 L 560 180"
+                fill="none"
+                stroke={mapStyle === 'standard' ? '#e4e2dd' : '#2d333b'}
+                strokeWidth="18"
+                className="dark:stroke-[#25282c]"
+              />
+
               {/* AEC Road (Main vertical road) */}
               <path
-                d="M 75 -20 C 70 80, 75 180, 70 280 C 65 340, 60 420, 50 620"
+                d="M 75 -20 C 70 80, 75 180, 70 280 C 68 340, 68 420, 70 480 C 68 520, 60 560, 50 620"
                 fill="none"
                 stroke={mapStyle === 'standard' ? '#e4e2dd' : '#2d333b'}
                 strokeWidth="24"
@@ -748,7 +736,7 @@ export default function AppleMapsView() {
             <g>
               {/* Sundarbari Path Fill */}
               <path
-                d="M 60 480 C 100 500, 180 520, 240 515 C 310 510, 360 490, 380 480 C 400 440, 410 380, 420 350 C 450 280, 500 245, 600 245"
+                d="M 60 540 C 100 555, 180 565, 240 560 C 310 555, 360 545, 380 535 C 400 500, 410 440, 420 400 C 450 330, 500 295, 600 295"
                 fill="none"
                 stroke={mapStyle === 'standard' ? '#ffffff' : '#3e444d'}
                 strokeWidth="14"
@@ -756,7 +744,7 @@ export default function AppleMapsView() {
                 className="dark:stroke-[#30343a]"
               />
 
-              {/* Nizarapur Path Fill */}
+              {/* Nizarapur Path Fill (upper) */}
               <path
                 d="M 75 285 C 130 265, 180 255, 240 245 C 310 235, 380 225, 450 215 C 490 225, 520 230, 540 235 L 750 285"
                 fill="none"
@@ -766,9 +754,29 @@ export default function AppleMapsView() {
                 className="dark:stroke-[#30343a]"
               />
 
+              {/* Pub-Nizarapur Path Fill */}
+              <path
+                d="M 70 480 L 200 480 L 350 480 L 500 480 L 600 480"
+                fill="none"
+                stroke={mapStyle === 'standard' ? '#ffffff' : '#3e444d'}
+                strokeWidth="14"
+                strokeLinecap="round"
+                className="dark:stroke-[#30343a]"
+              />
+
+              {/* Vertical connector road Fill */}
+              <path
+                d="M 480 480 L 480 320 L 480 180 L 560 180"
+                fill="none"
+                stroke={mapStyle === 'standard' ? '#ffffff' : '#3e444d'}
+                strokeWidth="14"
+                strokeLinecap="round"
+                className="dark:stroke-[#30343a]"
+              />
+
               {/* AEC Road Fill */}
               <path
-                d="M 75 -20 C 70 80, 75 180, 70 280 C 65 340, 60 420, 50 620"
+                d="M 75 -20 C 70 80, 75 180, 70 280 C 68 340, 68 420, 70 480 C 68 520, 60 560, 50 620"
                 fill="none"
                 stroke={mapStyle === 'standard' ? '#ffffff' : '#3e444d'}
                 strokeWidth="20"
@@ -781,7 +789,8 @@ export default function AppleMapsView() {
               <g className="fill-slate-400 dark:fill-slate-500 font-bold text-[9px] pointer-events-none select-none tracking-wide uppercase">
                 <text transform="rotate(84 68 180)" x="68" y="185">AEC ROAD</text>
                 <text transform="rotate(-6 310 238)" x="310" y="238">Nizarapur Path</text>
-                <text transform="rotate(-3 160 514)" x="160" y="514">Sundarbari Path</text>
+                <text transform="rotate(0 220 473)" x="220" y="473">Pub-Nizarapur path</text>
+                <text transform="rotate(-3 160 560)" x="160" y="560">Sundarbari Path</text>
               </g>
             )}
 
@@ -796,7 +805,7 @@ export default function AppleMapsView() {
                 >
                   {/* AEC Road - Heavy (Red) near intersection */}
                   <path
-                    d="M 70 240 C 70 260, 68 300, 65 330"
+                    d="M 70 240 C 70 260, 68 300, 68 380"
                     fill="none"
                     stroke="#ff3b30"
                     strokeWidth="3.5"
@@ -813,7 +822,7 @@ export default function AppleMapsView() {
                     strokeLinecap="round"
                   />
                   <path
-                    d="M 64 340 C 60 420, 50 620"
+                    d="M 68 390 C 68 420, 70 480 C 68 520, 60 560, 50 620"
                     fill="none"
                     stroke="#34c759"
                     strokeWidth="3.5"
@@ -867,7 +876,7 @@ export default function AppleMapsView() {
 
             {/* ALGOGUIDO OFFICE BUILDING ISOMETRIC MODEL */}
             <g
-              transform="translate(585, 140)"
+              transform="translate(615, 400)"
               className="cursor-pointer"
               onClick={() => selectLandmark(landmarks[0])}
             >
@@ -940,7 +949,7 @@ export default function AppleMapsView() {
 
             {/* PRIMARY ALGOGUIDO PIN MARKER */}
             <g
-              transform="translate(610, 160)"
+              transform="translate(640, 440)"
               className="cursor-pointer"
               onClick={() => selectLandmark(landmarks[0])}
             >
@@ -1145,8 +1154,8 @@ export default function AppleMapsView() {
                   {/* Spoken subtitle text */}
                   <span className="text-[10.5px] font-bold text-slate-200 line-clamp-1 italic">
                     {!isMuted ? (
-                      getCurrentStepIndex() === 0 ? "Narrator: Head toward Nizarapur Path route." :
-                      getCurrentStepIndex() === 7 ? "Narrator: You have arrived at your destination." :
+                      getCurrentStepIndex() === 0 ? "Narrator: Head East on AEC Road toward Govt Ayurvedic College." :
+                      getCurrentStepIndex() === 5 ? "Narrator: You have arrived at Algoguido Technologies Private Limited." :
                       `Narrator: ${getActiveSteps()[getCurrentStepIndex()].text}`
                     ) : "Audio Guidance Muted"}
                   </span>
