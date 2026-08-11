@@ -2743,7 +2743,7 @@ export default function Home() {
                 </a>
               </motion.div>
 
-              {/* Product 6: TheHireAMe */}
+              {/* Product 6: TheHireMe */}
               <motion.div
                 variants={itemVariants}
                 whileHover={{
@@ -2763,7 +2763,7 @@ export default function Home() {
                   <Badge variant="warning">Workforce</Badge>
                   <Badge variant="primary">AI</Badge>
                 </div>
-                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">06. TheHireAMe</span>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">06. TheHireMe</span>
                 <div className="relative z-10 flex flex-col gap-2">
                   <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors leading-snug">AI-Driven Staffing & Talent Sourcing</h3>
                   <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
@@ -3071,7 +3071,7 @@ export default function Home() {
                   { id: 'apply4jobs', badge: 'HR Tech', badgeCls: 'bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400', num: '03', name: 'Apply4Jobs', desc: 'Intelligent Recruitment & Job Portal — AI-powered resume screening & applicant tracking system.', tags: ['HR Tech', 'Recruitment', 'AI'], accent: 'text-amber-600' },
                   { id: 'eduai365', badge: 'Education', badgeCls: 'bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400', num: '04', name: 'EduAI365', desc: 'AI-Powered Education ERP — admissions, academics, exams, finance & AI-enabled learning support.', tags: ['Education', 'ERP', 'AI'], accent: 'text-blue-600' },
                   { id: 'scholarship', badge: 'Government', badgeCls: 'bg-slate-50 text-slate-700 dark:bg-slate-800/30 dark:text-slate-300', num: '05', name: 'Scholarship Portal', desc: 'Secure scholarship management — eligibility verification, workflow automation & beneficiary tracking.', tags: ['Education', 'Gov', 'Portal'], accent: 'text-slate-600' },
-                  { id: 'thehireme', badge: 'HR Tech', badgeCls: 'bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400', num: '06', name: 'TheHireAMe', desc: 'AI-Driven Staffing & Talent Sourcing — matching top-tier engineers to enterprise projects globally.', tags: ['HR Tech', 'Workforce', 'AI'], accent: 'text-amber-600' },
+                  { id: 'thehireme', badge: 'HR Tech', badgeCls: 'bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400', num: '06', name: 'TheHireMe', desc: 'AI-Driven Staffing & Talent Sourcing — matching top-tier engineers to enterprise projects globally.', tags: ['HR Tech', 'Workforce', 'AI'], accent: 'text-amber-600' },
                   { id: 'neherbal', badge: 'Agriculture', badgeCls: 'bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-400', num: '07', name: 'NEHerbalTea', desc: 'Smart Herbal Tea Marketplace — AI-enabled platform for Northeast India\'s herbal products.', tags: ['Agriculture', 'E-Commerce', 'AI'], accent: 'text-green-600' },
                   { id: 'aiworkforce', badge: 'AI Agents', badgeCls: 'bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400', num: '08', name: 'AI Workforce', desc: 'Multi-Agent Leads Management — 6 collaborating AI agents handle the full sales pipeline lifecycle.', tags: ['AI Agents', 'Leads', 'Workforce'], accent: 'text-blue-600' },
                   { id: 'lucky12', badge: 'Gaming', badgeCls: 'bg-purple-50 text-purple-700 dark:bg-purple-950/30 dark:text-purple-400', num: '09', name: 'Lucky-12', desc: 'Gaming App — interactive digital entertainment & dynamic rewards platform.', tags: ['Gaming', 'Mobile', 'App'], accent: 'text-purple-600' },
@@ -3413,7 +3413,7 @@ export default function Home() {
                 </a>
               </motion.div>
 
-              {/* Case 6: TheHireAMe */}
+              {/* Case 6: TheHireMe */}
               <motion.div
                 variants={itemVariants}
                 whileHover={{
@@ -3433,7 +3433,7 @@ export default function Home() {
                   <Badge variant="warning">Workforce</Badge>
                   <Badge variant="primary">Talent Sourcing</Badge>
                 </div>
-                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">06. TheHireAMe Staffing Platform</span>
+                <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest relative z-10">06. TheHireMe Staffing Platform</span>
                 <div className="relative z-10 flex flex-col gap-2">
                   <h3 className="font-display font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors leading-snug">AI-Driven Developer Staffing & Talent Sourcing</h3>
                   <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
