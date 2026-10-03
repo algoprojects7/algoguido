@@ -1632,27 +1632,32 @@ export default function Home() {
             transition={{ delay: 0.15 }}
             className="w-full flex justify-center px-4 mb-4 relative z-10"
           >
-            <div className="inline-flex flex-wrap md:flex-nowrap items-center justify-center gap-y-2.5 gap-x-5 px-6 py-2.5 rounded-full bg-white/40 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-md shadow-sm text-[10px] sm:text-xs font-semibold text-slate-700 dark:text-slate-300 tracking-wide">
+            <div className="inline-flex flex-wrap lg:flex-nowrap items-center justify-center gap-y-2.5 gap-x-4 lg:gap-x-5 px-6 py-2.5 rounded-full bg-white/40 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-md shadow-sm text-[10px] sm:text-xs font-semibold text-slate-700 dark:text-slate-300 tracking-wide">
               <span className="flex items-center gap-1.5 whitespace-nowrap">
                 <Brain className="h-3.5 w-3.5 text-blue-500 shrink-0" />
                 AI-First Approach
               </span>
-              <span className="h-3 w-px bg-slate-300 dark:bg-white/10 hidden md:inline shrink-0" />
+              <span className="h-3 w-px bg-slate-300 dark:bg-white/10 hidden lg:inline shrink-0" />
               <span className="flex items-center gap-1.5 whitespace-nowrap">
                 <ShieldCheck className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
                 ISO 9001:2015 Certified
               </span>
-              <span className="h-3 w-px bg-slate-300 dark:bg-white/10 hidden md:inline shrink-0" />
+              <span className="h-3 w-px bg-slate-300 dark:bg-white/10 hidden lg:inline shrink-0" />
+              <span className="flex items-center gap-1.5 whitespace-nowrap">
+                <Building2 className="h-3.5 w-3.5 text-orange-500 shrink-0" />
+                UDYAM Registered MSME
+              </span>
+              <span className="h-3 w-px bg-slate-300 dark:bg-white/10 hidden lg:inline shrink-0" />
               <span className="flex items-center gap-1.5 whitespace-nowrap">
                 <Lock className="h-3.5 w-3.5 text-purple-500 shrink-0" />
                 Secure & Scalable
               </span>
-              <span className="h-3 w-px bg-slate-300 dark:bg-white/10 hidden md:inline shrink-0" />
+              <span className="h-3 w-px bg-slate-300 dark:bg-white/10 hidden lg:inline shrink-0" />
               <span className="flex items-center gap-1.5 whitespace-nowrap">
                 <Zap className="h-3.5 w-3.5 text-red-500 shrink-0" />
                 Redis Cache Optimized
               </span>
-              <span className="h-3 w-px bg-slate-300 dark:bg-white/10 hidden md:inline shrink-0" />
+              <span className="h-3 w-px bg-slate-300 dark:bg-white/10 hidden lg:inline shrink-0" />
               <span className="flex items-center gap-1.5 whitespace-nowrap">
                 <Users className="h-3.5 w-3.5 text-amber-500 shrink-0" />
                 Trusted by 100+ Clients
